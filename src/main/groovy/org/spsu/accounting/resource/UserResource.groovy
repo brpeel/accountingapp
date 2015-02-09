@@ -26,10 +26,4 @@ class UserResource extends BaseResource {
         return new DAOImpl<UserDO>(dbi: jdbi.onDemand(UserDBI))
     }
 
-    @GET
-    @Path("{username}")
-    @Produces(MediaType.APPLICATION_JSON)
-    Response getUser(@PathParam("username") String username){
-        return getObjectAsResponse(username)
-    }
 }

@@ -49,29 +49,26 @@ abstract class BaseResource {
     @GET
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    Response get(@PathParam("id") int id){
+    def get(@PathParam("id") int id){
 
-        return Response.ok().entity(getObjectById(id)).build()
+        return getObjectById(id)
     }
 
     @GET
     @Path("/all/{allowInactive}")
     @Produces(MediaType.APPLICATION_JSON)
-    Response getAll(@PathParam("allowInactive") boolean allowInactive = false){
-
-        return getAllAsResponse(allowInactive)
+    List getAll(@PathParam("allowInactive") boolean allowInactive){
+        return getAllObjects(allowInactive)
     }
 
     @PUT
-    @Produces(MediaType.APPLICATION_JSON)
-    Response replace(@PathParam("allowInactive") boolean allowInactive = false){
+    Response replace(@PathParam("allowInactive") boolean allowInactive){
 
         return getAllAsResponse(allowInactive)
     }
 
     @PATCH
-    @Produces(MediaType.APPLICATION_JSON)
-    Response update(@PathParam("allowInactive") boolean allowInactive = false){
+    Response update(@PathParam("allowInactive") boolean allowInactive){
 
         return getAllAsResponse(allowInactive)
     }

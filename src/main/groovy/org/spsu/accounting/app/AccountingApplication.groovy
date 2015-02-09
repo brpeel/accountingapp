@@ -15,6 +15,8 @@ import io.dropwizard.setup.Bootstrap
 import io.dropwizard.setup.Environment
 import org.eclipse.jetty.server.session.SessionHandler
 import org.skife.jdbi.v2.DBI
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.spsu.accounting.auth.AccountingAuthenticator
 import org.spsu.accounting.auth.SessionFilter
 import org.spsu.accounting.data.dao.UserDAO
@@ -35,6 +37,8 @@ import javax.servlet.DispatcherType
  * Created by bpeel on 1/28/15.
  */
 class AccountingApplication extends Application<AccountingApplicationConfiguration> {
+
+    private Logger logger = LoggerFactory.getLogger(AccountingApplication)
 
     @Override
     void initialize(Bootstrap<AccountingApplicationConfiguration> bootstrap) {
@@ -110,18 +114,7 @@ class AccountingApplication extends Application<AccountingApplicationConfigurati
     private void register(BaseResource resource, Environment environment){
         environment.jersey().register(resource)
     }
-/*
-    private void register(BaseResource resource, DAO dao, Class dbiClazz, Environment environment, DBI jdbi){
-        dao.dbi = jdbi.onDemand(dbiClazz)
-        dao.validator = environment.getValidator()
-        dao.mapper = environment.getObjectMapper()
 
-        resource.dao = dao
-        resource.mapper = environment.getObjectMapper()
-
-        register(resource, environment)
-    }
-*/
     public static void main(String[] args) throws Exception {
         new AccountingApplication().run(args)
     }

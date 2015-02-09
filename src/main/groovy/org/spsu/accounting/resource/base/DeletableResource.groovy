@@ -16,7 +16,6 @@ import javax.ws.rs.core.Response
 abstract class DeletableResource extends BaseResource {
 
     @DELETE
-    @Produces(MediaType.APPLICATION_JSON)
     Response delete(@PathParam("id") Object id){
         try {
             if (dao instanceof ActiveDAO)
