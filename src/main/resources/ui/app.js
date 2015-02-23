@@ -18,17 +18,27 @@
 				controller  : 'aboutController'
 			})
 
+			.when('/logon', {
+                templateUrl : 'templates/logon.html',
+                controller  : 'logonController'
+            })
+
 	});
 
 	// create the controller and inject Angular's $scope
 	accountingApp.controller('mainController', function($scope) {
-		// create a message to display in our view
-		$scope.message = 'Everyone come and see how good I look!';
+
 
 	});
 
 	accountingApp.controller('aboutController', function($scope, $http) {
 
 		var controller = new AboutController($scope, $http)
+
+	});
+
+
+	accountingApp.controller('LogonController', function($scope, $http) {
+        var controller =  new LogonController($scope, $http)
 
 	});

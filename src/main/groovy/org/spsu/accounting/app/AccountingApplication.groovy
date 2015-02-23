@@ -30,6 +30,9 @@ import org.spsu.accounting.resource.AuthResource
 import org.spsu.accounting.resource.base.BaseResource
 import org.spsu.accounting.resource.MainMenuResource
 import org.spsu.accounting.resource.UserResource
+import org.spsu.accounting.utils.mail.MailConfig
+import org.spsu.accounting.utils.mail.MailServer
+import org.spsu.accounting.utils.mail.MailServerImpl
 
 import javax.servlet.DispatcherType
 
@@ -39,6 +42,8 @@ import javax.servlet.DispatcherType
 class AccountingApplication extends Application<AccountingApplicationConfiguration> {
 
     private Logger logger = LoggerFactory.getLogger(AccountingApplication)
+    public static MailServer mailServer
+    public static String APPLICATION = AccountingApplication.class.simpleName
 
     @Override
     void initialize(Bootstrap<AccountingApplicationConfiguration> bootstrap) {
@@ -64,10 +69,15 @@ class AccountingApplication extends Application<AccountingApplicationConfigurati
     void run(AccountingApplicationConfiguration configuration, Environment environment) throws Exception {
 
         final DBI jdbi = createDBI(configuration, environment)
+        MailConfig mailConfig = configuration.mail
+        mailServer = new MailServerImpl(mailConfig)
 
         registerHealthChecks(configuration, environment, jdbi)
 
         registerResources(environment, jdbi)
+
+        if (mailConfig)
+            mailServer.send(mailConfig.username, "Application Started : ${this.class.simpleName}", "Application Started : ${this.class.simpleName}")
     }
 
     private DBI createDBI(AccountingApplicationConfiguration configuration, Environment environment){

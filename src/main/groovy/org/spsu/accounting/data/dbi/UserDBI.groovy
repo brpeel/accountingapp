@@ -10,6 +10,8 @@ import org.spsu.accounting.data.domain.AccountDO
 import org.spsu.accounting.data.domain.UserDO
 import org.spsu.accounting.data.mapper.UserDOMapper
 
+import java.sql.Timestamp
+
 @RegisterMapper(UserDOMapper.class)
 interface UserDBI{
 
@@ -33,19 +35,29 @@ interface UserDBI{
     @MapResultAsBean
     List<UserDO> all(@Bind("allowInactive") boolean allowInactive)
 
-    @SqlQuery("insert into UserDO ( username, password, first_name, last_name, active, locked, password_reset, email, login_attempts) \
+    @SqlQuery("insert into Accounting_User ( username, password, first_name, last_name, active, locked, password_reset, email, login_attempts) \
 	 values ( :username, :password, :firstName, :lastName, :active, :locked, :passwordReset, :email, :loginAttempts) \
 	 returning id")
 	int insert(@BindBean UserDO doBean)
 
-	@SqlUpdate("update UserDO set  username = :username, first_name = :firstName, last_name = :lastName \
+	@SqlUpdate("update Accounting_User set  username = :username, first_name = :firstName, last_name = :lastName \
 	, active = :active, locked = :locked, email = :email \
 	, login_attempts = :loginAttempts where id = :id")
 	int update(@BindBean UserDO doBean)
 
-    @SqlUpdate("insert into session (id, expiration) values (:id, :expiration)")
-    void createSession(@Bind("id") id, @Bind("expiration") expiration)
+    @SqlUpdate("insert into token (id, expiration, user_id) values (:id, :expiration, :userid)")
+    void createSession(@Bind("id") String id, @Bind("expiration") Timestamp expiration, @Bind("userid") int userId)
 
-    @SqlQuery("select true from session where id = :id and expiration > :now")
-    boolean isValidSession(@Bind("id") id, @Bind("now") now)
+    @SqlQuery("select true from token where id = :id and expiration > :now")
+    boolean isValidSession(@Bind("id") String id, @Bind("now") Timestamp now)
+
+    @SqlUpdate("delete from token where user_id = :userid")
+    void clearSession(@Bind("userid") String userId)
+
+    @SqlUpdate("update accounting_user set password = :password, password_reset = now() where user_id = :userid")
+    void resetPassword(@Bind("password") String password, @Bind("userid") int userid)
+
+    @SqlUpdate("update accounting_user set password = :password, password_reset = null where user_id = :userid")
+    void updatePassword(@Bind("password") String password, @Bind("userid") int userid)
+
 }

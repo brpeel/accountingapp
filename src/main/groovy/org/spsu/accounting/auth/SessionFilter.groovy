@@ -35,14 +35,15 @@ class SessionFilter implements javax.servlet.Filter{
         HttpServletRequest request = (HttpServletRequest) servletRequest
 
         String token = request.getSession().getAttribute("token")
-        if (request.getRequestURI().endsWith("authenticate") || dao.isValidSession(token)) {
+        if (request.getRequestURI().contains("/ui/logon") || request.getRequestURI().endsWith("authenticate") || dao.isValidSession(token)) {
 
             chain.doFilter(servletRequest, response)
             return
         }
 
         HttpServletResponse httpResponse = (HttpServletResponse) response;
-        httpResponse.sendRedirect("http://localhost:8080/auth/authenticate")
+        chain.doFilter(servletRequest, response)
+        //httpResponse.sendRedirect("http://localhost:8080/ui/logon")
     }
 
     @Override

@@ -3,6 +3,7 @@ package org.spsu.accounting.app
 import com.fasterxml.jackson.annotation.JsonProperty
 import io.dropwizard.Configuration
 import io.dropwizard.db.DataSourceFactory
+import org.spsu.accounting.utils.mail.MailConfig
 
 import javax.validation.Valid
 import javax.validation.constraints.NotNull
@@ -16,5 +17,9 @@ class AccountingApplicationConfiguration extends Configuration {
     @NotNull
     @JsonProperty
     DataSourceFactory database = new DataSourceFactory();
+
+    @JsonProperty
+    @NotNull
+    MailConfig mail
 
 }

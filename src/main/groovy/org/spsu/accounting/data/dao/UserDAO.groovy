@@ -15,4 +15,10 @@ interface UserDAO extends ActiveDAO<UserDO> {
 
     boolean isValidSession(String id)
 
+    void clearSession(String token)
+
+    void resetPassword(UserDO user)
+
+    void setPassword(UserDO user, String password)
+
 }

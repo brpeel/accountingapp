@@ -24,6 +24,13 @@ logging:
 #      timeZone: UTC
 #      output: stdout
 
+mail:
+    username: swe4713brpeel@gmail.com
+    password: spsu2015
+    port: 587
+    host: smtp.gmail.com
+    notifyStart: false
+
 database:
   # the name of your JDBC driver
   driverClass: org.postgresql.Driver

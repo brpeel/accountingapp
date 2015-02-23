@@ -9,6 +9,7 @@ import org.spsu.accounting.data.domain.UserDO
 import org.spsu.accounting.resource.base.BaseResource
 
 import javax.ws.rs.GET
+import javax.ws.rs.POST
 import javax.ws.rs.Path
 import javax.ws.rs.PathParam
 import javax.ws.rs.Produces
@@ -21,9 +22,21 @@ import javax.ws.rs.core.Response
 @Path("user")
 
 class UserResource extends BaseResource {
+
     @Override
     protected DAO createDAO(DBI jdbi) {
         return new DAOImpl<UserDO>(dbi: jdbi.onDemand(UserDBI))
     }
 
+    @POST
+    @Path("/setpassword/{username}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response setPassword(@PathParam("username") String id, Map body){
+
+        UserDO user = this.getObjectById(id)
+
+        this.dao.setPassword(user, body.password)
+
+        return Response.noContent().header("Location", buildURI(id)).build()
+    }
 }
