@@ -7,18 +7,19 @@
     <!-- SCROLLS -->
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" />
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.0/css/font-awesome.css" />
-    <link rel="stylesheet" href="app.css" />
+    <link rel="stylesheet" href="ui/app.css" />
 
     <!-- SPELLS -->
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular-route.js"></script>
-    <script src="app.js"></script>
-    <script src="controllers/AboutController.js"></script>
-    <script src="controllers/MenuController.js"></script>
+    <script src="ui/app.js"></script>
+    <script src="ui/controllers/AboutController.js"></script>
+    <script src="ui/controllers/MenuController.js"></script>
+    <script src="ui/controllers/LogonController.js"></script>
 </head>
 
 <!-- define angular controller -->
-<body ng-controller="mainController">
+<body>
 
 <nav class="navbar navbar-default">
     <div class="container">
@@ -33,17 +34,14 @@
     </div>
 </nav>
 
-
-
 <div id="main">
-
 
     <!-- angular templating -->
     <!-- this is where content will be injected -->
 
     <nav ng-controller="MenuController" class="vertical col-md-2">
         <ul class="unstyled">
-            <li ng-repeat="item in menuItems"><a href="#/{{item.action}}"><i class="fa fa-home"></i> {{item.label}}</a></li>
+            <li ng-repeat="item in menuItems"><a href="#{{item.action}}"><i class="fa fa-home"></i> {{item.label}}</a></li>
         </ul>
     </nav>
     <div ng-view class="col-md-10"></div>
@@ -51,9 +49,7 @@
 </div>
 
 <footer class="text-center">
-    <p>View the tutorial on <a href="http://scotch.io/tutorials/javascript/single-page-apps-with-angularjs-routing-and-templating">Scotch.io</a></p>
 
-    <p>View a tutorial on <a href="http://scotch.io/tutorials/javascript/animating-angularjs-apps-ngview">Animating Your Angular Single Page App</a></p>
 </footer>
 
 </body>

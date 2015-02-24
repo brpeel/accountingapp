@@ -18,7 +18,7 @@ import javax.ws.rs.core.Response
 /**
  * Created by brettpeel on 2/7/15.
  */
-@Path("user")
+@Path("api/user")
 
 class UserResource extends BaseResource {
     @Override

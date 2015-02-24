@@ -6,6 +6,7 @@ import org.spsu.accounting.data.domain.UserDO
 
 import javax.servlet.http.HttpServletRequest
 import javax.ws.rs.GET
+import javax.ws.rs.POST
 import javax.ws.rs.Path
 import javax.ws.rs.Produces
 import javax.ws.rs.core.Context
@@ -24,10 +25,11 @@ class AuthResource {
         this.dao = dao
     }
 
-    @GET
+    @POST
     @Path("/authenticate")
     @Produces(MediaType.APPLICATION_JSON)
-    public UserDO authenticate(@Auth UserDO user, @Context HttpServletRequest request) {
+    public UserDO authenticate( @Context HttpServletRequest request, Map req) {
+        UserDO user = dao.checkLogin(req.username, req.password)
 
         request.getSession().setAttribute("token", dao.createSession(user))
         return user;
