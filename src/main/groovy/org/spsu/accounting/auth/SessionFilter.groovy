@@ -34,16 +34,33 @@ class SessionFilter implements javax.servlet.Filter{
 
         HttpServletRequest request = (HttpServletRequest) servletRequest
 
-        String token = request.getSession().getAttribute("token")
-        if (request.getRequestURI().contains("/ui/logon") || request.getRequestURI().endsWith("authenticate") || dao.isValidSession(token)) {
+        String path = request.getRequestURI()
+        logger.info("Checking path : ${path}")
 
-            chain.doFilter(servletRequest, response)
-            return
+        if (!isOpenPath(path)){
+            String token = request.getHeader("Authorization")
+
+            if (!isValid(token)){
+                ((HttpServletResponse) response).setStatus(Response.Status.UNAUTHORIZED.statusCode)
+                return
+            }
         }
 
-        HttpServletResponse httpResponse = (HttpServletResponse) response;
         chain.doFilter(servletRequest, response)
-        //httpResponse.sendRedirect("http://localhost:8080/ui/logon")
+    }
+
+    private boolean isValid(String token){
+        try {
+            return dao.isValidSession(token)
+        }
+        catch (Exception e){
+            logger.info("Could not check session status", e)
+        }
+        return false
+    }
+
+    private isOpenPath(String path){
+        return path == "/ui" || path.startsWith("/ui/") || path.startsWith("/open/") || path.startsWith("/auth/authenticate")
     }
 
     @Override

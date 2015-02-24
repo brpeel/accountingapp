@@ -18,7 +18,7 @@ import javax.ws.rs.core.Response
 /**
  * Created by bpeel on 12/19/14.
  */
-@Path("account")
+@Path("api/account")
 public class AccountResource extends BaseResource{
 
     @Override

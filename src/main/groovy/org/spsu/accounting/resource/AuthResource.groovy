@@ -3,13 +3,11 @@ package org.spsu.accounting.resource
 import io.dropwizard.auth.Auth
 import org.spsu.accounting.data.dao.UserDAO
 import org.spsu.accounting.data.domain.UserDO
-import org.spsu.accounting.utils.AuthUtils
 
 import javax.servlet.http.HttpServletRequest
 import javax.ws.rs.GET
 import javax.ws.rs.POST
 import javax.ws.rs.Path
-import javax.ws.rs.PathParam
 import javax.ws.rs.Produces
 import javax.ws.rs.core.Context
 import javax.ws.rs.core.MediaType
@@ -27,24 +25,14 @@ class AuthResource {
         this.dao = dao
     }
 
-    @GET
+    @POST
     @Path("/authenticate")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response authenticate(UserDO user, @Context HttpServletRequest request) {
+    public UserDO authenticate( @Context HttpServletRequest request, Map req) {
+        UserDO user = dao.checkLogin(req.username, req.password)
 
         request.getSession().setAttribute("token", dao.createSession(user))
-        return Response.temporaryRedirect("/ui");
-    }
-
-    @POST
-    @Path("/reset")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response reset(@PathParam("username") String username){
-        UserDO user = dao.get(username)
-
-        this.dao.resetPassword(user)
-
-        return Response.temporaryRedirect("/ui/login")
+        return user;
     }
 
 }

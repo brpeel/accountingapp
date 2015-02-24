@@ -14,7 +14,7 @@ import javax.ws.rs.core.Response
  * Created by bpeel on 1/28/15.
  */
 
-@Path("/about")
+@Path("open/about")
 class AboutResource {
 
     @GET

@@ -11,7 +11,7 @@ import javax.ws.rs.core.Response
 /**
  * Created by brettpeel on 2/7/15.
  */
-@Path("mainmenu")
+@Path("api/mainmenu")
 class MainMenuResource {
 
     @GET
