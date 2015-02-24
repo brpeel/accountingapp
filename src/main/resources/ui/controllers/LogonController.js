@@ -1,32 +1,47 @@
 'use strict';
-function LogonController($scope, $http) {
-    $scope.user = {}
-    $scope.logon = function(){
-        console.log("Submitting logon");
+function LogonController($rootScope, $scope, $http, $window, $location) {
 
+    var self = this;
+
+    $rootScope.menuItems = [];
+
+    $scope.user = {}
+
+    $scope.setToken = function(token){
+        console.log('Token '+JSON.stringify(token));
+        $window.sessionStorage.token = token
+        $scope.showLogon = false
+    }
+
+    $scope.setMenuItems = function(items){
+        console.log('Menu '+JSON.stringify(items));
+        $rootScope.menuItems = items;
+    }
+
+    $scope.logon = function(){
+        var username = $scope.username;
+        var password = $scope.password;
+
+        console.log("Submitting logon "+username);
         var userIn = {
-            username : 'brpeel',
-            password : 'password'
+            username : username,
+            password : password
         }
-        var scope = $scope;
 
         $http.post('auth/authenticate',userIn)
             .success(function(data, status, headers, config){
-                console.log(JSON.stringify(data))
 
-                if (data.success === true) {
-                    scope.user.username = userIn.username;
-                    scope.user.header = btoa(userIn.username + ':' + userIn.password);
-                    ctrl.errorMessage = '';
+               // scope.user.username = userIn.username;
+                $scope.user.header = btoa(userIn.username + ':' + userIn.password);
+                $scope.setToken(data.token);
+                $scope.setMenuItems(data.menuItems);
+                $location.path("/")
 
-                } else {
-                    // show error and logout user
-                }
             })
             .
             error(function(data, status, headers, config) {
                 console.log(JSON.stringify(data))
-            });;
+            });
     }
 };
 

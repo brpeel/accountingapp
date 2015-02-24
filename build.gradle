@@ -32,8 +32,6 @@ dependencies {
 
     compile group: 'io.dropwizard', name: 'dropwizard-views', version: dropWizardVersion
     compile group: 'io.dropwizard', name: 'dropwizard-assets', version: dropWizardVersion
-    compile group: 'io.dropwizard', name: 'dropwizard-views-freemarker', version: dropWizardVersion
-    compile group: 'io.dropwizard', name: 'dropwizard-views-mustache', version: dropWizardVersion
     compile group: 'io.dropwizard', name: 'dropwizard-core', version: dropWizardVersion
     compile group: 'io.dropwizard', name: 'dropwizard-auth', version: dropWizardVersion
     compile group: 'io.dropwizard', name: 'dropwizard-jackson', version: dropWizardVersion
@@ -47,6 +45,7 @@ dependencies {
     compile group: 'org.apache.tomcat', name: 'tomcat-jdbc', version: '8.0.18'
 
     compile group: 'org.jdbi', name: 'jdbi', version: '2.53'
+
 
     compile group: 'postgresql', name: 'postgresql', version: '9.1-901.jdbc4'
 //testing

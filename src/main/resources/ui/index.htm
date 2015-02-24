@@ -14,7 +14,7 @@
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular-route.js"></script>
     <script src="ui/app.js"></script>
     <script src="ui/controllers/AboutController.js"></script>
-    <script src="ui/controllers/MenuController.js"></script>
+    <script src="ui/controllers/HomeController.js"></script>
     <script src="ui/controllers/LogonController.js"></script>
 </head>
 
@@ -24,7 +24,7 @@
 <nav class="navbar navbar-default">
     <div class="container">
         <div class="navbar-header">
-            <a class="navbar-brand" href="/">Accounting</a>
+            <a class="navbar-brand" href="/ui/#">Accounting</a>
         </div>
 
         <ul class="nav navbar-nav navbar-right">
@@ -38,12 +38,12 @@
 
     <!-- angular templating -->
     <!-- this is where content will be injected -->
-
-    <nav ng-controller="MenuController" class="vertical col-md-2">
+    <nav class="vertical col-md-2" >
         <ul class="unstyled">
             <li ng-repeat="item in menuItems"><a href="#{{item.action}}"><i class="fa fa-home"></i> {{item.label}}</a></li>
         </ul>
     </nav>
+
     <div ng-view class="col-md-10"></div>
 
 </div>

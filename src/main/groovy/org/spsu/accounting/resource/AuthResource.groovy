@@ -1,5 +1,6 @@
 package org.spsu.accounting.resource
 
+import com.fasterxml.jackson.annotation.JsonProperty
 import io.dropwizard.auth.Auth
 import org.spsu.accounting.data.dao.UserDAO
 import org.spsu.accounting.data.domain.UserDO
@@ -19,6 +20,20 @@ import javax.ws.rs.core.Response
 @Path("auth")
 class AuthResource {
 
+
+    private class MenuItem {
+        @JsonProperty("label")
+        String label
+
+        @JsonProperty("action")
+        String action
+
+        public MenuItem(String label, String action){
+            this.label = label
+            this.action = action
+        }
+    }
+
     private final UserDAO dao;
 
     public AuthResource(UserDAO dao){
@@ -28,11 +43,16 @@ class AuthResource {
     @POST
     @Path("/authenticate")
     @Produces(MediaType.APPLICATION_JSON)
-    public UserDO authenticate( @Context HttpServletRequest request, Map req) {
+    public Response authenticate( @Context HttpServletRequest request, Map req) {
         UserDO user = dao.checkLogin(req.username, req.password)
+        if (!user)
+            return Response.status(Response.Status.UNAUTHORIZED).build()
 
-        request.getSession().setAttribute("token", dao.createSession(user))
-        return user;
+        String token =  dao.createSession(user);
+        MenuItem[] items = [new MenuItem("Users", "user"), new MenuItem("Accounts", "accounts"), new MenuItem("Transactions", "transactions"), new MenuItem("Reports", "reports")]
+        Map data = ["token":token, "menuItems":items]
+
+        return Response.ok(data).build();
     }
 
 }

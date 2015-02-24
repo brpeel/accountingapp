@@ -16,7 +16,7 @@ CREATE TABLE token
 (
   id character varying(100) NOT NULL,
   data character varying(500),
-  expiration bigint,
+  expiration bigint NOT NULL,
   user_id INTEGER NOT NULL,
   CONSTRAINT pk_session_id PRIMARY KEY (id)
 );
@@ -25,11 +25,11 @@ CREATE TABLE token
 --------------------------------------------------------------------------------
 CREATE TABLE accounting_trans_entry
 (
-	id INTEGER NOT NULL
-	,accounting_trans_id INTEGER NOT NULL
-	,account_id INTEGER NOT NULL
-	,account DECIMAL(15, 2) NOT NULL
-	,CONSTRAINT PK_accounting_trans_Entry PRIMARY KEY (id)
+   id INTEGER NOT NULL
+  ,accounting_trans_id INTEGER NOT NULL
+  ,account_id INTEGER NOT NULL
+  ,account DECIMAL(15, 2) NOT NULL
+  ,CONSTRAINT PK_accounting_trans_Entry PRIMARY KEY (id)
 );
 
 
@@ -38,14 +38,14 @@ CREATE TABLE accounting_trans_entry
 --------------------------------------------------------------------------------
 CREATE TABLE accounting_trans
 (
-	id SERIAL NOT NULL
-	,reported_by INTEGER NOT NULL
-	,approved_by INTEGER NOT NULL
-	,reported TIMESTAMP NOT NULL
-	,approved TIMESTAMP  NULL
-	,status VARCHAR(10) NOT NULL
-	,description VARCHAR(500)  NULL
-	,CONSTRAINT PK_accounting_trans_id PRIMARY KEY (id)
+   id SERIAL NOT NULL
+  ,reported_by INTEGER NOT NULL
+  ,approved_by INTEGER NOT NULL
+  ,reported TIMESTAMP NOT NULL
+  ,approved TIMESTAMP  NULL
+  ,status VARCHAR(10) NOT NULL
+  ,description VARCHAR(500)  NULL
+  ,CONSTRAINT PK_accounting_trans_id PRIMARY KEY (id)
 );
 
 
@@ -53,25 +53,25 @@ CREATE TABLE accounting_trans
 --------------------------------------------------------------------------------
 CREATE TABLE accounting_trans_document
 (
-	id SERIAL NOT NULL
-	,accounting_trans_id int not null
-	,document_uri VARCHAR(250) NOT NULL
-	,CONSTRAINT PK_accounting_trans_document_id PRIMARY KEY (id)
+   id SERIAL NOT NULL
+  ,accounting_trans_id int not null
+  ,document_uri VARCHAR(250) NOT NULL
+  ,CONSTRAINT PK_accounting_trans_document_id PRIMARY KEY (id)
 );
 
 -- Create Table: Account
 --------------------------------------------------------------------------------
 CREATE TABLE account
 (
-	id SERIAL NOT NULL
-	,name VARCHAR(250) NOT NULL
-	,initial_balance DECIMAL(15, 2) NOT NULL
-	,normal_side VARCHAR(10) NOT NULL
-	,added TIMESTAMP NOT NULL
-	,active BOOLEAN NOT NULL
-	,added_by INTEGER NOT NULL
-	,subcategory VARCHAR(250)  NULL
-	,CONSTRAINT PK_Account_id PRIMARY KEY (id)
+   id SERIAL NOT NULL
+  ,name VARCHAR(250) NOT NULL
+  ,initial_balance DECIMAL(15, 2) NOT NULL
+  ,normal_side VARCHAR(10) NOT NULL
+  ,added TIMESTAMP NOT NULL
+  ,active BOOLEAN NOT NULL
+  ,added_by INTEGER NOT NULL
+  ,subcategory VARCHAR(250)  NULL
+  ,CONSTRAINT PK_Account_id PRIMARY KEY (id)
 );
 
 
@@ -80,9 +80,9 @@ CREATE TABLE account
 --------------------------------------------------------------------------------
 CREATE TABLE account_statement
 (
-	account_id int not null
-	,statement_id int not null
-	,CONSTRAINT PK_Account_Statement_account_id PRIMARY KEY (account_id, statement_id)
+   account_id int not null
+  ,statement_id int not null
+  ,CONSTRAINT PK_Account_Statement_account_id PRIMARY KEY (account_id, statement_id)
 );
 
 
@@ -91,9 +91,9 @@ CREATE TABLE account_statement
 --------------------------------------------------------------------------------
 CREATE TABLE statement
 (
-	id SERIAL NOT NULL
-	,name VARCHAR(250) NOT NULL
-	,CONSTRAINT PK_Statement_id PRIMARY KEY (id)
+   id SERIAL NOT NULL
+  ,name VARCHAR(250) NOT NULL
+  ,CONSTRAINT PK_Statement_id PRIMARY KEY (id)
 );
 
 
@@ -102,17 +102,17 @@ CREATE TABLE statement
 --------------------------------------------------------------------------------
 CREATE TABLE accounting_user
 (
-	id SERIAL NOT NULL
-	,username VARCHAR(250) NOT NULL
-	,password VARCHAR(50) NOT NULL
-	,first_name VARCHAR(50) NOT NULL
-	,last_name VARCHAR(50) NOT NULL
-	,active BOOLEAN NOT NULL
-	,locked BOOLEAN NOT NULL
-	,password_reset TIMESTAMP NOT NULL
-	,email VARCHAR(250) NOT NULL
-	,login_attempts SMALLINT NOT NULL
-	,CONSTRAINT PK_User_id PRIMARY KEY (id)
+   id SERIAL NOT NULL
+  ,username VARCHAR(250) NOT NULL
+  ,password VARCHAR(50) NOT NULL
+  ,first_name VARCHAR(50) NOT NULL
+  ,last_name VARCHAR(50) NOT NULL
+  ,active BOOLEAN NOT NULL DEFAULT true
+  ,locked BOOLEAN NOT NULL DEFAULT false
+  ,password_set TIMESTAMP NOT NULL DEFAULT NOW()
+  ,email VARCHAR(250) NOT NULL
+  ,login_attempts SMALLINT NOT NULL DEFAULT 0
+  ,CONSTRAINT PK_User_id PRIMARY KEY (id)
 );
 
 
@@ -121,13 +121,13 @@ CREATE TABLE accounting_user
 --------------------------------------------------------------------------------
 CREATE TABLE user_membership
 (
-	user_id INTEGER NOT NULL
-	,user_type_id INTEGER NOT NULL
-	,membership_start TIMESTAMP  NULL
-	,membership_end TIMESTAMP  NULL
-	,added_by INTEGER NOT NULL
-	,added TIMESTAMP NOT NULL
-	,CONSTRAINT PK_User_Membership PRIMARY KEY (user_id, user_type_id)
+   user_id INTEGER NOT NULL
+  ,user_type_id INTEGER NOT NULL
+  ,membership_start TIMESTAMP  NULL
+  ,membership_end TIMESTAMP  NULL
+  ,added_by INTEGER NOT NULL
+  ,added TIMESTAMP NOT NULL
+  ,CONSTRAINT PK_User_Membership PRIMARY KEY (user_id, user_type_id)
 );
 
 
@@ -136,33 +136,33 @@ CREATE TABLE user_membership
 --------------------------------------------------------------------------------
 CREATE TABLE user_type
 (
-	id SERIAL NOT NULL
-	,type VARCHAR(10) NOT NULL
-	,description VARCHAR(250) NOT NULL
-	,CONSTRAINT PK_User_Type_id PRIMARY KEY (id)
+   id SERIAL NOT NULL
+  ,type VARCHAR(10) NOT NULL
+  ,description VARCHAR(250) NOT NULL
+  ,CONSTRAINT PK_User_Type_id PRIMARY KEY (id)
 );
 
 -- Create Table: trans_log
 --------------------------------------------------------------------------------
 CREATE TABLE trans_log
 (
-	id BIGSERIAL NOT NULL
-	,accounting_trans_id INTEGER NOT NULL
-	,status VARCHAR(10) NOT NULL
-	,changed_by INTEGER NOT NULL
-	,CONSTRAINT PK_trans_log_id PRIMARY KEY (id)
+   id BIGSERIAL NOT NULL
+  ,accounting_trans_id INTEGER NOT NULL
+  ,status VARCHAR(10) NOT NULL
+  ,changed_by INTEGER NOT NULL
+  ,CONSTRAINT PK_trans_log_id PRIMARY KEY (id)
 );
 
 -- Create Table: entry_log
 --------------------------------------------------------------------------------
 CREATE TABLE entry_log
 (
-	id BIGSERIAL NOT NULL
-	,accounting_trans_logid BIGINT NOT NULL
-	,entry_id int NOT NULL
-	,amount DECIMAL(15, 2) NOT NULL
-	,changed_by INTEGER NOT NULL
-	,CONSTRAINT PK_entry_log_id PRIMARY KEY (id)
+   id BIGSERIAL NOT NULL
+  ,accounting_trans_logid BIGINT NOT NULL
+  ,entry_id int NOT NULL
+  ,amount DECIMAL(15, 2) NOT NULL
+  ,changed_by INTEGER NOT NULL
+  ,CONSTRAINT PK_entry_log_id PRIMARY KEY (id)
 );
 
 -- Create Foreign Key: accounting_trans.reported_by -> User.id
@@ -229,3 +229,16 @@ ALTER TABLE entry_log ADD CONSTRAINT FK_entry_log_changed_by_Accounting_User_id 
 
 -- Create Foreign Key: entry_log.changed_by -> Accounting_User.id
 ALTER TABLE token ADD CONSTRAINT FK_token_user_id FOREIGN KEY (user_id) REFERENCES Accounting_User(id);
+
+insert into accounting_user (username, password, first_name, last_name, email)
+values ('brpeel', 'password', 'Brett', 'Peel', 'bpeel56@gmail.com');
+
+/*
+grant all privileges on schema public to accounting_user;
+
+GRANT SELECT ON ALL TABLES IN SCHEMA public TO accounting_user;
+GRANT UPDATE ON ALL TABLES IN SCHEMA public TO accounting_user;
+GRANT INSERT ON ALL TABLES IN SCHEMA public TO accounting_user;
+GRANT DELETE ON ALL TABLES IN SCHEMA public TO accounting_user;
+GRANT EXECUTE ON ALL FUNCTIONS IN SCHEMA public TO accounting_user;
+*/

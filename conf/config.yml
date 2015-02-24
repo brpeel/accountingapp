@@ -36,13 +36,13 @@ database:
   driverClass: org.postgresql.Driver
 
   # the username
-  user: bpeel
+  user: accounting_user
 
   # the password
-  password: bpeel
+  password: accounting_user
 
   # the JDBC URL
-  url: jdbc:postgresql://localhost:5432/bsg
+  url: jdbc:postgresql://localhost:5432/Accounting
 
   # any properties specific to your JDBC driver:
   properties:

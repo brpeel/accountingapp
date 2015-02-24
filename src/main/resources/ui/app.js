@@ -7,10 +7,14 @@
 		$routeProvider
 
 			// route for the home page
-			.when('/', {
+			.when('/logon', {
 				templateUrl : 'ui/templates/logon.html',
 				controller  : 'LogonController'
 			})
+            .when('/', {
+                templateUrl : 'ui/templates/home.html',
+                controller  : 'HomeController'
+            })
 
 			// route for the about page
 			.when('/about', {
@@ -18,12 +22,32 @@
 				controller  : 'aboutController'
 			})
 
-	});
-    var showLogon = false;
-	// create the controller and inject Angular's $scope
-	accountingApp.controller('LogonController', function($scope, $http) {
+	}).run( function($rootScope, $location, $window) {
+
+        // register listener to watch route changes
+        $rootScope.$on("$routeChangeStart", function (event, next, current) {
+            if ($window.sessionStorage.token == null) {
+                // no logged user, we should be going to #login
+                if (next.templateUrl == "ui/templates/login.html") {
+                    console.log('Already going to logon')
+                } else {
+                    // not going to #login, we should redirect now
+                    console.log('Routing to logon')
+                    $location.path("/logon");
+                }
+            }
+        });
+    });
+
+    accountingApp.controller('HomeController', function($scope, $http,  $window) {
+        // create a message to display in our view
+        console.log("IN the Home Controller")
+
+    });
+
+	accountingApp.controller('LogonController', function($rootScope, $scope, $http,  $window, $location) {
 		// create a message to display in our view
-        var controller = new LogonController($scope, $http)
+        var controller = new LogonController($rootScope, $scope, $http,  $window, $location)
 	});
 
 	accountingApp.controller('aboutController', function($scope, $http) {
@@ -61,64 +85,3 @@
     accountingApp.config(function ($httpProvider) {
         $httpProvider.interceptors.push('httpRequestInterceptor');
     });
-/*
-    accountingApp.directive('igLogin', function () {
-        return {
-            restrict: 'E',
-            replace: true,
-            template: '<p>Username:</p>',
-            controller: function ($scope) {
-
-                $scope.submit = function() {
-                    $scope.login();
-                    $("#loginModal").modal('hide');
-                };
-
-                $scope.cancel = function() {
-                    $scope.loggingIn = false;
-                    $("#loginModal").modal('hide');
-                };
-
-                $scope.$watch('loggingIn', function() {
-                    if ($scope.loggingIn) {
-                        $("#loginModal").modal('show');
-                    };
-                });
-            }
-        };
-    });
-    */
-    accountingApp.directive("modalShow", function ($parse) {
-        return {
-            restrict: "A",
-            link: function (scope, element, attrs) {
-
-                //Hide or show the modal
-                scope.showModal = function (visible, elem) {
-                    if (!elem)
-                        elem = element;
-
-                    if (visible)
-                        $(elem).modal("show");
-                    else
-                        $(elem).modal("hide");
-                }
-
-                //Watch for changes to the modal-visible attribute
-                scope.$watch(attrs.modalShow, function (newValue, oldValue) {
-                    scope.showModal(newValue, attrs.$$element);
-                });
-
-                //Update the visible value when the dialog is closed through UI actions (Ok, cancel, etc.)
-                $(element).bind("hide.bs.modal", function () {
-                    $parse(attrs.modalShow).assign(scope, false);
-                    if (!scope.$$phase && !scope.$root.$$phase)
-                        scope.$apply();
-                });
-            }
-
-        };
-    });
-
-
-
