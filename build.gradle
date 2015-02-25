@@ -95,7 +95,6 @@ task stage(type: Copy, dependsOn: [clean, build]) {
         'app.jar'
     }
 
-    from
 }
 stage.mustRunAfter(clean)
 
