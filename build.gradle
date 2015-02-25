@@ -94,6 +94,8 @@ task stage(type: Copy, dependsOn: [clean, build]) {
     rename {
         'app.jar'
     }
+
+    from
 }
 stage.mustRunAfter(clean)
 
