@@ -4,7 +4,6 @@ import org.apache.commons.mail.DefaultAuthenticator
 import org.apache.commons.mail.Email
 import org.apache.commons.mail.SimpleEmail
 
-import javax.mail.Session
 
 /**
  * Created by brettpeel on 2/22/15.
@@ -12,12 +11,7 @@ import javax.mail.Session
 class MailServerImpl implements MailServer {
 
     private final MailConfig config
-    /*
-    private final String username = "swe4713brpeel@gmail.com"
-    private String password = "spsu2015"
-    private int port = 587
-    private String host = "smtp.gmail.com"
-*/
+
     public MailServerImpl(MailConfig config){
         this.config = config
     }
@@ -36,6 +30,15 @@ class MailServerImpl implements MailServer {
 
     @Override
     String send(Email email) {
+
+        //If in test mode then do not send emails to users. Instead redirect to service mail box
+        if (config.testMode)
+        {
+            SimpleEmail e = new SimpleEmail()
+            e.addTo(config.username)
+            email.setTo(e.getToAddresses())
+        }
+
         email.setSmtpPort(config.port);
         email.setAuthenticator(new DefaultAuthenticator(config.username, config.password));
         email.setDebug(true);

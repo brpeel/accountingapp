@@ -2,6 +2,8 @@ package org.spsu.accounting.resource
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import io.dropwizard.auth.Auth
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.spsu.accounting.data.dao.UserDAO
 import org.spsu.accounting.data.domain.UserDO
 
@@ -34,6 +36,8 @@ class AuthResource {
         }
     }
 
+    static Logger logger = LoggerFactory.getLogger(AuthResource)
+
     private final UserDAO dao;
 
     public AuthResource(UserDAO dao){
@@ -53,6 +57,25 @@ class AuthResource {
         Map data = ["token":token, "menuItems":items]
 
         return Response.ok(data).build();
+    }
+
+    @POST
+    @Path("/reset")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response reset( @Context HttpServletRequest request, Map req) {
+        try {
+            UserDO user = dao.get(req.username)
+            if (!user)
+                return Response.status(Response.Status.UNAUTHORIZED).build()
+
+            dao.resetPassword(user)
+
+            return Response.ok(user).build();
+        }
+        catch (Exception e){
+            logger.error("Error resetting user password", e)
+            return Response.serverError().build()
+        }
     }
 
 }

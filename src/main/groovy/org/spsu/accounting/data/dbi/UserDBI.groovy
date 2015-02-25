@@ -20,8 +20,7 @@ interface UserDBI{
 	@MapResultAsBean
 	UserDO get(@Bind("username") String username)
 
-    @SqlQuery("select id, username, first_name, last_name, active locked, password_set, email, login_attempts \
-    from accounting_user where username = :username and password = :password")
+    @SqlQuery("select id, username, first_name, last_name, active locked, password_set, email, login_attempts     from accounting_user where username = :username and password = :password")
     @MapResultAsBean
     UserDO checkLogin(@Bind("username") String username, @Bind("password") String password)
 
@@ -51,13 +50,13 @@ interface UserDBI{
     @SqlQuery("select true from token where id = :id and expiration > :now")
     boolean isValidSession(@Bind("id") String id, @Bind("now") long now)
 
-    @SqlUpdate("delete from token where user_id = :userid")
+    @SqlUpdate("delete from token where id = :userid")
     void clearSession(@Bind("userid") String userId)
 
-    @SqlUpdate("update accounting_user set password = :password, password_set = now() where user_id = :userid")
+    @SqlUpdate("update accounting_user set password = :password, password_set = now() where id = :userid")
     void resetPassword(@Bind("password") String password, @Bind("userid") int userid)
 
-    @SqlUpdate("update accounting_user set password = :password, password_set = now() where user_id = :userid")
+    @SqlUpdate("update accounting_user set password = :password, password_set = now() where id = :userid")
     void updatePassword(@Bind("password") String password, @Bind("userid") int userid)
 
 }

@@ -9,10 +9,12 @@ class MailServerImplTest extends Specification {
     void setup() {
 
     }
-
+/*
     def "Send"() {
         given:
-        MailServer server = new MailServerImpl(new MailConfig())
+        MailConfig conf = new MailConfig()
+
+        MailServer server = new MailServerImpl(conf)
         when:
         server.send("bpeel56@gmail.com", "Testing mail server", "This is just a test")
 
@@ -20,4 +22,5 @@ class MailServerImplTest extends Specification {
         true
 
     }
+*/
 }

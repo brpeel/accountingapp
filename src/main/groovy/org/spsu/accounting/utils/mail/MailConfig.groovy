@@ -26,6 +26,8 @@ class MailConfig {
     String host = "smtp.gmail.com"
 
     @JsonProperty
-    @NotNull
     boolean notifyStart = false
+
+    @JsonProperty
+    boolean testMode = true
 }

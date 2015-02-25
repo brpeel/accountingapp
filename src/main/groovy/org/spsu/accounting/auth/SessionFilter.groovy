@@ -60,7 +60,7 @@ class SessionFilter implements javax.servlet.Filter{
     }
 
     private isOpenPath(String path){
-        return path == "/ui" || path.startsWith("/ui/") || path.startsWith("/open/") || path.startsWith("/auth/authenticate")
+        return path == "/ui" || path.startsWith("/ui/") || path.startsWith("/open/") || path.startsWith("/auth/")
     }
 
     @Override

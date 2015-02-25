@@ -56,7 +56,7 @@
 
 	});
 
-    accountingApp.factory('httpRequestInterceptor', function ($q) {
+    accountingApp.factory('httpRequestInterceptor', function ($q,  $window, $location) {
         return {
             request: function (config) {
                 //var token = $cookieStore.get("auth");

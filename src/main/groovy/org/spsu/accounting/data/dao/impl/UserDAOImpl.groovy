@@ -19,7 +19,8 @@ class UserDAOImpl extends ActiveDAOImpl<UserDO> implements UserDAO{
     UserDO checkLogin(String username, String password) {
         if (!username || !password)
             return null
-        return dbi.checkLogin(username, password)
+        String hash = AuthUtils.getHash(password)
+        return dbi.checkLogin(username, hash)
     }
 
     @Override
@@ -47,8 +48,8 @@ class UserDAOImpl extends ActiveDAOImpl<UserDO> implements UserDAO{
 
     @Override
     void resetPassword(UserDO user) {
-        String newPassword = AuthUtils.generateRandomHash(user.username+"Some Secret")
-        this.dbi.resetPassword(newPassword, user.id)
+        String newPassword = AuthUtils.generateString()
+        this.dbi.resetPassword(AuthUtils.getHash(newPassword), user.id)
 
         mailServer.send(user.email, "${AccountingApplication.APPLICATION} password reset", "Your new password is $newPassword")
     }

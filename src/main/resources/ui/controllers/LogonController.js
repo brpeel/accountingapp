@@ -5,20 +5,21 @@ function LogonController($rootScope, $scope, $http, $window, $location) {
 
     $rootScope.menuItems = [];
 
-    $scope.user = {}
+    $scope.user = {};
+    $scope.showInvalid = false;
 
     $scope.setToken = function(token){
-        console.log('Token '+JSON.stringify(token));
         $window.sessionStorage.token = token
         $scope.showLogon = false
-    }
+    };
 
     $scope.setMenuItems = function(items){
-        console.log('Menu '+JSON.stringify(items));
         $rootScope.menuItems = items;
-    }
+    };
 
     $scope.logon = function(){
+        $scope.setToken(null)
+
         var username = $scope.username;
         var password = $scope.password;
 
@@ -26,7 +27,7 @@ function LogonController($rootScope, $scope, $http, $window, $location) {
         var userIn = {
             username : username,
             password : password
-        }
+        };
 
         $http.post('auth/authenticate',userIn)
             .success(function(data, status, headers, config){
@@ -41,6 +42,27 @@ function LogonController($rootScope, $scope, $http, $window, $location) {
             .
             error(function(data, status, headers, config) {
                 console.log(JSON.stringify(data))
+                $scope.showInvalid = true
+                $scope.setToken(null)
+                $scope.setMenuItems(null);
+            });
+    };
+
+    $scope.resetPassword = function(){
+        console.log('Reset Password');
+        var username = $scope.username;
+
+        $http.post('auth/reset',{username: username})
+            .success(function(data, status, headers, config){
+
+                // scope.user.username = userIn.username;
+               alert("Your password reset email has been sent");
+
+            })
+            .
+            error(function(data, status, headers, config) {
+                console.log(JSON.stringify(data))
+                alert("Could not send password reset email");
             });
     }
 };

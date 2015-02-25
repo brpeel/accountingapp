@@ -79,7 +79,7 @@ class AccountingApplication extends Application<AccountingApplicationConfigurati
 
         registerResources(environment, jdbi)
 
-        if (mailConfig)
+        if (mailConfig.notifyStart)
             mailServer.send(mailConfig.username, "Application Started : ${this.class.simpleName}", "Application Started : ${this.class.simpleName}")
     }
 

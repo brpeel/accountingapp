@@ -30,6 +30,7 @@ mail:
     port: 587
     host: smtp.gmail.com
     notifyStart: false
+    testMode: true
 
 database:
   # the name of your JDBC driver
