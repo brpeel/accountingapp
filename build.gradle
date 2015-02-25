@@ -3,14 +3,16 @@ apply plugin: 'heroku'
 
 buildscript {
     repositories {
+
+        maven { url 'http://dl.bintray.com/vermeulen-mp/gradle-plugins' }
         mavenCentral()
         jcenter()
         mavenLocal()
-        maven { url 'http://dl.bintray.com/vermeulen-mp/gradle-plugins' }
     }
 
     dependencies {
-        classpath "org.gradle.api.plugins:gradle-heroku:0.9.6"
+        //classpath "org.gradle.api.plugins:gradle-heroku:0.9.6"
+        classpath "com.wiredforcode:gradle-heroku-plugin:1.0.0"
     }
 }
 
