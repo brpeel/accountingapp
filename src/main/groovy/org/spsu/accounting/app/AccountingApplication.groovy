@@ -71,13 +71,13 @@ class AccountingApplication extends Application<AccountingApplicationConfigurati
     @Override
     void run(AccountingApplicationConfiguration configuration, Environment environment) throws Exception {
 
-        final DBI jdbi = createDBI(configuration, environment)
+        //final DBI jdbi = createDBI(configuration, environment)
         MailConfig mailConfig = configuration.mail
         mailServer = new MailServerImpl(mailConfig)
 
         registerHealthChecks(configuration, environment, jdbi)
 
-        registerResources(environment, jdbi)
+        //registerResources(environment, jdbi)
 
         if (mailConfig.notifyStart)
             mailServer.send(mailConfig.username, "Application Started : ${this.class.simpleName}", "Application Started : ${this.class.simpleName}")
