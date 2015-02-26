@@ -72,12 +72,13 @@ class AccountingApplication extends Application<AccountingApplicationConfigurati
     void run(AccountingApplicationConfiguration configuration, Environment environment) throws Exception {
 
         //final DBI jdbi = createDBI(configuration, environment)
+        def jdbi = null
         MailConfig mailConfig = configuration.mail
         mailServer = new MailServerImpl(mailConfig)
 
-        registerHealthChecks(configuration, environment, jdbi)
+        //registerHealthChecks(configuration, environment, jdbi)
 
-        //registerResources(environment, jdbi)
+        registerResources(environment, jdbi)
 
         if (mailConfig.notifyStart)
             mailServer.send(mailConfig.username, "Application Started : ${this.class.simpleName}", "Application Started : ${this.class.simpleName}")
@@ -99,14 +100,17 @@ class AccountingApplication extends Application<AccountingApplicationConfigurati
 
     private void registerResources(Environment environment, DBI jdbi){
 
+
+        environment.jersey().register(new MainMenuResource())
+        environment.jersey().register(new AboutResource())
+
+        /*
         registerAuth(environment, jdbi)
 
         (new AccountResource()).register(environment, jdbi)
         (new UserResource()).register(environment, jdbi)
 
-        environment.jersey().register(new MainMenuResource())
-        environment.jersey().register(new AboutResource())
-
+        */
     }
 
     private void registerAuth(Environment environment, DBI jdbi){

@@ -1,5 +1,9 @@
+import com.github.jengelman.gradle.plugins.shadow.transformers.ServiceFileTransformer
+
+
 apply plugin: 'groovy'
 apply plugin: 'heroku'
+apply plugin: 'shadow'
 
 buildscript {
     repositories {
@@ -11,7 +15,7 @@ buildscript {
     }
 
     dependencies {
-        //classpath "org.gradle.api.plugins:gradle-heroku:0.9.6"
+        classpath 'com.github.jengelman.gradle.plugins:shadow:0.8'
         classpath "com.wiredforcode:gradle-heroku-plugin:1.0.0"
     }
 }
@@ -23,6 +27,8 @@ repositories {
 
     mavenLocal()
 }
+
+project.version = "1.0.0-all"
 
 def dropWizardVersion = "0.7.1"
 def groovyVersion = '2.4.0'
@@ -75,7 +81,7 @@ heroku {
 
 jar {
     manifest {
-        attributes 'Main-Class': 'com.appnexus.bsg.integration.sfdc.SFDCGatewayApplication'
+        attributes 'Main-Class': 'org.spsu.accounting.app.AccountingApplication'
         attributes 'Built-Date': new Date() //now
         attributes 'Built-By': System.getProperty('user.name')
         attributes 'Build-Jdk': System.getProperty('java.version')
@@ -88,11 +94,23 @@ jar {
 
 }
 
-task stage(type: Copy, dependsOn: [clean, build]) {
-    from jar.archivePath
-    into project.rootDir
+shadow {
+//replaces the basic jar with the enhanced, all dependencies jar
+    artifactAttached false
+
+//this bit is needed to allow the server config in yml file to be parsed correctly
+    transformer(ServiceFileTransformer)
+
+    exclude 'META-INF/*.DSA'
+    exclude 'META-INF/*.RSA'
+}
+
+task stage(type: Copy, dependsOn: [clean, build, shadowJar]) {
+
+    from project.rootDir.path+"/build/distributions"
+    into project.rootDir.path+"/run"
     rename {
-        'app.jar'
+        'app-all.jar'
     }
 
 }
