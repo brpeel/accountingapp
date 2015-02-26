@@ -29,11 +29,7 @@ repositories {
 }
 
 
-Calendar cal=Calendar.getInstance();//it return same time as new Date()
-def day = cal.get(Calendar.DAY_OF_YEAR)
-def daySec = cal.get(Calendar.HOUR_OF_DAY)*3600+cal.get(Calendar.MINUTE)*60+cal.get(Calendar.SECOND)
-def build = "$day.$daySec"
-project.version = "$build"
+project.version = "1.0.0"
 
 def dropWizardVersion = "0.7.1"
 def groovyVersion = '2.4.0'
@@ -109,17 +105,17 @@ shadow {
     exclude 'META-INF/*.RSA'
 }
 
-def deployJarName = "app-${build}.jar"
 task stage(type: Copy) {
 
     from project.rootDir.path+"/build/distributions"
     into project.rootDir.path+"/run"
     rename {
-        deployJarName
+        'app-all.jar'
     }
 
 }
 stage.mustRunAfter(clean)
 
 clean << {
+    project.file('run/app-all.jar').delete()
 }
