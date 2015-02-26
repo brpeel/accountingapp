@@ -28,7 +28,12 @@ repositories {
     mavenLocal()
 }
 
-project.version = "1.0.0-all"
+
+Calendar cal=Calendar.getInstance();//it return same time as new Date()
+def day = cal.get(Calendar.DAY_OF_YEAR)
+def daySec = cal.get(Calendar.HOUR_OF_DAY)*3600+cal.get(Calendar.MINUTE)*60+cal.get(Calendar.SECOND)
+def build = "$day.$daySec"
+project.version = "$build"
 
 def dropWizardVersion = "0.7.1"
 def groovyVersion = '2.4.0'
@@ -86,9 +91,8 @@ jar {
         attributes 'Built-By': System.getProperty('user.name')
         attributes 'Build-Jdk': System.getProperty('java.version')
         attributes 'Implementation-Title': 'AccountingProject'
-        attributes 'Implementation-Version': 0
-        attributes 'Specification-Version': 0
-        attributes 'Implementation-Build': 1
+        attributes 'Implementation-Version': 1
+        attributes 'Implementation-Build': build
         attributes 'Implementation-Vendor-Id': 'SPSU SWE App Domain Team'
     }
 
@@ -105,17 +109,17 @@ shadow {
     exclude 'META-INF/*.RSA'
 }
 
+def deployJarName = "app-${build}.jar"
 task stage(type: Copy) {
 
     from project.rootDir.path+"/build/distributions"
     into project.rootDir.path+"/run"
     rename {
-        'app-all.jar'
+        deployJarName
     }
 
 }
 stage.mustRunAfter(clean)
 
 clean << {
-    project.file('app.jar').delete()
 }
