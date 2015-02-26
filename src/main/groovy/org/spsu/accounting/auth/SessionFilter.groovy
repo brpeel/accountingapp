@@ -37,7 +37,6 @@ class SessionFilter implements javax.servlet.Filter{
 
         String path = request.getRequestURI()
         logger.info("Checking path : ${path}")
-
         if (!isOpenPath(path)){
             String token = request.getHeader("Authorization")
             UserDO user = isValid(token)

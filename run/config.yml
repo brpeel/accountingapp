@@ -19,7 +19,7 @@ mail:
     port: 587
     host: smtp.gmail.com
     notifyStart: false
-    testMode: true
+    testMode: false
 
 database:
   driverClass: org.postgresql.Driver
