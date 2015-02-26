@@ -23,8 +23,10 @@ import org.slf4j.LoggerFactory
 import org.spsu.accounting.auth.AccountingAuthenticator
 import org.spsu.accounting.auth.SessionFilter
 import org.spsu.accounting.data.dao.UserDAO
+import org.spsu.accounting.data.dao.impl.StartDAO
 import org.spsu.accounting.data.dao.impl.UserDAOImpl
 import org.spsu.accounting.data.dbi.HealthCheckDBI
+import org.spsu.accounting.data.dbi.StartDBI
 import org.spsu.accounting.data.dbi.UserDBI
 import org.spsu.accounting.data.domain.UserDO
 import org.spsu.accounting.resource.AboutResource
@@ -71,8 +73,10 @@ class AccountingApplication extends Application<AccountingApplicationConfigurati
     @Override
     void run(AccountingApplicationConfiguration configuration, Environment environment) throws Exception {
 
-        //final DBI jdbi = createDBI(configuration, environment)
-        def jdbi = null
+        final DBI jdbi = createDBI(configuration, environment)
+        StartDAO db = new StartDAO(dbi: jdbi.onDemand(StartDBI))
+        logger.info("DB connected = "+(db.test() == 1))
+
         MailConfig mailConfig = configuration.mail
         mailServer = new MailServerImpl(mailConfig)
 
@@ -104,13 +108,12 @@ class AccountingApplication extends Application<AccountingApplicationConfigurati
         environment.jersey().register(new MainMenuResource())
         environment.jersey().register(new AboutResource())
 
-        /*
+
         registerAuth(environment, jdbi)
 
         (new AccountResource()).register(environment, jdbi)
         (new UserResource()).register(environment, jdbi)
 
-        */
     }
 
     private void registerAuth(Environment environment, DBI jdbi){

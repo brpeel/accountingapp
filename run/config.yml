@@ -25,13 +25,13 @@ database:
   driverClass: org.postgresql.Driver
 
   # the username
-  user: accounting_user
+  user: qzttshdkjehswf
 
   # the password
-  password: accounting_user
+  password: gCaz38THpXvT3wOcJ7OoOsMGQy
 
   # the JDBC URL
-  url: jdbc:postgresql://localhost:5432/Accounting
+  url: jdbc:postgresql://ec2-54-225-101-202.compute-1.amazonaws.com:5432/d2jlgecs85p9ca
 
   # any properties specific to your JDBC driver:
   properties:
