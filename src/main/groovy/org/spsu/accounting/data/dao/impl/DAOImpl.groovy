@@ -21,7 +21,7 @@ public class DAOImpl<T extends BaseDO> implements DAO<T> {
     ObjectMapper objectMapper
 
     public List<T> all(){
-        return dbi.getAllObjects()
+        return dbi.getAll()
     }
 
     @Override

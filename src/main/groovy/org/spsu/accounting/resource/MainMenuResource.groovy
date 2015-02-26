@@ -20,7 +20,7 @@ class MainMenuResource {
     public getActions(){
 
         MenuItem[] items = [new MenuItem("Users", "user"), new MenuItem("Accounts", "account"), new MenuItem("Transactions", "transaction"), new MenuItem("Reports", "report")]
-        return Response.ok().entity(items).build()
+        return Response.ok().entity(["menuItems":items]).build()
     }
 
     private class MenuItem {

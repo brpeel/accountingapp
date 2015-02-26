@@ -40,7 +40,7 @@ CREATE TABLE accounting_trans
 (
    id SERIAL NOT NULL
   ,reported_by INTEGER NOT NULL
-  ,approved_by INTEGER NOT NULL
+  ,approved_by INTEGER NULL
   ,reported TIMESTAMP NOT NULL
   ,approved TIMESTAMP  NULL
   ,status VARCHAR(10) NOT NULL
@@ -244,4 +244,6 @@ GRANT UPDATE ON ALL TABLES IN SCHEMA public TO accounting_user;
 GRANT INSERT ON ALL TABLES IN SCHEMA public TO accounting_user;
 GRANT DELETE ON ALL TABLES IN SCHEMA public TO accounting_user;
 GRANT EXECUTE ON ALL FUNCTIONS IN SCHEMA public TO accounting_user;
+
+GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO accounting_user;
 */

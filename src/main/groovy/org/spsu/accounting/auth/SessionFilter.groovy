@@ -3,6 +3,7 @@ package org.spsu.accounting.auth
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.spsu.accounting.data.dao.UserDAO
+import org.spsu.accounting.data.domain.UserDO
 
 import javax.servlet.FilterChain
 import javax.servlet.FilterConfig
@@ -39,17 +40,18 @@ class SessionFilter implements javax.servlet.Filter{
 
         if (!isOpenPath(path)){
             String token = request.getHeader("Authorization")
-
-            if (!isValid(token)){
+            UserDO user = isValid(token)
+            if (!user){
                 ((HttpServletResponse) response).setStatus(Response.Status.UNAUTHORIZED.statusCode)
                 return
             }
+            request.setAttribute("userid", user.id)
         }
 
         chain.doFilter(servletRequest, response)
     }
 
-    private boolean isValid(String token){
+    private UserDO isValid(String token){
         try {
             return dao.isValidSession(token)
         }
@@ -60,6 +62,7 @@ class SessionFilter implements javax.servlet.Filter{
     }
 
     private isOpenPath(String path){
+        //return true
         return path == "/ui" || path.startsWith("/ui/") || path.startsWith("/open/") || path.startsWith("/auth/")
     }
 

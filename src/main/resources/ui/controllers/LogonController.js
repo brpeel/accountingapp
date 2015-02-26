@@ -10,11 +10,11 @@ function LogonController($rootScope, $scope, $http, $window, $location) {
 
     $scope.setToken = function(token){
         $window.sessionStorage.token = token
-        $scope.showLogon = false
+        $rootScope.showLogon = false
     };
 
     $scope.setMenuItems = function(items){
-        $rootScope.menuItems = items;
+        $scope.menuItems = items;
     };
 
     $scope.logon = function(){
@@ -35,7 +35,7 @@ function LogonController($rootScope, $scope, $http, $window, $location) {
                // scope.user.username = userIn.username;
                 $scope.user.header = btoa(userIn.username + ':' + userIn.password);
                 $scope.setToken(data.token);
-                $scope.setMenuItems(data.menuItems);
+                //$scope.setMenuItems(data.menuItems);
                 $location.path("/")
 
             })

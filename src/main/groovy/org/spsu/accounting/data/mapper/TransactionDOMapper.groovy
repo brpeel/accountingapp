@@ -21,6 +21,8 @@ public class TransactionDOMapper extends BaseMapper<TransactionDO>{
             transaction.approved = getDateValue(data, "approved")
         if (data.status)
             transaction.status = getValue(data, "status")
+        if (data.description)
+            transaction.description = getValue(data, "description")
 
 		return transaction
 	}

@@ -32,6 +32,7 @@ import org.spsu.accounting.data.domain.UserDO
 import org.spsu.accounting.resource.AboutResource
 import org.spsu.accounting.resource.AccountResource
 import org.spsu.accounting.resource.AuthResource
+import org.spsu.accounting.resource.TransactionResource
 import org.spsu.accounting.resource.base.BaseResource
 import org.spsu.accounting.resource.MainMenuResource
 import org.spsu.accounting.resource.UserResource
@@ -113,6 +114,7 @@ class AccountingApplication extends Application<AccountingApplicationConfigurati
 
         (new AccountResource()).register(environment, jdbi)
         (new UserResource()).register(environment, jdbi)
+        (new TransactionResource()).register(environment, jdbi)
 
     }
 

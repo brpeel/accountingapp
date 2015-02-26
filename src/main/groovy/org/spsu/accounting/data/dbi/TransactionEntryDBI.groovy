@@ -12,15 +12,15 @@ import org.spsu.accounting.data.mapper.TransactionEntryDOMapper
 @RegisterMapper(TransactionEntryDOMapper.class)
 interface TransactionEntryDBI{
 
-	@SqlQuery("select transaction_id, account_id, amount from transaction_entry where id = :id")
+	@SqlQuery("select transaction_id, account_id, amount from accounting_trans_entry where id = :id")
 	@MapResultAsBean
 	TransactionEntryDO get(@Bind("id") int id)
 
-	@SqlQuery("insert into TransactionEntryDO ( transaction_id, account_id, amount) \
+	@SqlQuery("insert into accounting_trans_entry ( transaction_id, account_id, amount) \
 	 values ( :transactionId, :accountId, :amount) \
 	 returning id")
 	int insert(@BindBean TransactionEntryDO doBean)
 
-	@SqlUpdate("update TransactionEntryDO set  transaction_id = :transactionId, account_id = :accountId, amount = :amount where id = :id")
+	@SqlUpdate("update accounting_trans_entry set  transaction_id = :transactionId, account_id = :accountId, amount = :amount where id = :id")
 	int update(@BindBean TransactionEntryDO doBean)
 }

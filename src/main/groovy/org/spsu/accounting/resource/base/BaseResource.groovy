@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory
 import org.spsu.accounting.data.dao.ActiveDAO
 import org.spsu.accounting.data.dao.DAO
 import org.spsu.accounting.data.domain.BaseDO
+import sun.security.provider.certpath.OCSPResponse
 
 import javax.ws.rs.GET
 import javax.ws.rs.PUT
@@ -57,21 +58,19 @@ abstract class BaseResource {
     @GET
     @Path("/all/{allowInactive}")
     @Produces(MediaType.APPLICATION_JSON)
-    List getAll(@PathParam("allowInactive") boolean allowInactive){
-        return getAllObjects(allowInactive)
+    Response getAll(@PathParam("allowInactive") boolean allowInactive){
+        List all = getAllObjects(allowInactive)
+        return Response.ok(all).build();
     }
 
-    @PUT
-    Response replace(@PathParam("allowInactive") boolean allowInactive){
-
-        return getAllAsResponse(allowInactive)
+    @GET
+    @Path("/all")
+    @Produces(MediaType.APPLICATION_JSON)
+    Response getAll(){
+        List all = getAllObjects(false)
+        return Response.ok(all).build();
     }
 
-    @PATCH
-    Response update(@PathParam("allowInactive") boolean allowInactive){
-
-        return getAllAsResponse(allowInactive)
-    }
 
     //UNLYING IMPLEMENTATIONS
     protected def getObjectById(id) {
@@ -174,20 +173,22 @@ abstract class BaseResource {
     }
 
     //DAO Wrappers
-    protected long createObject(BaseDO baseDO){
+    protected int createObject(BaseDO baseDO){
         try{
             return dao.create(baseDO)
         } catch (Exception e) {
+            logger.error("could not create object "+baseDO, e)
             if (e instanceof WebApplicationException)
                 throw e;
             throw new WebApplicationException(e, Response.Status.INTERNAL_SERVER_ERROR)
         }
     }
 
-    protected long saveObject(BaseDO baseDO){
+    protected int saveObject(BaseDO baseDO){
         try{
             return dao.save(baseDO)
         } catch (Exception e) {
+            logger.error("could not save object "+baseDO, e)
             if (e instanceof WebApplicationException)
                 throw e;
             throw new WebApplicationException(e, Response.Status.INTERNAL_SERVER_ERROR)

@@ -18,19 +18,19 @@ interface AccountDBI{
 
     @SqlQuery("select id, name, initial_balance, normal_side, added, active, added_by, subcategory from account where active = true")
     @MapResultAsBean
-    List<AccountDO> all()
+    List<AccountDO> getAll()
 
     @SqlQuery("select id, name, initial_balance, normal_side, added, active, added_by, subcategory from account where active = true or active = :allowInactive")
     @MapResultAsBean
-    List<AccountDO> all(@Bind("allowInactive") boolean allowInactive)
+    List<AccountDO> getAll(@Bind("allowInactive") boolean allowInactive)
 
 
-    @SqlQuery("insert into AccountDO (name, initial_balance, normal_side, added, active, added_by, subcategory) \
+    @SqlQuery("insert into v (name, initial_balance, normal_side, added, active, added_by, subcategory) \
 	 values ( :name, :initialBalance, :normalSide, :added, :active, :addedBy, :subcategory) \
 	 returning id")
 	int insert(@BindBean AccountDO doBean)
 
-	@SqlUpdate("update AccountDO set  name = :name, initial_balance = :initialBalance, normal_side = :normalSide, added = :added \
+	@SqlUpdate("update account set  name = :name, initial_balance = :initialBalance, normal_side = :normalSide, added = :added \
 	, active = :active, added_by = :addedBy, subcategory = :subcategory where id = :id")
 	int update(@BindBean AccountDO doBean)
 

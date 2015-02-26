@@ -4,18 +4,30 @@
 <html ng-app="accountingApp">
 
 <head>
-    <!-- SCROLLS -->
+    <!-- Styles -->
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" />
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.0/css/font-awesome.css" />
+    <link rel="stylesheet" href="ui/libs/ui-grid.min.css">
+
     <link rel="stylesheet" href="ui/app.css" />
 
-    <!-- SPELLS -->
-    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular.min.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular-route.js"></script>
+    <!-- Libs -->
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular-touch.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular-animate.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular-route.js"></script>
+    <script src="ui/libs/ui-grid.min.js"></script>
+    <script src="ui/libs/ui-grid.svg"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
+
+    <!-- My js -->
     <script src="ui/app.js"></script>
     <script src="ui/controllers/AboutController.js"></script>
     <script src="ui/controllers/HomeController.js"></script>
     <script src="ui/controllers/LogonController.js"></script>
+    <script src="ui/controllers/TransactionController.js"></script>
+    <script src="ui/controllers/CreateTransController.js"></script>
 </head>
 
 <!-- define angular controller -->
@@ -34,15 +46,16 @@
     </div>
 </nav>
 
+<nav class="vertical col-md-2" >
+    <ul class="unstyled">
+        <li ng-repeat="item in menuItems"><a href="#{{item.action}}"><i class="fa fa-home"></i> {{item.label}}</a></li>
+    </ul>
+</nav>
+
 <div id="main">
 
     <!-- angular templating -->
     <!-- this is where content will be injected -->
-    <nav class="vertical col-md-2" >
-        <ul class="unstyled">
-            <li ng-repeat="item in menuItems"><a href="#{{item.action}}"><i class="fa fa-home"></i> {{item.label}}</a></li>
-        </ul>
-    </nav>
 
     <div ng-view class="col-md-10"></div>
 

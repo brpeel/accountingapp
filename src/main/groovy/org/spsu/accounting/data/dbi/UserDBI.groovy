@@ -27,12 +27,12 @@ interface UserDBI{
     @SqlQuery("select id, username, password,  first_name, last_name, active locked, password_set, email, login_attempts \
     from accounting_user where active = true")
     @MapResultAsBean
-    List<UserDO> all()
+    List<UserDO> getAll()
 
     @SqlQuery("select id, username, password,  first_name, last_name, active locked, password_set, email, login_attempts \
     from accounting_user where active = true or active = :allowInactive")
     @MapResultAsBean
-    List<UserDO> all(@Bind("allowInactive") boolean allowInactive)
+    List<UserDO> getAll(@Bind("allowInactive") boolean allowInactive)
 
     @SqlQuery("insert into Accounting_User ( username, password, first_name, last_name, active, locked, password_set, email, login_attempts) \
 	 values ( :username, :password, :firstName, :lastName, :active, :locked, now(), :email, :loginAttempts) \
@@ -47,8 +47,8 @@ interface UserDBI{
     @SqlUpdate("insert into token (id, expiration, user_id) values (:id, :expiration, :userid)")
     void createSession(@Bind("id") String id, @Bind("expiration") long expiration, @Bind("userid") int userId)
 
-    @SqlQuery("select true from token where id = :id and expiration > :now")
-    boolean isValidSession(@Bind("id") String id, @Bind("now") long now)
+    @SqlQuery("select u.* from token t join accounting_user u on u.id = t.user_id where t.id = :id and t.expiration > :now")
+    UserDO isValidSession(@Bind("id") String id, @Bind("now") long now)
 
     @SqlUpdate("delete from token where id = :userid")
     void clearSession(@Bind("userid") String userId)

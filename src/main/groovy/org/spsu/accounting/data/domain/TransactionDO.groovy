@@ -20,4 +20,6 @@ public class TransactionDO extends BaseDO{
 	@JsonProperty("status")
 	String status
 
+    @JsonProperty("description")
+    String description
 }

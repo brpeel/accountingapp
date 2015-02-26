@@ -35,7 +35,7 @@ class UserDAOImpl extends ActiveDAOImpl<UserDO> implements UserDAO{
     }
 
     @Override
-    boolean isValidSession(String token) {
+    UserDO isValidSession(String token) {
         if (!token)
             return false
         return dbi.isValidSession(token, System.currentTimeMillis())

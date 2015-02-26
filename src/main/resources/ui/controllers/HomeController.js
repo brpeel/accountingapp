@@ -1,14 +1,16 @@
 'use strict';
-function MenuController($scope, $http) {
-  $scope.menuItems = [];
+var MenuController = function($rootScope, $scope, $http, $window, $location) {
+    $rootScope.menuItems = []
+    $scope.fetchMenu = function () {
 
-    $scope.fetchAbout = function() {
-
-            $http.get('/api/mainmenu/actions').success(function(items){
-
-                $scope.menuItems = items;
+        console.log('Fetch Menu Items');
+        $http.get('/api/mainmenu/actions')
+            .success(function (data, status, headers, config) {
+                console.log(data)
+                $rootScope.menuItems = data.menuItems;
             });
-        }
+    }
 
-        $scope.fetchAbout();
+
+    $scope.fetchMenu();
   };

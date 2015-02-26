@@ -12,16 +12,20 @@ import org.spsu.accounting.data.mapper.TransactionDOMapper
 @RegisterMapper(TransactionDOMapper.class)
 interface TransactionDBI{
 
-	@SqlQuery("select reported_by, approved_by, reported, approved, status from transaction where id = :id")
+	@SqlQuery("select reported_by, approved_by, reported, approved, status, description from accounting_trans where id = :id")
 	@MapResultAsBean
 	TransactionDO get(@Bind("id") int id)
 
-	@SqlQuery("insert into TransactionDO (reported_by, approved_by, reported, approved, status) \
-	 values ( :reportedBy, :approvedBy, :reported, :approved, :status) \
+    @SqlQuery("select reported_by, approved_by, reported, approved, status, description from accounting_trans")
+    @MapResultAsBean
+    List<TransactionDO> getAll()
+
+	@SqlQuery("insert into accounting_trans (reported_by, approved_by, reported, approved, status, description) \
+	 values ( :reportedBy, null, now(), null, 'Reported', :description) \
 	 returning id")
 	int insert(@BindBean TransactionDO doBean)
 
-	@SqlUpdate("update TransactionDO set  reported_by = :reportedBy, approved_by = :approvedBy, reported = :reported, approved = :approved \
-	, status = :status where id = :id")
+	@SqlUpdate("update accounting_trans set  reported_by = :reportedBy, approved_by = :approvedBy, approved = :approved \
+	, status = :status, description = :description where id = :id")
 	int update(@BindBean TransactionDO doBean)
 }

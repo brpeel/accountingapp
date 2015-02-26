@@ -13,7 +13,7 @@ interface UserDAO extends ActiveDAO<UserDO> {
 
     String createSession(UserDO user)
 
-    boolean isValidSession(String id)
+    UserDO isValidSession(String id)
 
     void clearSession(String token)
 

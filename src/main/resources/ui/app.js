@@ -1,6 +1,6 @@
 	// create the module and name it accountingApp
 	//var accountingApp = angular.module('accountingApp', ['ngRoute', 'accountingApp.about']);
-	var accountingApp = angular.module('accountingApp', ['ngRoute']);
+	var accountingApp = angular.module('accountingApp', ['ngRoute', 'ui.grid']);
 
 	// configure our routes
 	accountingApp.config(function($routeProvider) {
@@ -21,6 +21,14 @@
 				templateUrl : 'ui/templates/about.html',
 				controller  : 'aboutController'
 			})
+            .when('/transaction', {
+                templateUrl : 'ui/templates/transactions.html',
+                controller  : 'transactionController'
+            })
+            .when('/createTrans', {
+                templateUrl : 'ui/templates/createTransactions.html',
+                controller  : 'createTransController'
+            })
 
 	}).run( function($rootScope, $location, $window) {
 
@@ -39,10 +47,10 @@
         });
     });
 
-    accountingApp.controller('HomeController', function($scope, $http,  $window) {
+    accountingApp.controller('HomeController', function($rootScope, $scope, $http,  $window, $location) {
         // create a message to display in our view
         console.log("IN the Home Controller")
-
+        var controller = new MenuController($rootScope, $scope, $http,  $window, $location)
     });
 
 	accountingApp.controller('LogonController', function($rootScope, $scope, $http,  $window, $location) {
@@ -56,13 +64,23 @@
 
 	});
 
+    accountingApp.controller('transactionController', function($scope, $http) {
+        var controller = new TransactionController($scope, $http)
+
+    });
+
+    accountingApp.controller('createTransController', function($rootScope, $scope, $http,  $window, $location) {
+        // create a message to display in our view
+        var controller = new CreateTransController($rootScope, $scope, $http,  $window, $location)
+    });
+
     accountingApp.factory('httpRequestInterceptor', function ($q,  $window, $location) {
         return {
             request: function (config) {
                 //var token = $cookieStore.get("auth");
                 console.log('intercepted '+config.url);
 
-                config.headers['Authorization'] = 'Brett';
+                config.headers['Authorization'] = $window.sessionStorage.token;
 
                 console.log('headers : '+JSON.stringify(config.headers));
 
@@ -85,3 +103,4 @@
     accountingApp.config(function ($httpProvider) {
         $httpProvider.interceptors.push('httpRequestInterceptor');
     });
+
