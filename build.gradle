@@ -105,7 +105,7 @@ shadow {
     exclude 'META-INF/*.RSA'
 }
 
-task stage(type: Copy, dependsOn: [clean, build, shadowJar]) {
+task stage(type: Copy) {
 
     from project.rootDir.path+"/build/distributions"
     into project.rootDir.path+"/run"
