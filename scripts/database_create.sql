@@ -243,14 +243,3 @@ insert into accounting_trans (reported_by, approved_by, reported, approved, stat
 insert into accounting_trans (reported_by, approved_by, reported, approved, status, description)
   select id, null, now(), NULL, 'Reported', 'Owner Invested $10,000'
   from accounting_user where username = 'brpeel';
-/*
-grant all privileges on schema public to accounting_user;
-
-GRANT SELECT ON ALL TABLES IN SCHEMA public TO accounting_user;
-GRANT UPDATE ON ALL TABLES IN SCHEMA public TO accounting_user;
-GRANT INSERT ON ALL TABLES IN SCHEMA public TO accounting_user;
-GRANT DELETE ON ALL TABLES IN SCHEMA public TO accounting_user;
-GRANT EXECUTE ON ALL FUNCTIONS IN SCHEMA public TO accounting_user;
-
-GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO accounting_user;
-*/

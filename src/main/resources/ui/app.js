@@ -29,7 +29,14 @@
                 templateUrl : 'ui/templates/createTransactions.html',
                 controller  : 'createTransController'
             })
-
+            .when('/account', {
+                templateUrl : 'ui/templates/chartofaccounts.html',
+                controller  : 'chartOfAccountsController'
+            })
+            .when('/createAccount', {
+                templateUrl : 'ui/templates/createAccount.html',
+                controller  : 'createAccountController'
+            })
 	}).run( function($rootScope, $location, $window) {
 
         // register listener to watch route changes
@@ -72,6 +79,16 @@
     accountingApp.controller('createTransController', function($rootScope, $scope, $http,  $window, $location) {
         // create a message to display in our view
         var controller = new CreateTransController($rootScope, $scope, $http,  $window, $location)
+    });
+
+    accountingApp.controller('chartOfAccountsController', function($scope, $http) {
+        var controller = new ChartOfAccountsController($scope, $http)
+
+    });
+
+    accountingApp.controller('createAccountController', function($rootScope, $scope, $http,  $window, $location) {
+        // create a message to display in our view
+        var controller = new CreateAccountControler($rootScope, $scope, $http,  $window, $location)
     });
 
     accountingApp.factory('httpRequestInterceptor', function ($q,  $window, $location) {

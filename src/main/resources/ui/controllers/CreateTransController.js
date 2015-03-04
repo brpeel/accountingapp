@@ -3,6 +3,17 @@ function CreateTransController($rootScope, $scope, $http, $window, $location) {
 
     var self = this;
 
+    $scope.selectedAccount = null;
+    $scope.accounts = [];
+
+    $scope.fetchOptions = function() {
+
+        $http.get('/api/transaction/options').success(function(data){
+            console.log(JSON.stringify(data))
+            $scope.accounts = data.accounts;
+        });
+    };
+
     $scope.save = function(){
         console.log('Reset Password');
         var trans = {'description':$scope.description};
@@ -19,26 +30,21 @@ function CreateTransController($rootScope, $scope, $http, $window, $location) {
                 alert("Could not save transaction");
             });
     }
+
+    $scope.fetchOptions()
 };
 
 /*
 *
-* var userIn = {
- username : username,
- password : password
- }
- var that = this;
- $http.post('./login', userIn).success(function(data) {
- if (data.success === true) {
- that.user.username = userIn.username;
- that.user.header = btoa(userIn.username + ':' + userIn.password);
- ctrl.errorMessage = '';
- that.storeToSession();
- } else {
- // show error and logout user
-}
-}).error(function(arg) {
-    // show error and logout user //
-});
+* $scope.selectedTestAccount = null;
+ $scope.testAccounts = [];
+
+ $http({
+ method: 'GET',
+ url: '/Admin/GetTestAccounts',
+ data: { applicationId: 3 }
+ }).success(function (result) {
+ $scope.testAccounts = result;
+ });
 *
 * */

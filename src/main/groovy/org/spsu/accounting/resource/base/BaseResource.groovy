@@ -9,14 +9,18 @@ import org.slf4j.LoggerFactory
 import org.spsu.accounting.data.dao.ActiveDAO
 import org.spsu.accounting.data.dao.DAO
 import org.spsu.accounting.data.domain.BaseDO
+import org.spsu.accounting.data.domain.TransactionDO
 import sun.security.provider.certpath.OCSPResponse
 
+import javax.servlet.http.HttpServletRequest
 import javax.ws.rs.GET
+import javax.ws.rs.POST
 import javax.ws.rs.PUT
 import javax.ws.rs.Path
 import javax.ws.rs.PathParam
 import javax.ws.rs.Produces
 import javax.ws.rs.WebApplicationException
+import javax.ws.rs.core.Context
 import javax.ws.rs.core.MediaType
 import javax.ws.rs.core.Response
 
@@ -202,5 +206,25 @@ abstract class BaseResource {
 
     protected Response createResponse(Response.Status status, Object entity){
         return Response.status(status).entity(entity).build()
+    }
+
+    protected def setObjectValues(BaseDO doObj, Map<String,Object> values){
+        if (!doObj)
+            return doObj
+        if (!values)
+            return doObj
+
+        final Map fieldMap = [:]
+        doObj.getFields().each() { it -> fieldMap.put(it.toLowerCase(),it)}
+
+        final Map normalizedKeys = [:]
+        values.each {String key, Object value ->
+            key = key.replaceAll("_","").replaceAll(" ","").toLowerCase()
+            String field = fieldMap.get(key)
+            if (field)
+                doObj."$field" = value
+        }
+
+        return doObj
     }
 }

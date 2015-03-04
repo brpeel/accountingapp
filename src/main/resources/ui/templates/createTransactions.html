@@ -1,8 +1,32 @@
-<modal title="CreateTrans form"class="col-md-6">
+<modal title="CreateTrans form" class="col-md-6">
     <form role="createTransForm">
         <div class="form-group">
-            <label for="description">Description</label>
-            <input type="description" ng-model="description" class="form-control" name="description" id="description" placeholder="Enter Description" />
+            <div class="form-group">
+                <label for="description">Description</label>
+                <input type="description" ng-model="description" class="form-control" name="description"
+                       id="description" placeholder="Enter Description"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="description">Account</label>
+            <select ng-model="selectedAccount" class="form-control" ng-options="item.id as item.name for item in accounts">
+                <option value="">Select Account</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="description">Credit or Debit</label>
+            <select ng-model="selectedSide" class="form-control" >
+                <option value="default">Default to Account</option>
+                <option value="credit">Credit</option>
+                <option value="debit">Debit</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <div class="form-group">
+                <label for="amount">Amount</label>
+                <input type="amount" ng-model="amount" class="form-control" name="amount"
+                       id="amount" placeholder="Enter Amount"/>
+            </div>
         </div>
         <button class="btn btn-default" ng-click="save()">Submit</button>
     </form>

@@ -8,16 +8,6 @@ import junit.framework.Test
  */
 class BaseDOTest extends spock.lang.Specification {
 
-    class TestDO extends BaseDO {
-
-        String field1
-
-        @JsonProperty("field_2")
-        String field2
-
-        String field3
-    }
-
     def TestDO testDO
     void setup() {
         testDO = new TestDO(field1:"field1 original", field2: "field2 original", field3: "field3 original")
@@ -32,6 +22,15 @@ class BaseDOTest extends spock.lang.Specification {
 
         then:
         testDO.field1 == "field1 changed" && testDO.field2 == "field2 changed" && testDO.field3 == "field3 original"
+    }
+
+    def "Test getFields"(){
+
+        when:
+        List<String> fields = testDO.getFields().sort()
+
+        then:
+        fields == ["field1", "field2", "field3", "id"].sort()
     }
 
 }

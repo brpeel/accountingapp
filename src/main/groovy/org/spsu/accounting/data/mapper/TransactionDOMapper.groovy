@@ -3,7 +3,7 @@ package org.spsu.accounting.data.mapper
 import org.spsu.accounting.data.domain.TransactionDO
 
 public class TransactionDOMapper extends BaseMapper<TransactionDO>{
-
+/*
 	@Override
 	protected TransactionDO map(Map data) {
 
@@ -26,5 +26,5 @@ public class TransactionDOMapper extends BaseMapper<TransactionDO>{
 
 		return transaction
 	}
-
+*/
 }

@@ -3,8 +3,10 @@ package org.spsu.accounting.resource
 import org.skife.jdbi.v2.DBI
 import org.spsu.accounting.data.dao.DAO
 import org.spsu.accounting.data.dao.impl.DAOImpl
+import org.spsu.accounting.data.dbi.AccountDBI
 import org.spsu.accounting.data.dbi.TransactionDBI
 import org.spsu.accounting.data.dbi.UserDBI
+import org.spsu.accounting.data.domain.AccountDO
 import org.spsu.accounting.data.domain.TransactionDO
 import org.spsu.accounting.data.domain.UserDO
 import org.spsu.accounting.resource.base.BaseResource
@@ -24,9 +26,10 @@ import javax.ws.rs.core.Response
  */
 @Path("api/transaction")
 class TransactionResource extends BaseResource {
-
+    DAO<AccountDO> accountDAO
     @Override
     protected DAO createDAO(DBI jdbi) {
+        accountDAO = new DAOImpl<AccountDO>(dbi: jdbi.onDemand(AccountDBI))
         return new DAOImpl<TransactionDO>(dbi: jdbi.onDemand(TransactionDBI))
     }
 
@@ -35,8 +38,20 @@ class TransactionResource extends BaseResource {
     Response create( @Context HttpServletRequest request, Map req){
 
         int userid = request.getAttribute("userid")
-        TransactionDO transactionDO = new TransactionDO(description:req.description);
+        TransactionDO transactionDO = new TransactionDO();
         transactionDO.reportedBy = userid
+        setObjectValues(transactionDO, req)
+
         return postObject(transactionDO)
+    }
+
+    @GET
+    @Path("/options")
+    @Produces(MediaType.APPLICATION_JSON)
+    Response getAll(){
+        List<AccountDO> accounts = accountDAO.all()
+        def options = ["accounts":accounts]
+
+        return  Response.ok(options).build();
     }
 }

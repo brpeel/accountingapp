@@ -8,6 +8,6 @@ import com.fasterxml.jackson.annotation.JsonProperty
 class ActiveBaseDO extends BaseDO {
 
     @JsonProperty("active")
-    boolean active
+    boolean active = true
 
 }

@@ -3,7 +3,7 @@ package org.spsu.accounting.data.mapper
 import org.spsu.accounting.data.domain.UserDO
 
 public class UserDOMapper extends BaseMapper<UserDO>{
-
+/*
 	@Override
 	protected UserDO map(Map data) {
 
@@ -32,5 +32,5 @@ public class UserDOMapper extends BaseMapper<UserDO>{
 
 		return user
 	}
-
+*/
 }

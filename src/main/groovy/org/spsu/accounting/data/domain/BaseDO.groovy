@@ -37,4 +37,14 @@ abstract class BaseDO {
         }
 
     }
+
+    public List<String> getFields(Class c = this.getClass()) {
+        if (!c)
+            return []
+
+        final List<String> fields = getFields(c.getSuperclass())
+        c.declaredFields.findAll { !it.synthetic }.collect() { it -> fields.push(it.name) }
+
+        return fields
+    }
 }
