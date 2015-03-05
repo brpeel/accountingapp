@@ -31,11 +31,13 @@ public class AccountResource extends BaseResource{
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    Response create( @Context HttpServletRequest request, Map req){
+    Response create( @Context HttpServletRequest request, Map values){
 
-        int userid = request.getAttribute("userid")
+        validatePostRequest(values)
 
-        AccountDO item = new AccountDO(req);
+        int userid = getUser(request)
+
+        AccountDO item = new AccountDO(values);
         item.addedBy = userid
         return postObject(item)
     }

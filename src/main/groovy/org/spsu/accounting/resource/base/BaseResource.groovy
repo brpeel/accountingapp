@@ -22,8 +22,6 @@ import javax.ws.rs.Produces
 import javax.ws.rs.WebApplicationException
 import javax.ws.rs.core.Context
 import javax.ws.rs.core.MediaType
-import javax.ws.rs.core.Response
-
 /**
  * Created by bpeel on 1/28/15.
  */
@@ -170,12 +168,24 @@ abstract class BaseResource {
             throw new WebApplicationException(createResponse(Response.Status.BAD_REQUEST, "The id url parameter must match the id in the request body"))
     }
 
+    protected void validatePostRequest(Map values){
+
+        if (!values)
+            throw new WebApplicationException(createResponse(Response.Status.BAD_REQUEST, "Empty request body"))
+    }
     protected void validatePostRequest(BaseDO baseDO){
 
         if (baseDO == null)
             throw new WebApplicationException(createResponse(Response.Status.BAD_REQUEST, "Empty request body"))
     }
 
+    protected int getUser(HttpServletRequest request){
+
+        Integer userid = request.getAttribute("userid")
+        if (userid == null)
+            throw new WebApplicationException(Response.Status.UNAUTHORIZED)
+        return userid
+    }
     //DAO Wrappers
     protected int createObject(BaseDO baseDO){
         try{
@@ -228,3 +238,5 @@ abstract class BaseResource {
         return doObj
     }
 }
+
+import javax.ws.rs.core.Response
