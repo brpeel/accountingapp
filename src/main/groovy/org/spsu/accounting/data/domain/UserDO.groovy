@@ -18,9 +18,6 @@ public class UserDO extends ActiveBaseDO{
 	@JsonProperty("last_name")
 	String lastName
 
-	@JsonProperty("locked")
-	boolean locked
-
 	@JsonProperty("password_reset")
 	DateTime passwordReset
 
@@ -29,5 +26,8 @@ public class UserDO extends ActiveBaseDO{
 
 	@JsonProperty("login_attempts")
 	int loginAttempts
+
+    @JsonIgnore
+    boolean resetOnLogon
 
 }

@@ -1,0 +1,78 @@
+package org.spsu.accounting.data.dao.impl
+
+import org.spsu.accounting.data.dbi.UserDBI
+import org.spsu.accounting.data.domain.UserDO
+import org.spsu.accounting.utils.mail.MailServer
+import spock.lang.Shared
+import spock.lang.Specification
+import spock.lang.Unroll
+
+/**
+ * Created by bpeel on 3/5/15.
+ */
+
+class UserDAOImplTest extends Specification {
+
+    @Shared
+    UserDAOImpl dao
+    @Shared
+    UserDBI dbi
+    @Shared
+    UserDO user = new UserDO(id: 1, email: "someemail@server.com")
+    @Shared
+    MailServer mailServer
+
+    void setup() {
+        dbi = Mock(UserDBI)
+        dao = new UserDAOImpl(dbi: dbi)
+
+        mailServer = Mock(MailServer)
+        mailServer.send(_, _, _) >> { println "Sending email" }
+        mailServer.send(_) >> { println "Sending email" }
+
+        dao.mailServer = mailServer
+
+    }
+
+    @Unroll("#msg")
+    def "Password not valid"() {
+
+        when:
+        dao.setPassword(user, password)
+
+        then:
+        def exception = thrown(Exception)
+        exception.message == msg
+
+        where:
+        user | password          | msg
+        user | null              | "Password cannot be empty"
+        user | ""                | "Password cannot be empty"
+        user | "     "           | "Password cannot be empty"
+        user | "noFirstCapital"  | "Password must start with a capital letter"
+        user | "short"           | "Password must be at 8 characters long"
+        user | "Nonumbers"       | "Password must contain letters and numbers"
+        user | "123123123123123" | "Password must contain letters and numbers"
+
+    }
+
+    def "Send has password and send email when user updates their password"() {
+
+        when:
+        dao.setPassword(user, "SuperValidPassword123")
+
+        then:
+        1 * mailServer.send(_,_,_)
+        1 * dbi.updatePassword(_,_)
+    }
+
+    def "Send email when admin resets a users password"() {
+
+        when:
+        dao.resetPassword(user)
+
+        then:
+        1 * mailServer.send(_,_,_)
+        1 * dbi.resetPassword(_,_)
+    }
+}

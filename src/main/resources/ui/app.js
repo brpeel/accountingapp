@@ -11,6 +11,14 @@
 				templateUrl : 'ui/templates/logon.html',
 				controller  : 'LogonController'
 			})
+            .when('/logout', {
+                templateUrl : 'ui/templates/logon.html',
+                controller  : 'LogOutController'
+            })
+            .when('/resetpassword', {
+                templateUrl : 'ui/templates/resetPassword.html',
+                controller  : 'ResetPasswordController'
+            })
             .when('/', {
                 templateUrl : 'ui/templates/home.html',
                 controller  : 'HomeController'
@@ -60,10 +68,27 @@
         var controller = new MenuController($rootScope, $scope, $http,  $window, $location)
     });
 
+
+    accountingApp.controller('LogOutController', function($rootScope, $scope, $http,  $window, $location) {
+        // create a message to display in our view
+        console.log("clearing session")
+        $window.sessionStorage.clear()
+
+        $http.post('auth/logout',null)
+        $location.path("/logon")
+    });
+
 	accountingApp.controller('LogonController', function($rootScope, $scope, $http,  $window, $location) {
 		// create a message to display in our view
+        console.log('In LogonController')
         var controller = new LogonController($rootScope, $scope, $http,  $window, $location)
 	});
+
+    accountingApp.controller('ResetPasswordController', function($rootScope, $scope, $http,  $window, $location) {
+        // create a message to display in our view
+        console.log('In Reset Password Controller')
+        var controller = new ResetPasswordController($rootScope, $scope, $http,  $window, $location)
+    })
 
 	accountingApp.controller('aboutController', function($scope, $http) {
 
@@ -91,21 +116,16 @@
         var controller = new CreateAccountControler($rootScope, $scope, $http,  $window, $location)
     });
 
+
+
     accountingApp.factory('httpRequestInterceptor', function ($q,  $window, $location) {
         return {
             request: function (config) {
-                //var token = $cookieStore.get("auth");
-                console.log('intercepted '+config.url);
-
                 config.headers['Authorization'] = $window.sessionStorage.token;
-
-                console.log('headers : '+JSON.stringify(config.headers));
-
                 return config;
             },
 
             response: function(response){
-                console.log('intercepted success response '+JSON.stringify(response));
                 return response;
             },
 

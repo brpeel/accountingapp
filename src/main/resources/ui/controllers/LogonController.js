@@ -35,8 +35,11 @@ function LogonController($rootScope, $scope, $http, $window, $location) {
                // scope.user.username = userIn.username;
                 $scope.user.header = btoa(userIn.username + ':' + userIn.password);
                 $scope.setToken(data.token);
-                //$scope.setMenuItems(data.menuItems);
-                $location.path("/")
+
+                if (data.reset_on_logon)
+                    $location.path("/resetpassword")
+                else
+                    $location.path("/")
 
             })
             .

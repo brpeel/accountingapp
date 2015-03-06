@@ -45,6 +45,15 @@ class AuthResource {
     }
 
     @POST
+    @Path("/logout")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response logout(@Context HttpServletRequest request){
+        String token = request.getHeader("Authorization")
+        dao.clearSession(token)
+        return Response.ok().build()
+    }
+
+    @POST
     @Path("/authenticate")
     @Produces(MediaType.APPLICATION_JSON)
     public Response authenticate( @Context HttpServletRequest request, Map req) {
@@ -52,9 +61,12 @@ class AuthResource {
         if (!user)
             return Response.status(Response.Status.UNAUTHORIZED).build()
 
+        if (!user.loginAttempts >= 3)
+            return Response.status(Response.Status.UNAUTHORIZED).entity(["locked":true]).build()
+
         String token =  dao.createSession(user);
         MenuItem[] items = [new MenuItem("Users", "user"), new MenuItem("Accounts", "accounts"), new MenuItem("Transactions", "transactions"), new MenuItem("Reports", "reports")]
-        Map data = ["token":token, "menuItems":items]
+        Map data = ["token":token, "reset_on_logon":user.resetOnLogon, "menuItems":items]
 
         return Response.ok(data).build();
     }

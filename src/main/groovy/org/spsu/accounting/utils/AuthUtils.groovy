@@ -19,7 +19,10 @@ class AuthUtils {
 
     public static String generateString(int length){
         String charset = (('A'..'Z') + ('a'..'z') + ('0'..'9')).join()
+        return generateString(length, charset)
+    }
 
+    public static String generateString(int length, String charset){
         return RandomStringUtils.random(length, charset.toCharArray())
     }
 }

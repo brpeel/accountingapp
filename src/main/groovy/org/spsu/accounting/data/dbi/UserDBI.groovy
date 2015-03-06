@@ -15,16 +15,32 @@ import java.sql.Timestamp
 @RegisterMapper(UserDOMapper.class)
 interface UserDBI{
 
-	@SqlQuery("select id, username, first_name, last_name, active locked, password_set, email, login_attempts \
+	@SqlQuery("select id, username, first_name, last_name, active locked, password_set, email, login_attempts, reset_on_logon \
     from accounting_user where username = :username")
 	@MapResultAsBean
 	UserDO get(@Bind("username") String username)
 
-    @SqlQuery("select id, username, first_name, last_name, active locked, password_set, email, login_attempts     from accounting_user where username = :username and password = :password")
+
+    @SqlQuery("select id, username, first_name, last_name, active locked, password_set, email, login_attempts, reset_on_logon \
+    from accounting_user where id = :id")
+    @MapResultAsBean
+    UserDO get(@Bind("id") int id)
+
+    @SqlQuery("update accounting_user set \
+                login_attempts = 0 \
+            where username = :username and password = :password \
+            returning id, username, first_name, last_name, active locked, password_set, email, login_attempts, reset_on_logon")
     @MapResultAsBean
     UserDO checkLogin(@Bind("username") String username, @Bind("password") String password)
 
-    @SqlQuery("select id, username, password,  first_name, last_name, active locked, password_set, email, login_attempts \
+
+    @SqlQuery("update accounting_user set \
+                login_attempts = login_attempts + 1\
+            where username = :username")
+    @MapResultAsBean
+    UserDO setFailedLoginAttempt(@Bind("username") String username)
+
+    @SqlQuery("select id, username, password,  first_name, last_name, active locked, password_set, email, login_attempts, reset_on_logon \
     from accounting_user where active = true")
     @MapResultAsBean
     List<UserDO> getAll()
@@ -53,10 +69,11 @@ interface UserDBI{
     @SqlUpdate("delete from token where id = :userid")
     void clearSession(@Bind("userid") String userId)
 
-    @SqlUpdate("update accounting_user set password = :password, password_set = now() where id = :userid")
+    @SqlUpdate("update accounting_user set password = :password, password_set = now(), reset_on_logon = true, login_attempts = 0 where id = :userid")
     void resetPassword(@Bind("password") String password, @Bind("userid") int userid)
 
-    @SqlUpdate("update accounting_user set password = :password, password_set = now() where id = :userid")
+    @SqlUpdate("update accounting_user set password = :password, password_set = now(), reset_on_logon = false where id = :userid")
     void updatePassword(@Bind("password") String password, @Bind("userid") int userid)
+
 
 }

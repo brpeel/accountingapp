@@ -112,6 +112,7 @@ CREATE TABLE accounting_user
   ,password_set TIMESTAMP NOT NULL DEFAULT NOW()
   ,email VARCHAR(250) NOT NULL
   ,login_attempts SMALLINT NOT NULL DEFAULT 0
+  ,reset_on_logon BOOLEAN NOT NULL DEFAULT true
   ,CONSTRAINT PK_User_id PRIMARY KEY (id)
 );
 
