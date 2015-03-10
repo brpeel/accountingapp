@@ -7,6 +7,8 @@ import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Unroll
 
+import java.sql.Timestamp
+
 /**
  * Created by bpeel on 3/5/15.
  */
@@ -50,14 +52,14 @@ class UserDAOImplTest extends Specification {
         exception.message == msg
 
         where:
-        user | password          | msg
-        user | null              | "Password cannot be empty"
-        user | ""                | "Password cannot be empty"
-        user | "     "           | "Password cannot be empty"
-        user | "noFirstCapital"  | "Password must start with a capital letter"
-        user | "short"           | "Password must be at 8 characters long"
-        user | "Nonumbers"       | "Password must contain letters and numbers"
-        user | "123123123123123" | "Password must contain letters and numbers"
+        user | password                | msg
+        user | null                    | "Password cannot be empty"
+        user | ""                      | "Password cannot be empty"
+        user | "     "                 | "Password cannot be empty"
+        user | "noFirstCapital"        | "Password must start with a capital letter"
+        user | "short"                 | "Password must be at 8 characters long"
+        user | "Nonumbers"             | "Password must contain letters and numbers"
+        user | "123123123123123"       | "Password must contain letters and numbers"
         user | "SuperValidPassword123" | "Password cannot match one of the previous 5 passwords"
 
     }
@@ -68,8 +70,8 @@ class UserDAOImplTest extends Specification {
         dao.setPassword(user, "SuperValidPassword123")
 
         then:
-        1 * mailServer.send(_,_,_)
-        1 * dbi.updatePassword(_,_)
+        1 * mailServer.send(_, _, _)
+        1 * dbi.updatePassword(_, _)
     }
 
     def "Send email when admin resets a users password"() {
@@ -78,7 +80,27 @@ class UserDAOImplTest extends Specification {
         dao.resetPassword(user)
 
         then:
-        1 * mailServer.send(_,_,_)
-        1 * dbi.resetPassword(_,_)
+        1 * mailServer.send(_, _, _)
+        1 * dbi.resetPassword(_, _)
+    }
+
+    @Unroll("#feature #name")
+    def "Password expired"() {
+
+        given:
+        dbi.getPasswordSet(_) >> time
+
+        when:
+        def expired = dao.isPasswordExpired(user)
+
+        then:
+        expired == expected
+
+        where:
+        name          | user              | time                                      | expected
+        "Not expired" | new UserDO(id: 1) | new Timestamp(System.currentTimeMillis()) | false
+        "Expired"     | new UserDO(id: 1) | new Timestamp(0)                          | true
+        "Null time"   | new UserDO(id: 1) | null                                      | true
+
     }
 }

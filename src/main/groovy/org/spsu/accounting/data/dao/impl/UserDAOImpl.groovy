@@ -7,13 +7,18 @@ import org.spsu.accounting.utils.AuthUtils
 import org.spsu.accounting.utils.mail.MailServer
 
 import javax.ws.rs.WebApplicationException
+import java.sql.Timestamp
 
 /**
  * Created by brettpeel on 2/7/15.
  */
 class UserDAOImpl extends ActiveDAOImpl<UserDO> implements UserDAO{
 
-    public static final long SESSION_DURATION = 60*60*1000
+    public static final long MILLISECONDS_PER_HOUR = 60*60*1000
+
+    public static final long SESSION_DURATION = MILLISECONDS_PER_HOUR
+
+    public static final long PASSWORD_DURATRION = MILLISECONDS_PER_HOUR*24*30 // Calculates to 30 days
 
     public static MailServer mailServer = AccountingApplication.mailServer
 
@@ -95,5 +100,12 @@ class UserDAOImpl extends ActiveDAOImpl<UserDO> implements UserDAO{
             throw new Exception("Password cannot match one of the previous 5 passwords")
 
         return passwordHash
+    }
+
+    @Override
+    boolean isPasswordExpired(UserDO user) {
+        long passwordExpiration = dbi.getPasswordSet(user.id)?.time ?: 0
+        long now = System.currentTimeMillis()
+        return !passwordExpiration || passwordExpiration + PASSWORD_DURATRION <= now
     }
 }

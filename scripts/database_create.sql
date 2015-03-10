@@ -9,6 +9,7 @@ drop table if exists account_statement cascade;
 drop table if exists account cascade;
 drop table if exists accounting_trans_entry cascade;
 drop table if exists entry_log cascade;
+drop table if exists user_password cascade;
 
 drop table if exists token cascade;
 
@@ -237,15 +238,15 @@ ALTER TABLE token ADD CONSTRAINT FK_token_user_id FOREIGN KEY (user_id) REFERENC
 
 
 -- Create Foreign Key: user_password.userid -> User.id
-ALTER TABLE user_password ADD CONSTRAINT FK_User_Password_User_id FOREIGN KEY (userid) REFERENCES Accounting_User(id);
+ALTER TABLE user_password ADD CONSTRAINT FK_User_Password_User_id FOREIGN KEY (user_id) REFERENCES Accounting_User(id);
 
 
 
-insert into accounting_user (username, password, first_name, last_name, email)
-values ('brpeel', '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8', 'Brett', 'Peel', 'bpeel56@gmail.com');
+insert into accounting_user (username, first_name, last_name, email)
+values ('brpeel', 'Brett', 'Peel', 'bpeel56@gmail.com');
 
-insert into accounting_user (username, password, first_name, last_name, email)
-    values ('emamo', '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8', 'Ermais', 'Mamo', 'emamo@spsu.edu');
+insert into accounting_user (username, first_name, last_name, email)
+    values ('emamo', 'Ermais', 'Mamo', 'emamo@spsu.edu');
 
 insert into user_password (user_id, password)
   select id, '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8' from accounting_user where username = 'brpeel';

@@ -31,7 +31,7 @@ class AuthResourceTest extends Specification {
         cal.add(Calendar.MONTH, -2)
         long past = cal.getTimeInMillis()
 
-        dao.checkLogin(_,_) >> new UserDO(resetOnLogon:false, passwordSet:new DateTime(past), loginAttempts: 0)
+        dao.checkLogin(_,_) >> new UserDO(resetOnLogon:true, loginAttempts: 0)
         dao.createSession(_) >> "12345"
 
         when:
@@ -42,13 +42,28 @@ class AuthResourceTest extends Specification {
         response.entity?.reset_on_logon == true
     }
 
-    def "Authenticate - max login attempts exceeded"() {
+    def "Authenticate - password expired"() {
         given:
         Calendar cal = Calendar.getInstance()
         cal.add(Calendar.MONTH, -2)
         long past = cal.getTimeInMillis()
 
-        dao.checkLogin(_,_) >> new UserDO(resetOnLogon:false, passwordSet:new DateTime(past), loginAttempts: 3)
+        dao.checkLogin(_,_) >> new UserDO(resetOnLogon:false, loginAttempts: 0)
+        dao.createSession(_) >> "12345"
+        dao.isPasswordExpired(_) >> true
+
+        when:
+        Response response = resource.authenticate(request)
+
+        then:
+        response.status == Response.Status.OK.statusCode
+        response.entity?.password_expired == true
+    }
+
+    def "Authenticate - max login attempts exceeded"() {
+        given:
+
+        dao.checkLogin(_,_) >> new UserDO(resetOnLogon:false, loginAttempts: 3)
 
         when:
         Response response = resource.authenticate(request)

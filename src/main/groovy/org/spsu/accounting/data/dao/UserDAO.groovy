@@ -21,4 +21,6 @@ interface UserDAO extends ActiveDAO<UserDO> {
 
     void setPassword(UserDO user, String password)
 
+    boolean isPasswordExpired(UserDO user)
+
 }

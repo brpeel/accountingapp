@@ -3,6 +3,7 @@ package org.spsu.accounting.resource
 import io.dropwizard.auth.Auth
 import org.skife.jdbi.v2.DBI
 import org.spsu.accounting.data.dao.DAO
+import org.spsu.accounting.data.dao.UserDAO
 import org.spsu.accounting.data.dao.impl.DAOImpl
 import org.spsu.accounting.data.dao.impl.UserDAOImpl
 import org.spsu.accounting.data.dbi.UserDBI
@@ -24,10 +25,10 @@ import javax.ws.rs.core.Response
  */
 @Path("api/user")
 
-class UserResource extends BaseResource {
+class UserResource extends BaseResource<UserDAO> {
 
     @Override
-    protected DAO createDAO(DBI jdbi) {
+    protected UserDAO createDAO(DBI jdbi) {
         return new UserDAOImpl<UserDO>(dbi: jdbi.onDemand(UserDBI))
     }
 
@@ -36,12 +37,18 @@ class UserResource extends BaseResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response setPassword(@Context HttpServletRequest request, Map body){
 
-        int userid = request.getAttribute("userid")
-        UserDO user = this.getObjectById(userid)
+        try {
+            int userid = request.getAttribute("userid")
+            UserDO user = this.getObjectById(userid)
 
-        this.dao.setPassword(user, body.password)
+            this.dao.setPassword(user, body.password)
 
-        return Response.ok().build()
+            return Response.ok().build()
+        }
+        catch (Exception e){
+            logger.error("Could not reset password", e)
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build()
+        }
     }
 
 

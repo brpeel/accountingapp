@@ -25,7 +25,7 @@ import javax.ws.rs.core.Response
  * Created by bpeel on 2/24/15.
  */
 @Path("api/transaction")
-class TransactionResource extends BaseResource {
+class TransactionResource extends BaseResource<DAO> {
     DAO<AccountDO> accountDAO
     @Override
     protected DAO createDAO(DBI jdbi) {

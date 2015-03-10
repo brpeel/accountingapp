@@ -1,4 +1,4 @@
-package org.spsu.accounting.resource.base
+package org.spsu.accounting.resource
 
 import org.spsu.accounting.data.dao.ActiveDAO
 import org.spsu.accounting.data.dao.DAO

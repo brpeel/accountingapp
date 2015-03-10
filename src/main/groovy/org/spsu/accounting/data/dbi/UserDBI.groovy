@@ -83,4 +83,7 @@ interface UserDBI{
 
     @SqlQuery("select password from user_password where userid = :id order by id desc limit 5")
     Set<String> last5Passwords(@Bind("id") int userid)
+
+    @SqlQuery("select password_set from user_password where userid = :id order by id desc limit 1")
+    Timestamp getPasswordSet(@Bind("id") int userid)
 }

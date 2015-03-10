@@ -25,11 +25,11 @@ import javax.ws.rs.core.MediaType
 /**
  * Created by bpeel on 1/28/15.
  */
-abstract class BaseResource {
+abstract class BaseResource<T extends DAO<BaseDO>> {
 
     Logger logger = LoggerFactory.getLogger(getClass())
 
-    DAO dao;
+    protected T dao;
     ObjectMapper mapper
 
     public void register(Environment environment, DBI jdbi){
@@ -46,7 +46,9 @@ abstract class BaseResource {
         mapper = environment.getObjectMapper()
     }
 
-    protected abstract DAO createDAO(DBI jdbi)
+    protected abstract T createDAO(DBI jdbi)
+
+    public T getDao(){ return dao}
 
     //GENERIC RESOURCE IMPLEMENTATIONS
     @GET

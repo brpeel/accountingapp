@@ -6,8 +6,6 @@ import org.joda.time.DateTime
 
 public class UserDO extends ActiveBaseDO{
 
-    long passwordDuration = 60*60*24*30*1000
-
 	@JsonProperty("username")
 	String username
 
@@ -25,9 +23,5 @@ public class UserDO extends ActiveBaseDO{
 
     @JsonIgnore
     boolean resetOnLogon
-
-    public boolean passwordExpired(){
-        return passwordSet.millis > passwordDuration
-    }
 
 }

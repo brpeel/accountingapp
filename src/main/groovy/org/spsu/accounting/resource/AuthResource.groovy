@@ -64,11 +64,12 @@ class AuthResource {
         if (user.loginAttempts >= 3)
             return Response.status(Response.Status.UNAUTHORIZED).entity(["locked":true]).build()
 
-        boolean resetOnLogon = user.resetOnLogon || user.passwordExpired()
+        boolean passwordExpired = dao.isPasswordExpired(user)//
+        boolean resetOnLogon = user.resetOnLogon
 
         String token =  dao.createSession(user);
         MenuItem[] items = [new MenuItem("Users", "user"), new MenuItem("Accounts", "accounts"), new MenuItem("Transactions", "transactions"), new MenuItem("Reports", "reports")]
-        Map data = ["token":token, "reset_on_logon":resetOnLogon, "menuItems":items]
+        Map data = ["token":token, "reset_on_logon":resetOnLogon, "password_expired":passwordExpired, "menuItems":items]
 
         return Response.ok(data).build();
     }
