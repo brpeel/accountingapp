@@ -36,7 +36,7 @@ function LogonController($rootScope, $scope, $http, $window, $location) {
                 $scope.user.header = btoa(userIn.username + ':' + userIn.password);
                 $scope.setToken(data.token);
 
-                if (data.reset_on_logon)
+                if (data.reset_on_logon || data.password_expired)
                     $location.path("/resetpassword")
                 else
                     $location.path("/")

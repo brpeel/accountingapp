@@ -46,7 +46,7 @@ interface UserDBI{
     @MapResultAsBean
     UserDO setFailedLoginAttempt(@Bind("username") String username)
 
-    @SqlQuery("select id, username, password,  first_name, last_name, active locked, password_set, email, login_attempts, reset_on_logon \
+    @SqlQuery("select id, username, password,  first_name, last_name, active locked, email, login_attempts, reset_on_logon \
     from accounting_user where active = true")
     @MapResultAsBean
     List<UserDO> getAll()
@@ -81,9 +81,9 @@ interface UserDBI{
     @SqlUpdate("update accounting_user set password = :password, password_set = now(), reset_on_logon = false where id = :userid")
     void updatePassword(@Bind("password") String password, @Bind("userid") int userid)
 
-    @SqlQuery("select password from user_password where userid = :id order by id desc limit 5")
+    @SqlQuery("select password from user_password where user_id = :id order by id desc limit 5")
     Set<String> last5Passwords(@Bind("id") int userid)
 
-    @SqlQuery("select password_set from user_password where userid = :id order by id desc limit 1")
+    @SqlQuery("select password_set from user_password where user_id = :id order by id desc limit 1")
     Timestamp getPasswordSet(@Bind("id") int userid)
 }

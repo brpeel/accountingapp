@@ -2,6 +2,7 @@
 function ResetPasswordController($rootScope, $scope, $http, $window, $location) {
 
     $rootScope.menuItems = [];
+    $rootScope.errormessage = null;
 
     $scope.reset = function(){
 
@@ -13,6 +14,7 @@ function ResetPasswordController($rootScope, $scope, $http, $window, $location) 
             .
             error(function(data, status, headers, config) {
                 console.log(JSON.stringify(data))
+                $rootScope.errormessage = data
             });
     };
 };
