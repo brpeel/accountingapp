@@ -66,14 +66,14 @@ class UserDAOImpl extends ActiveDAOImpl<UserDO> implements UserDAO{
 
     @Override
     void setPassword(UserDO user, String password) {
-        validatePassword(password)
+        validatePassword(user.id, password)
 
         this.dbi.updatePassword(AuthUtils.getHash(password), user.id)
 
         mailServer.send(user.email, "WARNING: ${AccountingApplication.APPLICATION} your password has been changed reset", "Your new password has been changed. If you did not do this or you think this happened in error please contact your system administrator")
     }
 
-    void validatePassword(String password){
+    String validatePassword(int userid, String password){
 
         if (password == null || password.trim().length() == 0)
             throw new Exception("Password cannot be empty")
@@ -88,5 +88,12 @@ class UserDAOImpl extends ActiveDAOImpl<UserDO> implements UserDAO{
         int noNumberLength = password.replaceAll("[0-9.]", "").length()
         if (noNumberLength == 0 || noNumberLength == password.length())
             throw new Exception("Password must contain letters and numbers")
+        String passwordHash = AuthUtils.getHash(password)
+
+        Set<String> previousPasswords = dbi.last5Passwords(userid)
+        if (previousPasswords && previousPasswords.contains(passwordHash))
+            throw new Exception("Password cannot match one of the previous 5 passwords")
+
+        return passwordHash
     }
 }

@@ -36,7 +36,7 @@ class AuthResource {
         }
     }
 
-    static Logger logger = LoggerFactory.getLogger(AuthResource)
+    Logger logger = LoggerFactory.getLogger(AuthResource)
 
     private final UserDAO dao;
 
@@ -56,17 +56,19 @@ class AuthResource {
     @POST
     @Path("/authenticate")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response authenticate( @Context HttpServletRequest request, Map req) {
+    public Response authenticate(Map req) {
         UserDO user = dao.checkLogin(req.username, req.password)
         if (!user)
             return Response.status(Response.Status.UNAUTHORIZED).build()
 
-        if (!user.loginAttempts >= 3)
+        if (user.loginAttempts >= 3)
             return Response.status(Response.Status.UNAUTHORIZED).entity(["locked":true]).build()
+
+        boolean resetOnLogon = user.resetOnLogon || user.passwordExpired()
 
         String token =  dao.createSession(user);
         MenuItem[] items = [new MenuItem("Users", "user"), new MenuItem("Accounts", "accounts"), new MenuItem("Transactions", "transactions"), new MenuItem("Reports", "reports")]
-        Map data = ["token":token, "reset_on_logon":user.resetOnLogon, "menuItems":items]
+        Map data = ["token":token, "reset_on_logon":resetOnLogon, "menuItems":items]
 
         return Response.ok(data).build();
     }

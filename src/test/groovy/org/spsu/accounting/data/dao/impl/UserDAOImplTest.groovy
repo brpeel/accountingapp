@@ -24,6 +24,7 @@ class UserDAOImplTest extends Specification {
 
     void setup() {
         dbi = Mock(UserDBI)
+
         dao = new UserDAOImpl(dbi: dbi)
 
         mailServer = Mock(MailServer)
@@ -36,6 +37,10 @@ class UserDAOImplTest extends Specification {
 
     @Unroll("#msg")
     def "Password not valid"() {
+        given:
+        Set<String> last5Pwd = new HashSet<>()
+        last5Pwd.add("a0783e62371a7ac4cac91803231e635f7584a8a43f32b78c827bf8444137bd41")
+        dbi.last5Passwords(_) >> last5Pwd
 
         when:
         dao.setPassword(user, password)
@@ -53,6 +58,7 @@ class UserDAOImplTest extends Specification {
         user | "short"           | "Password must be at 8 characters long"
         user | "Nonumbers"       | "Password must contain letters and numbers"
         user | "123123123123123" | "Password must contain letters and numbers"
+        user | "SuperValidPassword123" | "Password cannot match one of the previous 5 passwords"
 
     }
 

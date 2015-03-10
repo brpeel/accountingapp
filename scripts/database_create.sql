@@ -104,19 +104,23 @@ CREATE TABLE accounting_user
 (
    id SERIAL NOT NULL
   ,username VARCHAR(250) NOT NULL
-  ,password VARCHAR(100) NOT NULL
   ,first_name VARCHAR(50) NOT NULL
   ,last_name VARCHAR(50) NOT NULL
   ,active BOOLEAN NOT NULL DEFAULT true
   ,locked BOOLEAN NOT NULL DEFAULT false
-  ,password_set TIMESTAMP NOT NULL DEFAULT NOW()
   ,email VARCHAR(250) NOT NULL
   ,login_attempts SMALLINT NOT NULL DEFAULT 0
   ,reset_on_logon BOOLEAN NOT NULL DEFAULT true
   ,CONSTRAINT PK_User_id PRIMARY KEY (id)
 );
 
-
+CREATE TABLE user_password
+(
+  id SERIAL NOT NULL,
+  user_id INTEGER NOT NULL,
+  password VARCHAR(100) NOT NULL,
+  password_set TIMESTAMP NOT NULL DEFAULT NOW()
+);
 
 -- Create Table: User_Membership
 --------------------------------------------------------------------------------
@@ -231,11 +235,23 @@ ALTER TABLE entry_log ADD CONSTRAINT FK_entry_log_changed_by_Accounting_User_id 
 -- Create Foreign Key: entry_log.changed_by -> Accounting_User.id
 ALTER TABLE token ADD CONSTRAINT FK_token_user_id FOREIGN KEY (user_id) REFERENCES Accounting_User(id);
 
+
+-- Create Foreign Key: user_password.userid -> User.id
+ALTER TABLE user_password ADD CONSTRAINT FK_User_Password_User_id FOREIGN KEY (userid) REFERENCES Accounting_User(id);
+
+
+
 insert into accounting_user (username, password, first_name, last_name, email)
 values ('brpeel', '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8', 'Brett', 'Peel', 'bpeel56@gmail.com');
 
 insert into accounting_user (username, password, first_name, last_name, email)
     values ('emamo', '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8', 'Ermais', 'Mamo', 'emamo@spsu.edu');
+
+insert into user_password (user_id, password)
+  select id, '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8' from accounting_user where username = 'brpeel';
+
+insert into user_password (user_id, password)
+    select id, '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8' from accounting_user where username = 'emamo' ;
 
 insert into accounting_trans (reported_by, approved_by, reported, approved, status, description)
   select id, null, now(), NULL, 'Reported', 'Paid Wages'

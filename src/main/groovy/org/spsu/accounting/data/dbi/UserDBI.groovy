@@ -26,10 +26,16 @@ interface UserDBI{
     @MapResultAsBean
     UserDO get(@Bind("id") int id)
 
-    @SqlQuery("update accounting_user set \
-                login_attempts = 0 \
-            where username = :username and password = :password \
-            returning id, username, first_name, last_name, active locked, password_set, email, login_attempts, reset_on_logon")
+    @SqlQuery("""with accuser as (
+                    select * from accounting_user where username = :username
+                ),
+                passwd as (
+                    select user_id, password from user_password up join accuser on up.user_id = accuser.id order by up.id desc limit 1
+                )
+                select accuser.*
+                from passwd
+                  join accuser on passwd.user_id = accuser.id
+                where password = :password""")
     @MapResultAsBean
     UserDO checkLogin(@Bind("username") String username, @Bind("password") String password)
 
@@ -75,5 +81,6 @@ interface UserDBI{
     @SqlUpdate("update accounting_user set password = :password, password_set = now(), reset_on_logon = false where id = :userid")
     void updatePassword(@Bind("password") String password, @Bind("userid") int userid)
 
-
+    @SqlQuery("select password from user_password where userid = :id order by id desc limit 5")
+    Set<String> last5Passwords(@Bind("id") int userid)
 }
