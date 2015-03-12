@@ -1,6 +1,7 @@
 package org.spsu.accounting.data.dao
 
 import org.spsu.accounting.data.domain.UserDO
+import org.spsu.accounting.data.domain.UserRole
 
 import java.sql.ResultSet
 
@@ -23,5 +24,4 @@ interface UserDAO extends ActiveDAO<UserDO> {
 
     boolean isPasswordExpired(UserDO user)
 
-    String getUserType(int userid)
 }

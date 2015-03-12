@@ -220,10 +220,7 @@ abstract class BaseResource<T extends DAO<BaseDO>> {
         if (!values)
             return doObj
 
-        final Map fieldMap = [:]
-        doObj.' listFields'().each() { it -> fieldMap.put(it.toLowerCase(),it)}
-
-        final Map normalizedKeys = [:]
+        final Map fieldMap = doObj.listFieldsForMerge()
         values.each {String key, Object value ->
             key = key.replaceAll("_","").replaceAll(" ","").toLowerCase()
             String field = fieldMap.get(key)

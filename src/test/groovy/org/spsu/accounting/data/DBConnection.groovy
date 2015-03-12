@@ -32,4 +32,23 @@ class DBConnection {
         return dbi.onDemand(SqlObjectType)
     }
 
+    static void clearTable(String table){
+        Handle h = dbi.open()
+        h.execute("delete from $table")
+    }
+
+
+    static def minFieldValue(String table, String field){
+        return getField("select min($field) as $field from $table", field)
+    }
+
+    static def maxFieldValue(String table, String field){
+        return getField("select max($field) as $field from $table", field)
+    }
+
+    static private def getField(String sql, String field){
+        Handle h = dbi.open()
+        def rows = h.select(sql)
+        return rows[0]?."$field"
+    }
 }

@@ -1,4 +1,4 @@
-﻿DROP INDEX IF EXISTS username_uidx CASCADE;
+﻿DROP INDEX IF EXISTS username_uidx;
 
 drop table if exists accounting_trans_document cascade;
 drop table if exists accounting_trans cascade;
@@ -242,17 +242,6 @@ ALTER TABLE token ADD CONSTRAINT FK_token_user_id FOREIGN KEY (user_id) REFERENC
 -- Create Foreign Key: user_password.userid -> User.id
 ALTER TABLE user_password ADD CONSTRAINT FK_User_Password_User_id FOREIGN KEY (user_id) REFERENCES Accounting_User(id);
 
-grant all privileges on schema public to accounting_user;
-
-GRANT SELECT ON ALL TABLES IN SCHEMA public TO accounting_user;
-GRANT UPDATE ON ALL TABLES IN SCHEMA public TO accounting_user;
-GRANT INSERT ON ALL TABLES IN SCHEMA public TO accounting_user;
-GRANT DELETE ON ALL TABLES IN SCHEMA public TO accounting_user;
-GRANT EXECUTE ON ALL FUNCTIONS IN SCHEMA public TO accounting_user;
-
-GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO accounting_user;
-
-
 insert into user_type (type, description)  values ('admin', 'Administrator user');
 insert into user_type (type, description)  values ('manager', 'Manager user');
 insert into user_type (type, description)  values ('user', 'Ordinary user');
@@ -268,20 +257,20 @@ insert into accounting_user (username, first_name, last_name, email) values ('em
 insert into user_membership (user_id, user_type_id, added_by)
   select id, 'admin', (select id from accounting_user where username = 'brpeela')
   from accounting_user
-  where substring(reverse(username),1,1) ='a';
+  where username like '%a';
 
 insert into user_membership (user_id, user_type_id, added_by)
   select id, 'manager', (select id from accounting_user where username = 'brpeela')
   from accounting_user
-  where substring(reverse(username), 1, 1) ='m';
+  where username like '%m';
 
 insert into user_membership (user_id, user_type_id, added_by)
   select id, 'user', (select id from accounting_user where username = 'brpeela')
   from accounting_user
-  where substring(reverse(username), 1, 1) not in ('a','m');
+  where username not like '%a' and username not like '%m';
 
 insert into user_password (user_id, password)
   select id, '008c70392e3abfbd0fa47bbc2ed96aa99bd49e159727fcba0f2e6abeb3a9d601' from accounting_user;
 
 insert into account (name, initial_balance, normal_side, added, active, added_by, subcategory)
-    select 'Service Revenue', 0.00, 'Credit', now(), true, id, 'Revenue' from accounting_user where username = 'brpeela';
+  select 'Service Revenue', 0.00, 'Credit', now(), true, id, 'Revenue' from accounting_user where username = 'brpeela';

@@ -13,32 +13,37 @@ import java.sql.Timestamp
 class AccountDBITest extends Specification {
 
     final static Timestamp now = new Timestamp(System.currentTimeMillis())
-    @Shared AccountDBI dbi
+    int minId
+    AccountDBI dbi
 
-    @Shared AccountDO account1 = new AccountDO(name: "Service Revenue", initialBalance: 0, normalSide: 'debit', active: true, addedBy: 1, subcategory: "Revenue")
-    @Shared AccountDO account2 = new AccountDO(name: "Investment Revenue", initialBalance: 1000, normalSide: 'debit', active: true, addedBy: 1, subcategory: "Revenue")
-    @Shared AccountDO account3 = new AccountDO(name: "Investment Inactive", initialBalance: 1000, normalSide: 'debit', active: true, addedBy: 1, subcategory: "Revenue")
+    AccountDO account1 = new AccountDO(name: "Service Revenue", initialBalance: 0, normalSide: 'debit', active: true, addedBy: 1, subcategory: "Revenue")
+    AccountDO account2 = new AccountDO(name: "Investment Revenue", initialBalance: 1000, normalSide: 'debit', active: true, addedBy: 1, subcategory: "Revenue")
+    AccountDO account3 = new AccountDO(name: "Investment Inactive", initialBalance: 1000, normalSide: 'debit', active: true, addedBy: 1, subcategory: "Revenue")
 
     void setup() {
         dbi = DBConnection.onDemand(AccountDBI)
+        DBConnection.clearTable("account")
 
-        account1.id = dbi.insert(account1)
-        account2.id = dbi.insert(account2)
+        dbi.insert(account1)
+        account1.id = DBConnection.maxFieldValue("account","id")
+
+        dbi.insert(account2)
+        account2.id = DBConnection.maxFieldValue("account","id")
+
         account3.active = false
-        account3.id = dbi.insert(account3)
+        dbi.insert(account3)
+        account3.id = DBConnection.maxFieldValue("account","id")
+
+        minId = DBConnection.minFieldValue("account","id")
     }
 
     def "Get"() {
-        given:
-        Timestamp now = new Timestamp(System.currentTimeMillis())
-        AccountDO account = new AccountDO(name: "Service Revenue", initialBalance: 0, normalSide: 'debit', active: true, addedBy: 1, subcategory: "Revenue")
-        int id = dbi.insert(account)
 
         when:
-        AccountDO result = dbi.get(1)
+        AccountDO result = dbi.get(minId)
 
         then:
-        result != null && result.id == 1
+        result != null && result.id == minId
     }
 
     def "GetAll"() {
@@ -56,22 +61,24 @@ class AccountDBITest extends Specification {
     def "Update"() {
 
         when:
-        account1.name = "New Account"
-        dbi.update(account1)
-        AccountDO acc = dbi.get(1)
+        AccountDO acc = account2
+        acc.name = "New Account"
+        dbi.update(acc)
+        AccountDO result = dbi.get(acc.id)
 
         then:
-        acc.name == "New Account"
+        result.name == "New Account"
     }
 
     def "Delete"() {
 
         given:
         int originalCount = (dbi.getAll()).size()
+        AccountDO acc = dbi.get(minId)
 
         when:
-        account1.active = false
-        dbi.update(account1)
+        acc.active = false
+        dbi.update(acc)
         int count = (dbi.getAll()).size()
 
         then:

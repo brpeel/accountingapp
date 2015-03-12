@@ -109,8 +109,4 @@ class UserDAOImpl extends ActiveDAOImpl<UserDO> implements UserDAO{
         return !passwordExpiration || passwordExpiration + PASSWORD_DURATRION <= now
     }
 
-    @Override
-    String getUserType(int userid) {
-        return dbi.getUserType(userid)
-    }
 }

@@ -20,22 +20,7 @@ import javax.ws.rs.core.Response
 @Path("api/menu")
 class MenuResource {
 
-    private enum UserType {
-        user,
-        manager,
-        admin
 
-        public static UserType getUserType(String type){
-            type = type?.toLowerCase()
-
-            UserType userType = user
-            if (type == "manager")
-                userType = manager
-            if (type == "admin")
-                userType = admin
-            return userType
-        }
-    }
 
     private class MenuItem {
         @JsonProperty("label")

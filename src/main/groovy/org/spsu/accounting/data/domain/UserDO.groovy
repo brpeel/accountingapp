@@ -28,4 +28,10 @@ public class UserDO extends ActiveBaseDO{
     @JsonIgnore
     boolean locked
 
+    @JsonProperty("roles")
+    HashSet<UserRole> roles = new HashSet<UserRole>()
+
+    public boolean hasRole(UserRole role){
+        return roles && roles.contains(role)
+    }
 }
