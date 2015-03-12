@@ -49,13 +49,15 @@ class MenuResource {
     public getActions(@Context HttpServletRequest request){
 
         int userid = request.getAttribute("userid")
-        dao.
+
+        UserDO user = request.getAttribute("user")
+
         MenuItem[] items = [new MenuItem("Users", "user"), new MenuItem("Accounts", "account"), new MenuItem("Transactions", "transaction"), new MenuItem("Reports", "report")]
         return Response.ok().entity(["menuItems":items, "username":request.getAttribute("username")]).build()
     }
 
 
-    private Map<String, List<MenuItem>> getAllowedMenuItems(){
+    private Map<String, List<MenuItem>> getAllowedMenuItems(UserDO user){
 
     }
 }
