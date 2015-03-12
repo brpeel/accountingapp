@@ -57,7 +57,7 @@ class UserDAOImplTest extends Specification {
         user | ""                      | "Password cannot be empty"
         user | "     "                 | "Password cannot be empty"
         user | "noFirstCapital"        | "Password must start with a capital letter"
-        user | "short"                 | "Password must be at 8 characters long"
+        user | "short"                 | "Password must be at least 8 characters long"
         user | "Nonumbers"             | "Password must contain letters and numbers"
         user | "123123123123123"       | "Password must contain letters and numbers"
         user | "SuperValidPassword123" | "Password cannot match one of the previous 5 passwords"

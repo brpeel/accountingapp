@@ -1,7 +1,5 @@
 package org.spsu.accounting.app
 
-import com.fasterxml.jackson.annotation.JsonIgnore
-import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.databind.util.ISO8601DateFormat
@@ -16,7 +14,6 @@ import io.dropwizard.migrations.MigrationsBundle
 import io.dropwizard.setup.Bootstrap
 import io.dropwizard.setup.Environment
 import org.eclipse.jetty.server.session.SessionHandler
-import org.joda.time.DateTime
 import org.skife.jdbi.v2.DBI
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -34,7 +31,7 @@ import org.spsu.accounting.resource.AccountResource
 import org.spsu.accounting.resource.AuthResource
 import org.spsu.accounting.resource.TransactionResource
 import org.spsu.accounting.resource.base.BaseResource
-import org.spsu.accounting.resource.MainMenuResource
+import org.spsu.accounting.resource.MenuResource
 import org.spsu.accounting.resource.UserResource
 import org.spsu.accounting.utils.mail.MailConfig
 import org.spsu.accounting.utils.mail.MailServer
@@ -106,7 +103,7 @@ class AccountingApplication extends Application<AccountingApplicationConfigurati
     private void registerResources(Environment environment, DBI jdbi){
 
 
-        environment.jersey().register(new MainMenuResource())
+        environment.jersey().register(new MenuResource())
         environment.jersey().register(new AboutResource())
 
 

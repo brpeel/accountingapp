@@ -45,6 +45,7 @@ class SessionFilter implements javax.servlet.Filter{
                 return
             }
             request.setAttribute("userid", user.id)
+            request.setAttribute("username", user.username)
         }
 
         chain.doFilter(servletRequest, response)

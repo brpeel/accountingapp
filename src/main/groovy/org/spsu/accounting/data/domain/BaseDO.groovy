@@ -19,15 +19,7 @@ abstract class BaseDO {
         if (!changes || changes.size() == 0)
             return
 
-        Map classFields = ["":""]
-
-        for(Field f : this.getClass().declaredFields){
-            String name = f.name.toLowerCase()
-            classFields.put(name, name)
-            def annotation = f.getAnnotation(JsonProperty)?.value()
-            if (annotation)
-                classFields.put(annotation.toLowerCase(), f.name)
-        }
+        Map<String, String> classFields = listFieldsForMerge()
 
         for (String field : changes.keySet()){
             field = field.toLowerCase()
@@ -38,12 +30,19 @@ abstract class BaseDO {
 
     }
 
-    public List<String> getFields(Class c = this.getClass()) {
+    public Map<String, String> listFieldsForMerge(Class c = this.getClass()) {
         if (!c)
-            return []
+            return new HashMap<String, String>()
 
-        final List<String> fields = getFields(c.getSuperclass())
-        c.declaredFields.findAll { !it.synthetic }.collect() { it -> fields.push(it.name) }
+        final Map<String,String> fields = listFieldsForMerge(c.getSuperclass())
+
+        c.declaredFields.findAll { !it.synthetic }.collect() { Field f ->
+            String name = f.name.toLowerCase()
+            fields.put(name, name)
+            def annotation = f.getAnnotation(JsonProperty)?.value()
+            if (annotation)
+                fields.put(annotation.toLowerCase(), f.name)
+        }
 
         return fields
     }

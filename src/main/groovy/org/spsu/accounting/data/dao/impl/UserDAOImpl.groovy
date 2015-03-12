@@ -84,7 +84,7 @@ class UserDAOImpl extends ActiveDAOImpl<UserDO> implements UserDAO{
             throw new Exception("Password cannot be empty")
 
         if (password.length() < 8)
-            throw new Exception("Password must be at 8 characters long")
+            throw new Exception("Password must be at least 8 characters long")
 
         int firstLetter = password.charAt(0)
         if (firstLetter > 97 && firstLetter < 122)
@@ -107,5 +107,10 @@ class UserDAOImpl extends ActiveDAOImpl<UserDO> implements UserDAO{
         long passwordExpiration = dbi.getPasswordSet(user.id)?.time ?: 0
         long now = System.currentTimeMillis()
         return !passwordExpiration || passwordExpiration + PASSWORD_DURATRION <= now
+    }
+
+    @Override
+    String getUserType(int userid) {
+        return dbi.getUserType(userid)
     }
 }

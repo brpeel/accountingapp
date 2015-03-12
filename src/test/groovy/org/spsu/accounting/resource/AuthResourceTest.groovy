@@ -67,12 +67,9 @@ class AuthResourceTest extends Specification {
 
         when:
         Response response = resource.authenticate(request)
-
         then:
         response.status == Response.Status.UNAUTHORIZED.statusCode
-        response.entity?.locked == true
     }
-
 
     def "Authenticate - invalid user name or password"() {
         given:
@@ -85,4 +82,5 @@ class AuthResourceTest extends Specification {
         response.status == Response.Status.UNAUTHORIZED.statusCode
 
     }
+
 }

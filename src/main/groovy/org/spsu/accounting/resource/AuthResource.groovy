@@ -36,7 +36,7 @@ class AuthResource {
         }
     }
 
-    Logger logger = LoggerFactory.getLogger(AuthResource)
+    static Logger logger = LoggerFactory.getLogger(AuthResource)
 
     private final UserDAO dao;
 
@@ -59,17 +59,17 @@ class AuthResource {
     public Response authenticate(Map req) {
         UserDO user = dao.checkLogin(req.username, req.password)
         if (!user)
-            return Response.status(Response.Status.UNAUTHORIZED).build()
+            return Response.status(Response.Status.UNAUTHORIZED).entity("Invalid username and/or password. Please verify your logon credentials.").build()
 
         if (user.loginAttempts >= 3)
-            return Response.status(Response.Status.UNAUTHORIZED).entity(["locked":true]).build()
+            return Response.status(Response.Status.UNAUTHORIZED).entity("Your account has been locked. Please Contact your administrator.").build()
 
-        boolean passwordExpired = dao.isPasswordExpired(user)//
+        boolean passwordExpired = dao.isPasswordExpired(user)
         boolean resetOnLogon = user.resetOnLogon
 
         String token =  dao.createSession(user);
-        MenuItem[] items = [new MenuItem("Users", "user"), new MenuItem("Accounts", "accounts"), new MenuItem("Transactions", "transactions"), new MenuItem("Reports", "reports")]
-        Map data = ["token":token, "reset_on_logon":resetOnLogon, "password_expired":passwordExpired, "menuItems":items]
+        //MenuItem[] items = [new MenuItem("Users", "user"), new MenuItem("Accounts", "accounts"), new MenuItem("Transactions", "transactions"), new MenuItem("Reports", "reports")]
+        Map data = ["token":token, "username":user.username, "reset_on_logon":resetOnLogon, "password_expired":passwordExpired]
 
         return Response.ok(data).build();
     }

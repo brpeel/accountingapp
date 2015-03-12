@@ -7,8 +7,9 @@
     <!-- Styles -->
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" />
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.0/css/font-awesome.css" />
-    <link rel="stylesheet" href="//twitter-bootstrap/twitter-bootstrap-v2/docs/assets/css/bootstrap.css">
-    <link rel="stylesheet" href="ui/libs/ui-grid.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="ui/libs/ui-grid.min.css"/>
 
     <link rel="stylesheet" href="ui/app.css" />
 
@@ -46,6 +47,7 @@
         <ul class="nav navbar-nav navbar-right">
             <li><a href="#"><i class="fa fa-home"></i> Home</a></li>
             <li><a href="#about"><i class="fa fa-shield"></i> About</a></li>
+            <li ng-show="username"><a href="#user"><i class="fa fa-user"></i> {{username}}</a></li>
             <li><a href="#logout"><i class="fa fa-log-out"></i> Logout</a></li>
         </ul>
     </div>

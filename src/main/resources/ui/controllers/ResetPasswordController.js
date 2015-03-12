@@ -9,6 +9,7 @@ function ResetPasswordController($rootScope, $scope, $http, $window, $location) 
         var password = $scope.password;
         $http.post('api/user/setpassword',{password:password})
             .success(function(data, status, headers, config){
+                    $rootScope.errormessage = null;
                     $location.path("/")
             })
             .

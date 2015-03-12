@@ -1,4 +1,7 @@
 <modal title="Login form" visible="showLogon" class="col-md-6">
+    <div class="alert alert-danger" ng-show="errormessage">
+        <strong>Error!</strong> {{errormessage}}
+    </div>
     <form role="logonForm">
         <div class="form-group">
             <label for="userId">Username</label>
@@ -7,9 +10,6 @@
         <div class="form-group">
             <label for="password">Password</label>
             <input type="password" ng-model="password" class="form-control" name="password" id="password" placeholder="Password" />
-        </div>
-        <div class="form-group" ng-show="showInvalid">
-            <label class="error">Invalid username and/or password. Please verify your logon credentials</label>
         </div>
         <button class="btn btn-default" ng-click="logon()">Submit</button>
         <div class="form-group">

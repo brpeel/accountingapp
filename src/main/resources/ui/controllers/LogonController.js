@@ -3,18 +3,14 @@ function LogonController($rootScope, $scope, $http, $window, $location) {
 
     var self = this;
 
-    $rootScope.menuItems = [];
+    $rootScope.errormessage = null;
+    $rootScope.menuItems = null;
 
     $scope.user = {};
-    $scope.showInvalid = false;
 
     $scope.setToken = function(token){
         $window.sessionStorage.token = token
         $rootScope.showLogon = false
-    };
-
-    $scope.setMenuItems = function(items){
-        $scope.menuItems = items;
     };
 
     $scope.logon = function(){
@@ -32,7 +28,8 @@ function LogonController($rootScope, $scope, $http, $window, $location) {
         $http.post('auth/authenticate',userIn)
             .success(function(data, status, headers, config){
 
-               // scope.user.username = userIn.username;
+                $rootScope.errormessage = null;
+                $rootScope.username = data.username;
                 $scope.user.header = btoa(userIn.username + ':' + userIn.password);
                 $scope.setToken(data.token);
 
@@ -40,14 +37,12 @@ function LogonController($rootScope, $scope, $http, $window, $location) {
                     $location.path("/resetpassword")
                 else
                     $location.path("/")
-
             })
             .
             error(function(data, status, headers, config) {
-                console.log(JSON.stringify(data))
-                $scope.showInvalid = true
-                $scope.setToken(null)
-                $scope.setMenuItems(null);
+
+                $scope.setToken(null);
+                $rootScope.errormessage = data;
             });
     };
 
@@ -64,30 +59,10 @@ function LogonController($rootScope, $scope, $http, $window, $location) {
             })
             .
             error(function(data, status, headers, config) {
-                console.log(JSON.stringify(data))
+
                 alert("Could not send password reset email");
+                $rootScope.errormessage = data
             });
     }
 };
 
-/*
-*
-* var userIn = {
- username : username,
- password : password
- }
- var that = this;
- $http.post('./login', userIn).success(function(data) {
- if (data.success === true) {
- that.user.username = userIn.username;
- that.user.header = btoa(userIn.username + ':' + userIn.password);
- ctrl.errorMessage = '';
- that.storeToSession();
- } else {
- // show error and logout user
-}
-}).error(function(arg) {
-    // show error and logout user //
-});
-*
-* */

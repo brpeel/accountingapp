@@ -1,7 +1,6 @@
 package org.spsu.accounting.resource.base
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import io.dropwizard.jersey.PATCH
 import io.dropwizard.setup.Environment
 import org.skife.jdbi.v2.DBI
 import org.slf4j.Logger
@@ -9,18 +8,13 @@ import org.slf4j.LoggerFactory
 import org.spsu.accounting.data.dao.ActiveDAO
 import org.spsu.accounting.data.dao.DAO
 import org.spsu.accounting.data.domain.BaseDO
-import org.spsu.accounting.data.domain.TransactionDO
-import sun.security.provider.certpath.OCSPResponse
 
 import javax.servlet.http.HttpServletRequest
 import javax.ws.rs.GET
-import javax.ws.rs.POST
-import javax.ws.rs.PUT
 import javax.ws.rs.Path
 import javax.ws.rs.PathParam
 import javax.ws.rs.Produces
 import javax.ws.rs.WebApplicationException
-import javax.ws.rs.core.Context
 import javax.ws.rs.core.MediaType
 /**
  * Created by bpeel on 1/28/15.
@@ -227,7 +221,7 @@ abstract class BaseResource<T extends DAO<BaseDO>> {
             return doObj
 
         final Map fieldMap = [:]
-        doObj.getFields().each() { it -> fieldMap.put(it.toLowerCase(),it)}
+        doObj.' listFields'().each() { it -> fieldMap.put(it.toLowerCase(),it)}
 
         final Map normalizedKeys = [:]
         values.each {String key, Object value ->

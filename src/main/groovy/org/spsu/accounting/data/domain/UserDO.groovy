@@ -24,4 +24,8 @@ public class UserDO extends ActiveBaseDO{
     @JsonIgnore
     boolean resetOnLogon
 
+
+    @JsonIgnore
+    boolean locked
+
 }

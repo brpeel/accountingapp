@@ -1,6 +1,8 @@
 package org.spsu.accounting.data.domain
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.annotation.JsonPropertyOrder
 import com.fasterxml.jackson.annotation.JsonSetter
 import io.dropwizard.validation.ValidationMethod
 import org.joda.time.DateTime
@@ -36,16 +38,12 @@ public class AccountDO extends ActiveBaseDO{
     }
 
     @ValidationMethod(message="normal side must be either debit or credit")
+    @JsonIgnore
     public boolean isValidSide(){
         return normalSide in ["debit","credit"]
     }
 
     @JsonSetter("normal_side")
-    public void setNormal_Side(String normal_side){
-        this.setNormalSide(normal_side)
-    }
-
-    @JsonSetter("normalSide")
     public void setNormalSide(String normalSide){
         this.normalSide = normalSide.toLowerCase()
     }

@@ -1,4 +1,6 @@
-﻿drop table if exists accounting_trans_document cascade;
+﻿DROP INDEX IF EXISTS username_uidx CASCADE;
+
+drop table if exists accounting_trans_document cascade;
 drop table if exists accounting_trans cascade;
 drop table if exists trans_log cascade;
 drop table if exists user_type cascade;
@@ -108,12 +110,13 @@ CREATE TABLE accounting_user
   ,first_name VARCHAR(50) NOT NULL
   ,last_name VARCHAR(50) NOT NULL
   ,active BOOLEAN NOT NULL DEFAULT true
-  ,locked BOOLEAN NOT NULL DEFAULT false
   ,email VARCHAR(250) NOT NULL
   ,login_attempts SMALLINT NOT NULL DEFAULT 0
   ,reset_on_logon BOOLEAN NOT NULL DEFAULT true
   ,CONSTRAINT PK_User_id PRIMARY KEY (id)
 );
+
+CREATE UNIQUE INDEX username_uidx ON accounting_user (username);
 
 CREATE TABLE user_password
 (
@@ -128,11 +131,11 @@ CREATE TABLE user_password
 CREATE TABLE user_membership
 (
    user_id INTEGER NOT NULL
-  ,user_type_id INTEGER NOT NULL
-  ,membership_start TIMESTAMP  NULL
+  ,user_type_id VARCHAR(10) NOT NULL
+  ,membership_start TIMESTAMP  NULL DEFAULT NOW()
   ,membership_end TIMESTAMP  NULL
   ,added_by INTEGER NOT NULL
-  ,added TIMESTAMP NOT NULL
+  ,added TIMESTAMP NOT NULL DEFAULT NOW()
   ,CONSTRAINT PK_User_Membership PRIMARY KEY (user_id, user_type_id)
 );
 
@@ -142,10 +145,9 @@ CREATE TABLE user_membership
 --------------------------------------------------------------------------------
 CREATE TABLE user_type
 (
-   id SERIAL NOT NULL
-  ,type VARCHAR(10) NOT NULL
+   type VARCHAR(10) NOT NULL
   ,description VARCHAR(250) NOT NULL
-  ,CONSTRAINT PK_User_Type_id PRIMARY KEY (id)
+  ,CONSTRAINT PK_User_Type_type PRIMARY KEY (type)
 );
 
 -- Create Table: trans_log
@@ -191,7 +193,7 @@ ALTER TABLE accounting_trans_entry ADD CONSTRAINT FK_accounting_trans_entry_acco
 
 
 -- Create Foreign Key: User_Membership.user_type_id -> User_Type.id
-ALTER TABLE User_Membership ADD CONSTRAINT FK_User_Membership_user_type_id_User_Type_id FOREIGN KEY (user_type_id) REFERENCES User_Type(id);
+ALTER TABLE User_Membership ADD CONSTRAINT FK_User_Membership_user_type FOREIGN KEY (user_type_id) REFERENCES User_Type(type);
 
 
 -- Create Foreign Key: User_Membership.user_id -> User.id
@@ -240,24 +242,46 @@ ALTER TABLE token ADD CONSTRAINT FK_token_user_id FOREIGN KEY (user_id) REFERENC
 -- Create Foreign Key: user_password.userid -> User.id
 ALTER TABLE user_password ADD CONSTRAINT FK_User_Password_User_id FOREIGN KEY (user_id) REFERENCES Accounting_User(id);
 
+grant all privileges on schema public to accounting_user;
+
+GRANT SELECT ON ALL TABLES IN SCHEMA public TO accounting_user;
+GRANT UPDATE ON ALL TABLES IN SCHEMA public TO accounting_user;
+GRANT INSERT ON ALL TABLES IN SCHEMA public TO accounting_user;
+GRANT DELETE ON ALL TABLES IN SCHEMA public TO accounting_user;
+GRANT EXECUTE ON ALL FUNCTIONS IN SCHEMA public TO accounting_user;
+
+GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO accounting_user;
 
 
-insert into accounting_user (username, first_name, last_name, email)
-values ('brpeel', 'Brett', 'Peel', 'bpeel56@gmail.com');
+insert into user_type (type, description)  values ('admin', 'Administrator user');
+insert into user_type (type, description)  values ('manager', 'Manager user');
+insert into user_type (type, description)  values ('user', 'Ordinary user');
 
-insert into accounting_user (username, first_name, last_name, email)
-    values ('emamo', 'Ermais', 'Mamo', 'emamo@spsu.edu');
+insert into accounting_user (username, first_name, last_name, email) values ('brpeela', 'Brett', 'Peel', 'bpeel56@gmail.com');
+insert into accounting_user (username, first_name, last_name, email) values ('brpeelm', 'Brett', 'Peel', 'bpeel56@gmail.com');
+insert into accounting_user (username, first_name, last_name, email) values ('brpeel', 'Brett', 'Peel', 'bpeel56@gmail.com');
+
+insert into accounting_user (username, first_name, last_name, email) values ('emamoa', 'Ermais', 'Mamo', 'emamo@spsu.edu');
+insert into accounting_user (username, first_name, last_name, email) values ('emamom', 'Ermais', 'Mamo', 'emamo@spsu.edu');
+insert into accounting_user (username, first_name, last_name, email) values ('emamo', 'Ermais', 'Mamo', 'emamo@spsu.edu');
+
+insert into user_membership (user_id, user_type_id, added_by)
+  select id, 'admin', (select id from accounting_user where username = 'brpeela')
+  from accounting_user
+  where substring(reverse(username),1,1) ='a';
+
+insert into user_membership (user_id, user_type_id, added_by)
+  select id, 'manager', (select id from accounting_user where username = 'brpeela')
+  from accounting_user
+  where substring(reverse(username), 1, 1) ='m';
+
+insert into user_membership (user_id, user_type_id, added_by)
+  select id, 'user', (select id from accounting_user where username = 'brpeela')
+  from accounting_user
+  where substring(reverse(username), 1, 1) not in ('a','m');
 
 insert into user_password (user_id, password)
-  select id, '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8' from accounting_user where username = 'brpeel';
+  select id, '008c70392e3abfbd0fa47bbc2ed96aa99bd49e159727fcba0f2e6abeb3a9d601' from accounting_user;
 
-insert into user_password (user_id, password)
-    select id, '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8' from accounting_user where username = 'emamo' ;
-
-insert into accounting_trans (reported_by, approved_by, reported, approved, status, description)
-  select id, null, now(), NULL, 'Reported', 'Paid Wages'
-  from accounting_user where username = 'brpeel';
-
-insert into accounting_trans (reported_by, approved_by, reported, approved, status, description)
-  select id, null, now(), NULL, 'Reported', 'Owner Invested $10,000'
-  from accounting_user where username = 'brpeel';
+insert into account (name, initial_balance, normal_side, added, active, added_by, subcategory)
+    select 'Service Revenue', 0.00, 'Credit', now(), true, id, 'Revenue' from accounting_user where username = 'brpeela';

@@ -6,7 +6,7 @@
 	accountingApp.config(function($routeProvider) {
 		$routeProvider
 
-			// route for the home page
+			// User and Auth
 			.when('/logon', {
 				templateUrl : 'ui/templates/logon.html',
 				controller  : 'LogonController'
@@ -19,16 +19,8 @@
                 templateUrl : 'ui/templates/resetPassword.html',
                 controller  : 'ResetPasswordController'
             })
-            .when('/', {
-                templateUrl : 'ui/templates/home.html',
-                controller  : 'HomeController'
-            })
 
-			// route for the about page
-			.when('/about', {
-				templateUrl : 'ui/templates/about.html',
-				controller  : 'aboutController'
-			})
+            //Transactions
             .when('/transaction', {
                 templateUrl : 'ui/templates/transactions.html',
                 controller  : 'transactionController'
@@ -37,6 +29,8 @@
                 templateUrl : 'ui/templates/createTransactions.html',
                 controller  : 'createTransController'
             })
+
+            //Accounts
             .when('/account', {
                 templateUrl : 'ui/templates/chartofaccounts.html',
                 controller  : 'chartOfAccountsController'
@@ -45,6 +39,19 @@
                 templateUrl : 'ui/templates/createAccount.html',
                 controller  : 'createAccountController'
             })
+
+            // route for the about page
+            .when('/about', {
+                templateUrl : 'ui/templates/about.html',
+                controller  : 'aboutController'
+            })
+            .when('/', {
+                templateUrl : 'ui/templates/home.html',
+                controller  : 'HomeController'
+            })
+            .otherwise({
+                redirectTo: '/'
+            });
 	}).run( function($rootScope, $location, $window) {
 
         // register listener to watch route changes
@@ -72,6 +79,8 @@
     accountingApp.controller('LogOutController', function($rootScope, $scope, $http,  $window, $location) {
         // create a message to display in our view
         console.log("clearing session")
+        $rootScope.menuItems = []
+        $rootScope.username = null
         $window.sessionStorage.clear()
 
         $http.post('auth/logout',null)
