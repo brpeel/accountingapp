@@ -5,7 +5,9 @@ import io.dropwizard.auth.Auth
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.spsu.accounting.data.dao.UserDAO
+import org.spsu.accounting.data.domain.PermissionSet
 import org.spsu.accounting.data.domain.UserDO
+import org.spsu.accounting.data.domain.UserRole
 
 import javax.servlet.http.HttpServletRequest
 import javax.ws.rs.GET
@@ -68,7 +70,8 @@ class AuthResource {
         boolean resetOnLogon = user.resetOnLogon
 
         String token =  dao.createSession(user);
-        //MenuItem[] items = [new MenuItem("Users", "user"), new MenuItem("Accounts", "accounts"), new MenuItem("Transactions", "transactions"), new MenuItem("Reports", "reports")]
+
+
         Map data = ["token":token, "username":user.username, "reset_on_logon":resetOnLogon, "password_expired":passwordExpired]
 
         return Response.ok(data).build();

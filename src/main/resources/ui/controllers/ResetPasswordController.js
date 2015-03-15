@@ -2,6 +2,7 @@
 function ResetPasswordController($rootScope, $scope, $http, $window, $location) {
 
     $rootScope.menuItems = [];
+    $rootScope.permissions = [];
     $rootScope.errormessage = null;
 
     $scope.reset = function(){

@@ -8,6 +8,7 @@ import org.spsu.accounting.data.dao.impl.DAOImpl
 import org.spsu.accounting.data.dbi.AccountDBI
 import org.spsu.accounting.data.domain.AccountDO
 import org.spsu.accounting.resource.base.BaseResource
+import org.spsu.accounting.resource.base.DeletableResource
 
 import javax.servlet.http.HttpServletRequest
 import javax.ws.rs.GET
@@ -23,7 +24,7 @@ import javax.ws.rs.core.Response
  * Created by bpeel on 12/19/14.
  */
 @Path("api/account")
-public class AccountResource extends BaseResource<ActiveDAO<AccountDO>>{
+public class AccountResource extends BaseResource<ActiveDAO<AccountDO>> {
 
     @Override
     protected ActiveDAO<AccountDO> createDAO(DBI jdbi) {

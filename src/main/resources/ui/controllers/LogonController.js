@@ -5,6 +5,7 @@ function LogonController($rootScope, $scope, $http, $window, $location) {
 
     $rootScope.errormessage = null;
     $rootScope.menuItems = null;
+    $rootScope.permissions = null;
 
     $scope.user = {};
 
@@ -30,6 +31,8 @@ function LogonController($rootScope, $scope, $http, $window, $location) {
 
                 $rootScope.errormessage = null;
                 $rootScope.username = data.username;
+                $rootScope.permissions = data.permissions;
+                $rootScope.menuItems = data.mainMenu;
                 $scope.user.header = btoa(userIn.username + ':' + userIn.password);
                 $scope.setToken(data.token);
 

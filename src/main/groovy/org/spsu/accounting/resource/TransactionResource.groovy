@@ -25,7 +25,7 @@ import javax.ws.rs.core.Response
  * Created by bpeel on 2/24/15.
  */
 @Path("api/transaction")
-class TransactionResource extends BaseResource<DAO> {
+class TransactionResource extends BaseResource<DAO<TransactionDO>> {
     DAO<AccountDO> accountDAO
     @Override
     protected DAO createDAO(DBI jdbi) {
@@ -44,14 +44,15 @@ class TransactionResource extends BaseResource<DAO> {
 
         return postObject(transactionDO)
     }
-
+/*
     @GET
     @Path("/options")
     @Produces(MediaType.APPLICATION_JSON)
-    Response getAll(){
+    Response options(){
         List<AccountDO> accounts = accountDAO.all()
         def options = ["accounts":accounts]
 
         return  Response.ok(options).build();
     }
+    */
 }

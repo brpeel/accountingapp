@@ -1,19 +1,16 @@
 package org.spsu.accounting.resource.base
 
-import io.dropwizard.jersey.PATCH
 import org.spsu.accounting.data.dao.ActiveDAO
+import org.spsu.accounting.data.domain.BaseDO
 
-import javax.ws.rs.DELETE
-import javax.ws.rs.PathParam
-import javax.ws.rs.Produces
-import javax.ws.rs.WebApplicationException
+import javax.ws.rs.*
 import javax.ws.rs.core.MediaType
 import javax.ws.rs.core.Response
 
 /**
  * Created by brettpeel on 2/8/15.
  */
-abstract class DeletableResource extends BaseResource {
+abstract class DeletableResource<T extends ActiveDAO<BaseDO>> extends BaseResource<T> {
 
     @DELETE
     Response delete(@PathParam("id") Object id){
@@ -28,5 +25,6 @@ abstract class DeletableResource extends BaseResource {
             throw new WebApplicationException(e, Response.Status.INTERNAL_SERVER_ERROR)
         }
     }
+
 
 }

@@ -51,5 +51,12 @@ class UserResource extends BaseResource<UserDAO> {
         }
     }
 
+    @GET
+    @Path("/all/{allowInactive}")
+    @Produces(MediaType.APPLICATION_JSON)
+    Response getAll(@PathParam("allowInactive") boolean allowInactive){
+        List all = getAllObjects(allowInactive)
+        return Response.ok(all).build();
+    }
 
 }

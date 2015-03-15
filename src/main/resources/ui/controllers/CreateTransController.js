@@ -4,13 +4,13 @@ function CreateTransController($rootScope, $scope, $http, $window, $location) {
     var self = this;
 
     $scope.selectedAccount = null;
-    $scope.accounts = [];
+    $rootScope.accounts = [];
 
     $scope.fetchOptions = function() {
 
-        $http.get('/api/transaction/options').success(function(data){
+        $http.get('/api/account/all').success(function(data){
             console.log(JSON.stringify(data))
-            $scope.accounts = data.accounts;
+            $rootScope.accounts = data;
         });
     };
 

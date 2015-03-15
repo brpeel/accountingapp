@@ -19,10 +19,13 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.spsu.accounting.auth.AccountingAuthenticator
 import org.spsu.accounting.auth.SessionFilter
+import org.spsu.accounting.data.dao.PermissionDAO
 import org.spsu.accounting.data.dao.UserDAO
+import org.spsu.accounting.data.dao.impl.PermissionDAOImpl
 import org.spsu.accounting.data.dao.impl.StartDAO
 import org.spsu.accounting.data.dao.impl.UserDAOImpl
 import org.spsu.accounting.data.dbi.HealthCheckDBI
+import org.spsu.accounting.data.dbi.PermissionDBI
 import org.spsu.accounting.data.dbi.StartDBI
 import org.spsu.accounting.data.dbi.UserDBI
 import org.spsu.accounting.data.domain.UserDO
@@ -79,7 +82,8 @@ class AccountingApplication extends Application<AccountingApplicationConfigurati
         mailServer = new MailServerImpl(mailConfig)
 
         //registerHealthChecks(configuration, environment, jdbi)
-
+        PermissionDAO permissionDAO = new PermissionDAOImpl(dbi:jdbi.onDemand(PermissionDBI))
+        permissionDAO.loadPermissions()
         registerResources(environment, jdbi)
 
         if (mailConfig.notifyStart)

@@ -1,19 +1,23 @@
 package org.spsu.accounting.data.mapper
 
+import org.postgresql.jdbc4.Jdbc4Array
 import org.spsu.accounting.data.domain.UserDO
 import org.spsu.accounting.data.domain.UserRole
 
 public class UserDOMapper extends BaseMapper<UserDO>{
 
     @Override
-    protected Map convertInputs(Map data, Map rawData) {
-        final HashSet<UserRole> roles = new HashSet<>()
+    protected Map convertInputs(Map data) {
 
-        rawData.roles?.each { String role ->
-            roles.add(UserRole.determineRole(role))
+        Jdbc4Array usersRoles = data.roles
+        if (usersRoles) {
+            final HashSet<UserRole> roles = new HashSet<>()
+
+            usersRoles.array.each { String role ->
+                roles.add(UserRole.determineRole(role))
+            }
+            data.roles = roles
         }
-
-        data.roles = roles
         return data
     }
 }

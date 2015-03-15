@@ -21,7 +21,7 @@
             })
 
             //Transactions
-            .when('/transaction', {
+            .when('/transactions', {
                 templateUrl : 'ui/templates/transactions.html',
                 controller  : 'transactionController'
             })
@@ -31,7 +31,7 @@
             })
 
             //Accounts
-            .when('/account', {
+            .when('/accounts', {
                 templateUrl : 'ui/templates/chartofaccounts.html',
                 controller  : 'chartOfAccountsController'
             })

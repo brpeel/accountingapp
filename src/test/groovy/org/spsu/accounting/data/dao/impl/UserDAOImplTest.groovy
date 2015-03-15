@@ -1,5 +1,6 @@
 package org.spsu.accounting.data.dao.impl
 
+import org.spsu.accounting.data.DBConnection
 import org.spsu.accounting.data.dbi.UserDBI
 import org.spsu.accounting.data.domain.UserDO
 import org.spsu.accounting.utils.mail.MailServer
@@ -103,4 +104,17 @@ class UserDAOImplTest extends Specification {
         "Null time"   | new UserDO(id: 1) | null                                      | true
 
     }
+/*
+    def "Test GetAll"(){
+
+        given:
+        UserDBI dbi = DBConnection.onDemand(UserDBI)
+
+        when:
+        List<UserDO> users = dbi.getAll()
+
+        then:
+        users.size() > 0
+    }
+    */
 }

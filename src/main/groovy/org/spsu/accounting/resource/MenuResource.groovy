@@ -4,7 +4,9 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.spsu.accounting.data.dao.UserDAO
+import org.spsu.accounting.data.domain.PermissionSet
 import org.spsu.accounting.data.domain.UserDO
+import org.spsu.accounting.data.domain.UserRole
 
 import javax.servlet.http.HttpServletRequest
 import javax.ws.rs.GET
@@ -19,8 +21,6 @@ import javax.ws.rs.core.Response
  */
 @Path("api/menu")
 class MenuResource {
-
-
 
     private class MenuItem {
         @JsonProperty("label")
@@ -43,6 +43,10 @@ class MenuResource {
 
     private final UserDAO dao;
 
+    public static final Set<MenuItem> UserActions = []
+    public static final Set<MenuItem> ManagerActions = []
+    public static final Set<MenuItem> AdminActions = []
+
     @GET
     @Path("actions")
     @Produces(MediaType.APPLICATION_JSON)
@@ -52,12 +56,15 @@ class MenuResource {
 
         UserDO user = request.getAttribute("user")
 
-        MenuItem[] items = [new MenuItem("Users", "user"), new MenuItem("Accounts", "account"), new MenuItem("Transactions", "transaction"), new MenuItem("Reports", "report")]
-        return Response.ok().entity(["menuItems":items, "username":request.getAttribute("username")]).build()
+        UserRole maxRole = user.maxRole()
+        Set permissions = PermissionSet.getPermissions(maxRole)
+        Set mainMenu = PermissionSet.getPermissionsByGroup(maxRole)."MainMenu"
+
+        return Response.ok().entity(["menuItems":mainMenu, "permissions":permissions, "username":request.getAttribute("username")]).build()
     }
 
 
-    private Map<String, List<MenuItem>> getAllowedMenuItems(UserDO user){
+    protected Map<String, List<MenuItem>> getAllowedMenuItems(UserDO user){
 
     }
 }

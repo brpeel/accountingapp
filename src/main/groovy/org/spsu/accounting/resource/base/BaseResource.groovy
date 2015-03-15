@@ -54,21 +54,12 @@ abstract class BaseResource<T extends DAO<BaseDO>> {
     }
 
     @GET
-    @Path("/all/{allowInactive}")
-    @Produces(MediaType.APPLICATION_JSON)
-    Response getAll(@PathParam("allowInactive") boolean allowInactive){
-        List all = getAllObjects(allowInactive)
-        return Response.ok(all).build();
-    }
-
-    @GET
     @Path("/all")
     @Produces(MediaType.APPLICATION_JSON)
     Response getAll(){
         List all = getAllObjects(false)
         return Response.ok(all).build();
     }
-
 
     //UNLYING IMPLEMENTATIONS
     protected def getObjectById(id) {
