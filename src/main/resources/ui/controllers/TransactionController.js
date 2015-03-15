@@ -1,6 +1,18 @@
 'use strict';
 
-var TransactionController = function( $scope, $http) {
+var TransactionController = function($rootScope, $scope, $http, $window, $location) {
+
+
+    $scope.createLabel = null;
+    $scope.createIcon = null;
+    var permissions = $rootScope.permissions;
+    for (var i in permissions){
+        var p = permissions[i]
+        if (p.permission == "createTrans"){
+            $scope.createLabel = p.label
+            $scope.createIcon = p.style
+        }
+    };
 
     $scope.fetchTrans = function() {
 

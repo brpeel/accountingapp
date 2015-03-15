@@ -105,8 +105,8 @@
 
 	});
 
-    accountingApp.controller('transactionController', function($scope, $http) {
-        var controller = new TransactionController($scope, $http)
+    accountingApp.controller('transactionController', function($rootScope, $scope, $http, $window, $location) {
+        var controller = new TransactionController($rootScope, $scope, $http,  $window, $location)
 
     });
 

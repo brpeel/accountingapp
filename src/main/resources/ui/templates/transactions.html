@@ -1,5 +1,6 @@
 
     <!--div class="gridStyle" ng-grid="transGrid"></div -->
-    <a href="#createTrans">Create Transaction</a>
+
+    <a href="#createTrans" ng-show="createLabel"><i  class="{{createIcon}}">{{createLabel}}</i></a>
 
     <div id="grid1" ui-grid="{ data: myData }" class="grid"></div>
