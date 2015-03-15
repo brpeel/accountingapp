@@ -107,7 +107,7 @@ class AccountingApplication extends Application<AccountingApplicationConfigurati
     private void registerResources(Environment environment, DBI jdbi){
 
 
-        environment.jersey().register(new MenuResource())
+        environment.jersey().register(new MenuResource(dao: new UserDAOImpl<UserDO>(dbi: jdbi.onDemand(UserDBI))))
         environment.jersey().register(new AboutResource())
 
 

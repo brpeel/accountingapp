@@ -115,8 +115,8 @@
         var controller = new CreateTransController($rootScope, $scope, $http,  $window, $location)
     });
 
-    accountingApp.controller('chartOfAccountsController', function($scope, $http) {
-        var controller = new ChartOfAccountsController($scope, $http)
+    accountingApp.controller('chartOfAccountsController', function($rootScope, $scope, $http, $window, $location) {
+        var controller = new ChartOfAccountsController($rootScope, $scope, $http, $window, $location)
 
     });
 

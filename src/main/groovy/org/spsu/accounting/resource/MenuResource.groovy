@@ -22,30 +22,9 @@ import javax.ws.rs.core.Response
 @Path("api/menu")
 class MenuResource {
 
-    private class MenuItem {
-        @JsonProperty("label")
-        String label
-
-        @JsonProperty("action")
-        String action
-
-        @JsonProperty("icon")
-        String icon
-
-        public MenuItem(String label, String action, String icon){
-            this.label = label
-            this.action = action
-            this.icon = icon
-        }
-    }
-
     static Logger logger = LoggerFactory.getLogger(AuthResource)
 
-    private final UserDAO dao;
-
-    public static final Set<MenuItem> UserActions = []
-    public static final Set<MenuItem> ManagerActions = []
-    public static final Set<MenuItem> AdminActions = []
+    private UserDAO dao;
 
     @GET
     @Path("actions")
@@ -54,7 +33,7 @@ class MenuResource {
 
         int userid = request.getAttribute("userid")
 
-        UserDO user = request.getAttribute("user")
+        UserDO user = dao.get(userid)
 
         UserRole maxRole = user.maxRole()
         Set permissions = PermissionSet.getPermissions(maxRole)
@@ -63,8 +42,4 @@ class MenuResource {
         return Response.ok().entity(["menuItems":mainMenu, "permissions":permissions, "username":request.getAttribute("username")]).build()
     }
 
-
-    protected Map<String, List<MenuItem>> getAllowedMenuItems(UserDO user){
-
-    }
 }

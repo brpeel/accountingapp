@@ -1,6 +1,7 @@
 'use strict';
 var MenuController = function($rootScope, $scope, $http, $window, $location) {
     $rootScope.menuItems = []
+    $rootScope.permissions = []
     $scope.fetchMenu = function () {
 
         console.log('Fetch Menu Items');
@@ -8,7 +9,8 @@ var MenuController = function($rootScope, $scope, $http, $window, $location) {
             .success(function (data, status, headers, config) {
                 console.log(data)
                 var items = data.menuItems.sort(comparePermissions);
-                console.log(items)
+                $rootScope.permissions = data.permissions
+
                 $rootScope.menuItems = items;
                 $rootScope.username = data.username;
             });
