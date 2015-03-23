@@ -41,33 +41,13 @@ class TransactionDAOImpl extends DAOImpl<TransactionDO> implements TransactionDA
 
         List<String> conditions = []
 
-        if (startRange != null)
-            conditions.add("reported >= ${new Timestamp(startRange.millis)}")
+        id = (id != null && id.trim().length() > 0 ? "%$id%" : null)
+        keyword = (keyword != null && keyword.trim().length() > 0 ? "%$keyword%" : null)
 
-        if (endRange != null)
-            conditions.add("reported <= ${new Timestamp(endRange.millis)}")
+        Timestamp start = (!startRange ? null : new Timestamp(startRange.millis))
+        Timestamp end = (!endRange ? null : new Timestamp(endRange.millis))
 
-        if (id != null && id.trim().length() > 0) {
-            id = "%$id%"
-            conditions.add("cast(id as varchar) like :id")
-        }
-        else {
-            id = null
-            conditions.add(":id is null")
-        }
-
-        if (keyword != null && keyword.trim().length() > 0) {
-            keyword = "%$keyword%"
-            conditions.add("lower(description) like :keyword")
-        }
-        else {
-            keyword = null
-            conditions.add(":keyword is null")
-        }
-
-        String whereClause = conditions.join(" and ")
-        logger.info("searching for transactions using $whereClause")
-        return dbi.search(whereClause, id, keyword)
+        return dbi.search(id, keyword, start, end)
 
     }
 

@@ -63,4 +63,9 @@ class DBConnection {
         def rows = h.select(sql)
         return rows[0]?."$field"
     }
+
+    static void execute(String sql){
+        Handle h = dbi.open()
+        h.execute(sql)
+    }
 }

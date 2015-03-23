@@ -1,6 +1,7 @@
 package org.spsu.accounting.data.dao.impl
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import org.joda.time.DateTime
 import org.spsu.accounting.data.DBConnection
 import org.spsu.accounting.data.dbi.DocumentDBI
 import org.spsu.accounting.data.dbi.TransactionDBI
@@ -13,6 +14,7 @@ import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Unroll
 
+import javax.print.attribute.standard.DateTimeAtCompleted
 import javax.validation.Validation
 import javax.validation.ValidatorFactory
 
@@ -36,6 +38,20 @@ class TransactionDAOImplTest extends Specification {
         //stubbedDBI = DBConnection.onDemand(TransactionDBI)
     }
 
+    TransactionDO newTrans(Integer id){
+        TransactionDO transaction
+        if (id)
+            transaction = new TransactionDO(id: id, reportedBy: 1, description: "Test transaction")
+        else
+            transaction = new TransactionDO(reportedBy: 1, description: "Test transaction")
+
+        transaction.entries = []
+        transaction.entries.add(new TransactionEntryDO(amount: 100, debit: false, accountId: 1))
+        transaction.entries.add(new TransactionEntryDO(amount: 100, debit: true, accountId: 1))
+
+        return transaction
+    }
+
     void setup() {
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory()
 
@@ -49,10 +65,7 @@ class TransactionDAOImplTest extends Specification {
         //Transaction Setup
         dbi.get(_) >> null
 
-        transaction = new TransactionDO(id: 1, reportedBy: 1, description: "Test transaction")
-        transaction.entries = []
-        transaction.entries.add(new TransactionEntryDO(amount: 100, debit: false, accountId: 1))
-        transaction.entries.add(new TransactionEntryDO(amount: 100, debit: true, accountId: 1))
+        transaction = newTrans(1)
     }
 
     def "Debits must equal credits for each transaction"() {
@@ -127,18 +140,33 @@ class TransactionDAOImplTest extends Specification {
 
     def "Transactions can be searched by transaction id, date range, or key word"() {
         given:
-        dao.dbi = DBConnection.onDemand(TransactionDBI, "jdbc:postgresql://localhost:5432/Accounting", "accounting_user", "accounting_user")
+        dao.dbi = DBConnection.onDemand(TransactionDBI)
+        DBConnection.clearTable("accounting_trans")
+
+        DateTime past = new DateTime("2015-02-01")
+        DateTime future = new DateTime("2015-04-01")
+
         transaction.reportedBy = 1
-        transaction.id = null
+
         dao.create(transaction)
+        int id = DBConnection.maxFieldValue("accounting_trans", "id")
+        int oldid = dao.create(newTrans())
+        int newid = dao.create(newTrans())
+        int diffname = dao.create(newTrans())
+
+        DBConnection.execute("update accounting_trans set id = 10, reported = '2015-01-01' where id = $oldid")
+        DBConnection.execute("update accounting_trans set id = 11, reported = '2016-01-01' where id = $newid")
+        DBConnection.execute("update accounting_trans set id = 12, description = 'Some other desc' where id = $diffname")
 
         when:
-        def result = dao.search(1)
-        int transId = DBConnection.maxFieldValue("accounting_trans", "id")
-        println result
+        def all = dao.all()
+        def results = dao.search(id, past, future, "Test")
+        def result = results.get(0)
 
         then:
-        false
+        results?.size() == 1
+        result?.id?.toString() =~ "1"
+        result?.description?.toLowerCase() =~ "test"
     }
 
 }
