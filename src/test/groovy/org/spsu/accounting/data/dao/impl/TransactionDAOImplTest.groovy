@@ -121,7 +121,7 @@ class TransactionDAOImplTest extends Specification {
         dao.removeDocument(1, "something")
 
         then:
-        2 * documentDBI.delete(_,_)
+        1 * documentDBI.delete(_,_)
     }
 
     def "Each transaction will automatically be assigned the current date and time when the transaction was recorded"() {
@@ -160,7 +160,7 @@ class TransactionDAOImplTest extends Specification {
 
         when:
         def all = dao.all()
-        def results = dao.search(id, past, future, "Test")
+        def results = dao.search(id, "Test", past, future)
         def result = results.get(0)
 
         then:

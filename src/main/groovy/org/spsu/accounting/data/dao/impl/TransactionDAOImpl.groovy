@@ -33,11 +33,11 @@ class TransactionDAOImpl extends DAOImpl<TransactionDO> implements TransactionDA
         return trans
     }
 
-    List<TransactionDO> search(Integer id, DateTime startRange = null, DateTime endRange = null, String keyword = null){
-        return search(id?.toString(), startRange, endRange, keyword)
+    List<TransactionDO> search(Integer id, String keyword = null, DateTime startRange = null, DateTime endRange = null){
+        return search(id?.toString(), keyword, startRange, endRange)
     }
 
-    List<TransactionDO> search(String id, DateTime startRange = null, DateTime endRange = null, String keyword = null){
+    List<TransactionDO> search(String id, String keyword = null, DateTime startRange = null, DateTime endRange = null){
 
         List<String> conditions = []
 
