@@ -265,9 +265,9 @@ insert into user_type (type, description)  values ('admin', 'Administrator user'
 insert into user_type (type, description)  values ('manager', 'Manager user');
 insert into user_type (type, description)  values ('user', 'Ordinary user');
 
-insert into accounting_user (username, first_name, last_name, email) values ('brpeela', 'Brett', 'Peel', 'bpeel56@gmail.com');
-insert into accounting_user (username, first_name, last_name, email) values ('brpeelm', 'Brett', 'Peel', 'bpeel56@gmail.com');
-insert into accounting_user (username, first_name, last_name, email) values ('brpeel', 'Brett', 'Peel', 'bpeel56@gmail.com');
+insert into accounting_user (username, first_name, last_name, email, reset_on_logon) values ('brpeela', 'Brett', 'Peel', 'bpeel56@gmail.com', false);
+insert into accounting_user (username, first_name, last_name, email, reset_on_logon) values ('brpeelm', 'Brett', 'Peel', 'bpeel56@gmail.com', false);
+insert into accounting_user (username, first_name, last_name, email, reset_on_logon) values ('brpeel', 'Brett', 'Peel', 'bpeel56@gmail.com', false);
 
 insert into accounting_user (username, first_name, last_name, email) values ('emamoa', 'Ermais', 'Mamo', 'emamo@spsu.edu');
 insert into accounting_user (username, first_name, last_name, email) values ('emamom', 'Ermais', 'Mamo', 'emamo@spsu.edu');

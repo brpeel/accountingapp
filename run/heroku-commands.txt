@@ -9,3 +9,7 @@ psql -h ec2-54-225-101-202.compute-1.amazonaws.com -p 5432 -d d2jlgecs85p9ca -U 
 git push heroku master
 
 #Logs
+heroku logs
+
+#Url
+https://accountingspsu.herokuapp.com/ui
