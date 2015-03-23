@@ -128,6 +128,8 @@ class TransactionDAOImplTest extends Specification {
 
         given:
         dao.dbi = DBConnection.onDemand(TransactionDBI)
+        DBConnection.clearTable("accounting_trans")
+
         transaction.reportedBy = 1
         int transId = dao.create(transaction)
 

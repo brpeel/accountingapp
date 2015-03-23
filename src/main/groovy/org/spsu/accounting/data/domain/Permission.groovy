@@ -1,6 +1,8 @@
 package org.spsu.accounting.data.domain
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.annotation.JsonSetter
+import com.fasterxml.jackson.databind.deser.impl.SetterlessProperty
 import com.sun.org.apache.bcel.internal.generic.INSTANCEOF
 
 /**
@@ -39,6 +41,11 @@ final class Permission {
     @Override
     int hashCode() {
         return (!permission ? 0 : permission.hashCode())
+    }
+
+    @JsonSetter("minRole")
+    public void setMinRole(String role){
+        minRole = UserRole.determineRole(role)
     }
 }
 

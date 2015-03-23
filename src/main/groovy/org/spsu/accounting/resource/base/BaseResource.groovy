@@ -115,7 +115,7 @@ abstract class BaseResource<T extends DAO<BaseDO>> {
         return Response.noContent().header("Location", buildURI(id)).build()
     }
 
-    protected Response putObject(Object id, T obj, String path){
+    protected Response putObject(Object id, BaseDO obj, String path){
 
         validatePutRequest(id, obj)
         int rows = this.saveObject(obj)
@@ -126,7 +126,7 @@ abstract class BaseResource<T extends DAO<BaseDO>> {
 
     }
 
-    protected Response postObject(T obj){
+    protected Response postObject(BaseDO obj){
 
         validatePostRequest(obj)
 
@@ -158,6 +158,12 @@ abstract class BaseResource<T extends DAO<BaseDO>> {
     protected void validatePostRequest(BaseDO baseDO){
 
         if (baseDO == null)
+            throw new WebApplicationException(createResponse(Response.Status.BAD_REQUEST, "Empty request body"))
+    }
+
+    protected void validatePostRequest(Map values){
+
+        if (values == null || values.size() == 0)
             throw new WebApplicationException(createResponse(Response.Status.BAD_REQUEST, "Empty request body"))
     }
 
