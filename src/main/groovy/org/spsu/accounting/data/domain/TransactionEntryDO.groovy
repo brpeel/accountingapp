@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 
 public class TransactionEntryDO extends BaseDO{
 
-	@JsonProperty("transaction_id")
+	@JsonProperty("trans_id")
 	int transactionId
 
 	@JsonProperty("account_id")
@@ -13,4 +13,6 @@ public class TransactionEntryDO extends BaseDO{
 	@JsonProperty("account")
 	Float amount
 
+    @JsonProperty("debit")
+    boolean debit
 }

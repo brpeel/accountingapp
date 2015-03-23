@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 
 public class DocumentDO extends BaseDO{
 
-	@JsonProperty("transaction_id")
+	@JsonProperty("trans_id")
 	int transactionId
 
 	@JsonProperty("document_uri")

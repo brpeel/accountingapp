@@ -115,10 +115,10 @@ abstract class BaseResource<T extends DAO<BaseDO>> {
         return Response.noContent().header("Location", buildURI(id)).build()
     }
 
-    protected Response putObject(Object id, BaseDO baseDO, String path){
+    protected Response putObject(Object id, T obj, String path){
 
-        validatePutRequest(id, baseDO)
-        int rows = this.saveObject(baseDO)
+        validatePutRequest(id, obj)
+        int rows = this.saveObject(obj)
 
         if (rows == 0)
             return Response.status(Response.Status.NOT_FOUND).build()
@@ -126,11 +126,11 @@ abstract class BaseResource<T extends DAO<BaseDO>> {
 
     }
 
-    protected Response postObject(BaseDO baseDO){
+    protected Response postObject(T obj){
 
-        validatePostRequest(baseDO)
+        validatePostRequest(obj)
 
-        def id = this.createObject(baseDO)
+        def id = this.createObject(obj)
 
         return Response.created(buildURI(id)).build()
     }
@@ -155,11 +155,6 @@ abstract class BaseResource<T extends DAO<BaseDO>> {
             throw new WebApplicationException(createResponse(Response.Status.BAD_REQUEST, "The id url parameter must match the id in the request body"))
     }
 
-    protected void validatePostRequest(Map values){
-
-        if (!values)
-            throw new WebApplicationException(createResponse(Response.Status.BAD_REQUEST, "Empty request body"))
-    }
     protected void validatePostRequest(BaseDO baseDO){
 
         if (baseDO == null)

@@ -13,7 +13,7 @@ import java.lang.reflect.Field
 abstract class BaseDO {
 
     @JsonProperty("id")
-    int id
+    Integer id
 
     def merge(Map<String, Object> changes){
         if (!changes || changes.size() == 0)

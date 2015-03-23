@@ -2,6 +2,7 @@ package org.spsu.accounting.resource
 
 import org.skife.jdbi.v2.DBI
 import org.spsu.accounting.data.dao.DAO
+import org.spsu.accounting.data.dao.impl.ActiveDAOImpl
 import org.spsu.accounting.data.dao.impl.DAOImpl
 import org.spsu.accounting.data.dbi.AccountDBI
 import org.spsu.accounting.data.dbi.TransactionDBI
@@ -29,7 +30,7 @@ class TransactionResource extends BaseResource<DAO<TransactionDO>> {
     DAO<AccountDO> accountDAO
     @Override
     protected DAO createDAO(DBI jdbi) {
-        accountDAO = new DAOImpl<AccountDO>(dbi: jdbi.onDemand(AccountDBI))
+        accountDAO = new ActiveDAOImpl<AccountDO>(dbi: jdbi.onDemand(AccountDBI))
         return new DAOImpl<TransactionDO>(dbi: jdbi.onDemand(TransactionDBI))
     }
 
@@ -44,15 +45,7 @@ class TransactionResource extends BaseResource<DAO<TransactionDO>> {
 
         return postObject(transactionDO)
     }
-/*
-    @GET
-    @Path("/options")
-    @Produces(MediaType.APPLICATION_JSON)
-    Response options(){
-        List<AccountDO> accounts = accountDAO.all()
-        def options = ["accounts":accounts]
 
-        return  Response.ok(options).build();
-    }
-    */
+
+
 }

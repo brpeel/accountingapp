@@ -32,9 +32,21 @@ class DBConnection {
         return dbi.onDemand(SqlObjectType)
     }
 
+    static synchronized def <SqlObjectType> SqlObjectType onDemand(Class<SqlObjectType> SqlObjectType, String dbUrl, String user, String password){
+        dbi = new DBI(dbUrl, user, password)
+        return dbi.onDemand(SqlObjectType)
+    }
+
     static void clearTable(String table){
         Handle h = dbi.open()
         h.execute("delete from $table")
+    }
+
+    static void clearTables(String... tables){
+        if (!tables)
+            return
+        final Handle h = dbi.open()
+        tables.each {String table -> h.execute("delete from $table")}
     }
 
 

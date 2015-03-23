@@ -4,12 +4,14 @@ function CreateTransController($rootScope, $scope, $http, $window, $location) {
     var self = this;
 
     $scope.selectedAccount = null;
+
+    $scope.errormessage = null;
     $rootScope.accounts = [];
 
     $scope.fetchOptions = function() {
 
         $http.get('/api/account/all').success(function(data){
-            console.log(JSON.stringify(data))
+            console.log("Accounts: "+JSON.stringify(data))
             $rootScope.accounts = data;
         });
     };
@@ -26,8 +28,8 @@ function CreateTransController($rootScope, $scope, $http, $window, $location) {
             })
             .
             error(function(data, status, headers, config) {
-                console.log(JSON.stringify(data))
-                alert("Could not save transaction");
+
+                $scope.errormessage = data;
             });
     }
 

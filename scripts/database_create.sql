@@ -31,9 +31,10 @@ CREATE TABLE token
 CREATE TABLE accounting_trans_entry
 (
    id INTEGER NOT NULL
-  ,accounting_trans_id INTEGER NOT NULL
+  ,trans_id INTEGER NOT NULL
   ,account_id INTEGER NOT NULL
   ,account DECIMAL(15, 2) NOT NULL
+  ,debit BOOLEAN NOT NULL
   ,CONSTRAINT PK_accounting_trans_Entry PRIMARY KEY (id)
 );
 
@@ -50,7 +51,7 @@ CREATE TABLE accounting_trans
   ,approved TIMESTAMP  NULL
   ,status VARCHAR(10) NOT NULL
   ,description VARCHAR(500)  NULL
-  ,CONSTRAINT PK_accounting_trans_id PRIMARY KEY (id)
+  ,CONSTRAINT PK_trans_id PRIMARY KEY (id)
 );
 
 
@@ -59,7 +60,7 @@ CREATE TABLE accounting_trans
 CREATE TABLE accounting_trans_document
 (
    id SERIAL NOT NULL
-  ,accounting_trans_id int not null
+  ,trans_id int not null
   ,document_uri VARCHAR(250) NOT NULL
   ,CONSTRAINT PK_accounting_trans_document_id PRIMARY KEY (id)
 );
@@ -170,7 +171,7 @@ CREATE TABLE user_type
 CREATE TABLE trans_log
 (
    id BIGSERIAL NOT NULL
-  ,accounting_trans_id INTEGER NOT NULL
+  ,trans_id INTEGER NOT NULL
   ,status VARCHAR(10) NOT NULL
   ,changed_by INTEGER NOT NULL
   ,CONSTRAINT PK_trans_log_id PRIMARY KEY (id)
@@ -184,6 +185,7 @@ CREATE TABLE entry_log
   ,accounting_trans_logid BIGINT NOT NULL
   ,entry_id int NOT NULL
   ,amount DECIMAL(15, 2) NOT NULL
+  ,debit BOOLEAN NOT NULL
   ,changed_by INTEGER NOT NULL
   ,CONSTRAINT PK_entry_log_id PRIMARY KEY (id)
 );
@@ -200,11 +202,11 @@ ALTER TABLE accounting_trans ADD CONSTRAINT FK_accounting_trans_approved_by_User
 ALTER TABLE Account ADD CONSTRAINT FK_Account_added_by_User_id FOREIGN KEY (added_by) REFERENCES Accounting_User(id);
 
 
--- Create Foreign Key: accounting_trans_Document.accounting_trans_id -> accounting_trans.id
-ALTER TABLE accounting_trans_document ADD CONSTRAINT FK_accounting_trans_document_accounting_trans_id FOREIGN KEY (accounting_trans_id) REFERENCES accounting_trans(id);
+-- Create Foreign Key: accounting_trans_Document.trans_id -> accounting_trans.id
+ALTER TABLE accounting_trans_document ADD CONSTRAINT FK_accounting_trans_document_trans_id FOREIGN KEY (trans_id) REFERENCES accounting_trans(id);
 
--- Create Foreign Key: accounting_trans_Entry.accounting_trans_id -> accounting_trans.id
-ALTER TABLE accounting_trans_entry ADD CONSTRAINT FK_accounting_trans_entry_accounting_trans_id FOREIGN KEY (accounting_trans_id) REFERENCES accounting_trans(id);
+-- Create Foreign Key: accounting_trans_Entry.trans_id -> accounting_trans.id
+ALTER TABLE accounting_trans_entry ADD CONSTRAINT FK_accounting_trans_entry_trans_id FOREIGN KEY (trans_id) REFERENCES accounting_trans(id);
 
 
 -- Create Foreign Key: User_Membership.user_type_id -> User_Type.id
@@ -233,8 +235,8 @@ ALTER TABLE Account_Statement ADD CONSTRAINT FK_Account_Statement_account_id_Acc
 ALTER TABLE accounting_trans_Entry ADD CONSTRAINT FK_accounting_trans_Entry_account_id_Account_id FOREIGN KEY (account_id) REFERENCES Account(id);
 
 
--- Create Foreign Key: trans_log.accounting_trans_id -> accounting_trans.id
-ALTER TABLE trans_log ADD CONSTRAINT FK_trans_log_accounting_trans_id FOREIGN KEY (accounting_trans_id) REFERENCES accounting_trans(id);
+-- Create Foreign Key: trans_log.trans_id -> accounting_trans.id
+ALTER TABLE trans_log ADD CONSTRAINT FK_trans_log_trans_id FOREIGN KEY (trans_id) REFERENCES accounting_trans(id);
 
 
 -- Create Foreign Key: entry_log.accounting_trans_logid -> trans_log.id

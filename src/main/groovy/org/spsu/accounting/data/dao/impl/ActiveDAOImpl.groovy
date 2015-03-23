@@ -15,7 +15,9 @@ class ActiveDAOImpl<T extends ActiveBaseDO> extends DAOImpl implements ActiveDAO
 
     @Override
     List<T> all(boolean allowInactive = false) throws SQLException {
-        return dbi.getAll(allowInactive)
+        if(allowInactive)
+            return dbi.getAllIncludingInactive()
+        return dbi.getAll()
     }
 
     @Override

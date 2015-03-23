@@ -22,4 +22,37 @@ public class TransactionDO extends BaseDO{
 
     @JsonProperty("description")
     String description
+
+    List<TransactionEntryDO> entries = []
+
+    List<DocumentDO> documents = []
+
+    Float sumDebits(){
+        float amount = 0
+        if (!entries)
+            return 0;
+        entries?.each {TransactionEntryDO  entry ->
+            if (entry && entry.isDebit())
+                amount += entry.amount
+        }
+
+        return amount
+    }
+
+    Float sumCredits(){
+        float amount = 0
+        if (!entries)
+            return 0;
+        entries?.each {TransactionEntryDO  entry ->
+            if (entry && !entry.isDebit())
+                amount += entry.amount
+        }
+
+        return amount
+    }
+
+    public boolean isSubmitted(){
+        return status?.toLowerCase() in ["submitted", "approved"]
+    }
+
 }

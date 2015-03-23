@@ -1,6 +1,8 @@
 package org.spsu.accounting.data.dao.impl
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.spsu.accounting.data.dao.DAO
 import org.spsu.accounting.data.domain.BaseDO
 
@@ -15,6 +17,7 @@ import java.sql.SQLException
  */
 public class DAOImpl<T extends BaseDO> implements DAO<T> {
 
+    protected Logger logger = LoggerFactory.getLogger(getClass().simpleName)
     def dbi;
 
     Validator validator
@@ -37,14 +40,15 @@ public class DAOImpl<T extends BaseDO> implements DAO<T> {
 
         //Don't use the get method implementation in this class, because we need to know if the object was deleted
         // to prevent a primary key collision
-        T existing =  dbi.get(object.id)
+        T existing =  get(object.id)
 
         if (!existing){
             List validationMessages = validateObject(object)
 
             if (validationMessages)
                 throw new WebApplicationException(Response.status(Response.Status.BAD_REQUEST).entity(validationMessages).build());
-            return dbi.insert(object)
+            def id = dbi.insert(object)
+            return object.id = id
         }
 
         throw new SQLException("Object for id $object.id already exists")
