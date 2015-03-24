@@ -1,7 +1,6 @@
 package org.spsu.accounting.data.mapper
 
 import org.spsu.accounting.data.domain.Permission
-import org.spsu.accounting.data.domain.UserRole
 import spock.lang.Specification
 import spock.lang.Unroll
 
@@ -27,7 +26,7 @@ class PermissionMapperTest extends Specification {
 
         then:
         result != null
-        result.minRole == expectedRole
+        result.role == expectedRole
         result.permission == permission
         result.group == permission_group
         result.order == group_order
@@ -37,9 +36,9 @@ class PermissionMapperTest extends Specification {
 
         where:
         permission    | user_type_id | permission_group | group_order | label          | style        | active | expectedRole
-        "createTrans" | "user"       | "Transaction"    | 0           | "Create Trans" | "some style" | true   | UserRole.USER
-        "Accounts"    | "admin"      | "MainMenu"       | 1           | null           | null         | false  | UserRole.ADMIN
-        "createTrans" | "manager"    | "Transaction"    | 0           | "Create"       | "Style"      | null   | UserRole.MANAGER
+        "createTrans" | 10           | "Transaction"    | 0           | "Create Trans" | "some style" | true   | 10
+        "Accounts"    | 100          | "MainMenu"       | 1           | null           | null         | false  | 100
+        "createTrans" | 50           | "Transaction"    | 0           | "Create"       | "Style"      | null   | 50
 
     }
 }

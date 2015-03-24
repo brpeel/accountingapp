@@ -6,9 +6,6 @@ import org.spsu.accounting.data.domain.UserDO
 import org.spsu.accounting.utils.AuthUtils
 import org.spsu.accounting.utils.mail.MailServer
 
-import javax.ws.rs.WebApplicationException
-import java.sql.Timestamp
-
 /**
  * Created by brettpeel on 2/7/15.
  */

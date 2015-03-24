@@ -30,10 +30,10 @@ CREATE TABLE token
 --------------------------------------------------------------------------------
 CREATE TABLE accounting_trans_entry
 (
-   id INTEGER NOT NULL
+   id SERIAL NOT NULL
   ,trans_id INTEGER NOT NULL
   ,account_id INTEGER NOT NULL
-  ,account DECIMAL(15, 2) NOT NULL
+  ,amount DECIMAL(15, 2) NOT NULL
   ,debit BOOLEAN NOT NULL
   ,CONSTRAINT PK_accounting_trans_Entry PRIMARY KEY (id)
 );
@@ -134,7 +134,7 @@ CREATE TABLE user_password
 CREATE TABLE user_membership
 (
    user_id INTEGER NOT NULL
-  ,user_type_id VARCHAR(10) NOT NULL
+  ,user_type_id int NOT NULL
   ,membership_start TIMESTAMP  NULL DEFAULT NOW()
   ,membership_end TIMESTAMP  NULL
   ,added_by INTEGER NOT NULL
@@ -147,7 +147,7 @@ CREATE TABLE user_membership
 CREATE TABLE user_permission
 (
    permission varchar(50) NOT NULL
-  ,user_type_id VARCHAR(10) NOT NULL
+  ,user_type_id int NOT NULL
   ,permission_group VARCHAR(50) NOT NULL
   ,group_order int default 0
   ,label varchar(100)
@@ -161,7 +161,7 @@ CREATE TABLE user_permission
 --------------------------------------------------------------------------------
 CREATE TABLE user_type
 (
-   type VARCHAR(10) NOT NULL
+   type int NOT NULL
   ,description VARCHAR(250) NOT NULL
   ,CONSTRAINT PK_User_Type_type PRIMARY KEY (type)
 );
@@ -261,9 +261,9 @@ ALTER TABLE token ADD CONSTRAINT FK_token_user_id FOREIGN KEY (user_id) REFERENC
 -- Create Foreign Key: user_password.userid -> User.id
 ALTER TABLE user_password ADD CONSTRAINT FK_User_Password_User_id FOREIGN KEY (user_id) REFERENCES Accounting_User(id);
 
-insert into user_type (type, description)  values ('admin', 'Administrator user');
-insert into user_type (type, description)  values ('manager', 'Manager user');
-insert into user_type (type, description)  values ('user', 'Ordinary user');
+insert into user_type (type, description)  values (100, 'Administrator user');
+insert into user_type (type, description)  values (50, 'Manager user');
+insert into user_type (type, description)  values (10, 'Ordinary user');
 
 insert into accounting_user (username, first_name, last_name, email, reset_on_logon) values ('brpeela', 'Brett', 'Peel', 'bpeel56@gmail.com', false);
 insert into accounting_user (username, first_name, last_name, email, reset_on_logon) values ('brpeelm', 'Brett', 'Peel', 'bpeel56@gmail.com', false);
@@ -274,17 +274,17 @@ insert into accounting_user (username, first_name, last_name, email) values ('em
 insert into accounting_user (username, first_name, last_name, email) values ('emamo', 'Ermais', 'Mamo', 'emamo@spsu.edu');
 
 insert into user_membership (user_id, user_type_id, added_by)
-  select id, 'admin', (select id from accounting_user where username = 'brpeela')
+  select id, 100, (select id from accounting_user where username = 'brpeela')
   from accounting_user
   where username like '%a';
 
 insert into user_membership (user_id, user_type_id, added_by)
-  select id, 'manager', (select id from accounting_user where username = 'brpeela')
+  select id, 50, (select id from accounting_user where username = 'brpeela')
   from accounting_user
   where username like '%m';
 
 insert into user_membership (user_id, user_type_id, added_by)
-  select id, 'user', (select id from accounting_user where username = 'brpeela')
+  select id, 10, (select id from accounting_user where username = 'brpeela')
   from accounting_user
   where username not like '%a' and username not like '%m';
 
@@ -297,39 +297,39 @@ insert into account (name, initial_balance, normal_side, added, active, added_by
 ----- Permissions
 
 --Main Menu
-insert into user_permission (permission_group, permission, group_order, user_type_id, label, style) values ('MainMenu', 'accounts', 0, 'user', 'Chart of Accounts', 'fa fa-columns');
-insert into user_permission (permission_group, permission, group_order, user_type_id, label, style) values ('MainMenu', 'transactions', 1, 'user', 'Transactions', 'fa fa-columns');
+insert into user_permission (permission_group, permission, group_order, user_type_id, label, style) values ('MainMenu', 'accounts', 0, 10, 'Chart of Accounts', 'fa fa-columns');
+insert into user_permission (permission_group, permission, group_order, user_type_id, label, style) values ('MainMenu', 'transactions', 1, 10, 'Transactions', 'fa fa-columns');
 
 
 
-insert into user_permission (permission_group, permission, group_order, user_type_id, label, style) values ('MainMenu', 'trialBalance', 2, 'user', 'TrialBalances', 'fa fa-usd');
-insert into user_permission (permission_group, permission, group_order, user_type_id, label, style) values ('MainMenu', 'incomeStatement',3, 'user', 'Income Statement', 'fa fa-pie-chart');
-insert into user_permission (permission_group, permission, group_order, user_type_id, label, style) values ('MainMenu', 'balanceSheet',4, 'user', 'Balance Sheet', 'fa fa-pie-chart');
-insert into user_permission (permission_group, permission, group_order, user_type_id, label, style) values ('MainMenu', 'financialRatio',5, 'user', 'Financial Ratio', 'fa fa-pie-chart');
-insert into user_permission (permission_group, permission, group_order, user_type_id, label, style) values ('MainMenu', 'ownersEquity',6, 'user', 'Owner Equity', 'fa fa-pie-chart');
-insert into user_permission (permission_group, permission, group_order, user_type_id, label, style, active) values ('MainMenu', 'CashFlow',7, 'user', 'Cash Flow', 'fa fa-pie-chart', false);
+insert into user_permission (permission_group, permission, group_order, user_type_id, label, style) values ('MainMenu', 'trialBalance', 2, 10, 'TrialBalances', 'fa fa-usd');
+insert into user_permission (permission_group, permission, group_order, user_type_id, label, style) values ('MainMenu', 'incomeStatement',3, 10, 'Income Statement', 'fa fa-pie-chart');
+insert into user_permission (permission_group, permission, group_order, user_type_id, label, style) values ('MainMenu', 'balanceSheet',4, 10, 'Balance Sheet', 'fa fa-pie-chart');
+insert into user_permission (permission_group, permission, group_order, user_type_id, label, style) values ('MainMenu', 'financialRatio',5, 10, 'Financial Ratio', 'fa fa-pie-chart');
+insert into user_permission (permission_group, permission, group_order, user_type_id, label, style) values ('MainMenu', 'ownersEquity',6, 10, 'Owner Equity', 'fa fa-pie-chart');
+insert into user_permission (permission_group, permission, group_order, user_type_id, label, style, active) values ('MainMenu', 'CashFlow',7, 10, 'Cash Flow', 'fa fa-pie-chart', false);
 
-insert into user_permission (permission_group, permission, group_order, user_type_id, label, style) values ('MainMenu', 'email', 20, 'user', 'Send Email', 'fa fa-envelope-o');
+insert into user_permission (permission_group, permission, group_order, user_type_id, label, style) values ('MainMenu', 'email', 20, 10, 'Send Email', 'fa fa-envelope-o');
 
 --Transactions
-insert into user_permission (permission_group, permission, group_order, user_type_id, label, style) values ('Transaction', 'createTrans', 1, 'user', 'Add Transaction', 'fa fa-plus-square');
-insert into user_permission (permission_group, permission, group_order, user_type_id, label, style) values ('Transaction', 'submitTrans', 2, 'user', 'Submit', 'fa fa-paper-plane');
-insert into user_permission (permission_group, permission, group_order, user_type_id, label, style) values ('Transaction', 'editTrans', 3, 'user', 'Edit', 'fa fa-keyboard-0');
+insert into user_permission (permission_group, permission, group_order, user_type_id, label, style) values ('Transaction', 'createTrans', 1, 10, 'Add Transaction', 'fa fa-plus-square');
+insert into user_permission (permission_group, permission, group_order, user_type_id, label, style) values ('Transaction', 'submitTrans', 2, 10, 'Submit', 'fa fa-paper-plane');
+insert into user_permission (permission_group, permission, group_order, user_type_id, label, style) values ('Transaction', 'editTrans', 3, 10, 'Edit', 'fa fa-keyboard-0');
 
 
 --Main Menu
-insert into user_permission (permission_group, permission, group_order, user_type_id, label, style) values ('MainMenu', 'AssignSurrogate', 2, 'manager', 'Assign Surrogate', 'fa fa-user');
+insert into user_permission (permission_group, permission, group_order, user_type_id, label, style) values ('MainMenu', 'AssignSurrogate', 2, 50, 'Assign Surrogate', 'fa fa-user');
 
-insert into user_permission (permission_group, permission, group_order, user_type_id, label, style) values ('Transaction', 'ApproveTrans', 1, 'manager', 'Approve', 'fa fa-thumbs-up');
-insert into user_permission (permission_group, permission, group_order, user_type_id, label, style) values ('Transaction', 'RejectTrans', 2, 'manager', 'Reject', 'fa fa-thumbs-down');
+insert into user_permission (permission_group, permission, group_order, user_type_id, label, style) values ('Transaction', 'ApproveTrans', 1, 50, 'Approve', 'fa fa-thumbs-up');
+insert into user_permission (permission_group, permission, group_order, user_type_id, label, style) values ('Transaction', 'RejectTrans', 2, 50, 'Reject', 'fa fa-thumbs-down');
 
 
-insert into user_permission (permission_group, permission, group_order, user_type_id, label, style) values ('MainMenu', 'users', 19, 'admin', 'Users', 'fa fa-users');
+insert into user_permission (permission_group, permission, group_order, user_type_id, label, style) values ('MainMenu', 'users', 19, 100, 'Users', 'fa fa-users');
 
-insert into user_permission (permission_group, permission, group_order, user_type_id, label, style) values ('User', 'createUser',0, 'admin', 'Add User', 'fa fa-user-plus');
-insert into user_permission (permission_group, permission, group_order, user_type_id, label, style) values ('User', 'editUser', 1, 'admin', 'Edit User', 'fa fa-pencil');
+insert into user_permission (permission_group, permission, group_order, user_type_id, label, style) values ('User', 'createUser',0, 100, 'Add User', 'fa fa-user-plus');
+insert into user_permission (permission_group, permission, group_order, user_type_id, label, style) values ('User', 'editUser', 1, 100, 'Edit User', 'fa fa-pencil');
 
-insert into user_permission (permission_group, permission, group_order, user_type_id, label, style) values ('Account', 'createAccount', 0, 'admin', 'Add Account', 'fa fa-plus-square');
-insert into user_permission (permission_group, permission, group_order, user_type_id, label, style) values ('Account', 'removeAccount', 1, 'admin', 'Deactivate Account', 'fa fa-minus-square');
+insert into user_permission (permission_group, permission, group_order, user_type_id, label, style) values ('Account', 'createAccount', 0, 100, 'Add Account', 'fa fa-plus-square');
+insert into user_permission (permission_group, permission, group_order, user_type_id, label, style) values ('Account', 'removeAccount', 1, 100, 'Deactivate Account', 'fa fa-minus-square');
 
 

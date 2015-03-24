@@ -29,13 +29,8 @@ import org.spsu.accounting.data.dbi.PermissionDBI
 import org.spsu.accounting.data.dbi.StartDBI
 import org.spsu.accounting.data.dbi.UserDBI
 import org.spsu.accounting.data.domain.UserDO
-import org.spsu.accounting.resource.AboutResource
-import org.spsu.accounting.resource.AccountResource
-import org.spsu.accounting.resource.AuthResource
-import org.spsu.accounting.resource.TransactionResource
+import org.spsu.accounting.resource.*
 import org.spsu.accounting.resource.base.BaseResource
-import org.spsu.accounting.resource.MenuResource
-import org.spsu.accounting.resource.UserResource
 import org.spsu.accounting.utils.mail.MailConfig
 import org.spsu.accounting.utils.mail.MailServer
 import org.spsu.accounting.utils.mail.MailServerImpl

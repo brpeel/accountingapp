@@ -2,19 +2,14 @@ package org.spsu.accounting.resource
 
 import org.skife.jdbi.v2.DBI
 import org.spsu.accounting.data.dao.ActiveDAO
-import org.spsu.accounting.data.dao.DAO
 import org.spsu.accounting.data.dao.impl.ActiveDAOImpl
-import org.spsu.accounting.data.dao.impl.DAOImpl
 import org.spsu.accounting.data.dbi.AccountDBI
 import org.spsu.accounting.data.domain.AccountDO
 import org.spsu.accounting.resource.base.BaseResource
-import org.spsu.accounting.resource.base.DeletableResource
 
 import javax.servlet.http.HttpServletRequest
-import javax.ws.rs.GET
 import javax.ws.rs.POST
 import javax.ws.rs.Path
-import javax.ws.rs.PathParam
 import javax.ws.rs.Produces
 import javax.ws.rs.core.Context
 import javax.ws.rs.core.MediaType

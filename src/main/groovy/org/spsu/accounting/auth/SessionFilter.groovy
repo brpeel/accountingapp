@@ -5,15 +5,9 @@ import org.slf4j.LoggerFactory
 import org.spsu.accounting.data.dao.UserDAO
 import org.spsu.accounting.data.domain.UserDO
 
-import javax.servlet.FilterChain
-import javax.servlet.FilterConfig
-import javax.servlet.ServletException
-import javax.servlet.ServletRequest
-import javax.servlet.ServletResponse
+import javax.servlet.*
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
-import javax.ws.rs.WebApplicationException
-import javax.ws.rs.core.Request
 import javax.ws.rs.core.Response
 
 /**

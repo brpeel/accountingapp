@@ -104,17 +104,18 @@ class UserDAOImplTest extends Specification {
         "Null time"   | new UserDO(id: 1) | null                                      | true
 
     }
-/*
-    def "Test GetAll"(){
+
+    def "Get"(){
 
         given:
         UserDBI dbi = DBConnection.onDemand(UserDBI)
 
         when:
+        UserDO user = dbi.get(1)
         List<UserDO> users = dbi.getAll()
 
         then:
         users.size() > 0
+        user?.role == 100
     }
-    */
 }

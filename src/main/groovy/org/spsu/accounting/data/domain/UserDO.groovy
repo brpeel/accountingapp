@@ -2,7 +2,6 @@ package org.spsu.accounting.data.domain
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.joda.time.DateTime
 
 public class UserDO extends ActiveBaseDO{
 
@@ -24,19 +23,7 @@ public class UserDO extends ActiveBaseDO{
     @JsonIgnore
     boolean resetOnLogon
 
-    @JsonProperty("roles")
-    HashSet<UserRole> roles = new HashSet<UserRole>()
+    @JsonProperty("role")
+    int role
 
-    public boolean hasRole(UserRole role){
-        return roles && roles.contains(role)
-    }
-
-    public UserRole maxRole(){
-        UserRole maxRole = UserRole.USER
-        for (UserRole role : roles){
-            if (maxRole < role)
-                maxRole = role
-        }
-        return maxRole
-    }
 }

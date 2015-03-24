@@ -6,15 +6,12 @@ import org.spsu.accounting.data.DBConnection
 import org.spsu.accounting.data.dbi.DocumentDBI
 import org.spsu.accounting.data.dbi.TransactionDBI
 import org.spsu.accounting.data.dbi.TransactionEntryDBI
-import org.spsu.accounting.data.domain.DocumentDO
 import org.spsu.accounting.data.domain.TransactionDO
 import org.spsu.accounting.data.domain.TransactionEntryDO
 import org.spsu.accounting.resource.TransactionResource
-import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Unroll
 
-import javax.print.attribute.standard.DateTimeAtCompleted
 import javax.validation.Validation
 import javax.validation.ValidatorFactory
 

@@ -12,11 +12,11 @@ import spock.lang.Unroll
 
 class PermissionTest extends Specification {
     void setup() {
-
-        PermissionSet.addPermission(new Permission(group: "MainMenu", permission: "CreateAccount", minRole: UserRole.ADMIN))
-        PermissionSet.addPermission(new Permission(group: "Transaction", permission: "ApproveTransaction", minRole: UserRole.MANAGER))
-        PermissionSet.addPermission(new Permission(group: "Transaction", permission: "CreateTransaction", minRole: UserRole.USER))
-        PermissionSet.addPermission(new Permission(group: "MainMenu", permission: "transactions", minRole: UserRole.USER))
+        PermissionSet.permissions.clear()
+        PermissionSet.addPermission(new Permission(group: "MainMenu", permission: "CreateAccount", role: 100))
+        PermissionSet.addPermission(new Permission(group: "Transaction", permission: "ApproveTransaction", role: 50))
+        PermissionSet.addPermission(new Permission(group: "Transaction", permission: "CreateTransaction", role: 10))
+        PermissionSet.addPermission(new Permission(group: "MainMenu", permission: "transactions", role: 10))
 
     }
 
@@ -29,10 +29,10 @@ class PermissionTest extends Specification {
         result.size() == numPermissions
 
         where:
-        role             | numPermissions
-        UserRole.ADMIN   | 4
-        UserRole.MANAGER | 3
-        UserRole.USER    | 2
+        role | numPermissions
+        100  | 4
+        50   | 3
+        10   | 2
 
     }
 
@@ -46,27 +46,29 @@ class PermissionTest extends Specification {
         result.Transaction?.size() == transactionPermissions
 
         where:
-        role             | mainMenuPermissions | transactionPermissions
-        UserRole.ADMIN   | 2                   | 2
-        UserRole.MANAGER | 1                   | 2
-        UserRole.USER    | 1                   | 1
+        role | mainMenuPermissions | transactionPermissions
+        100  | 2                   | 2
+        50   | 1                   | 2
+        10   | 1                   | 1
 
     }
 
-    def "Test Load Permissions"(){
+    def "Test Load Permissions"() {
         setup:
         PermissionDBI dbi = DBConnection.onDemand(PermissionDBI)
         PermissionDAOImpl dao = new PermissionDAOImpl(dbi: dbi)
 
         when:
         dao.loadPermissions()
-        Set adminPerms = PermissionSet.getPermissions(UserRole.ADMIN)
-        Set managerPerms = PermissionSet.getPermissions(UserRole.MANAGER)
-        Set userPerms = PermissionSet.getPermissions(UserRole.USER)
+        int adminPerms = PermissionSet.getPermissions(100)?.size()
+        int managerPerms = PermissionSet.getPermissions(50)?.size()
+        int userPerms = PermissionSet.getPermissions(10)?.size()
 
         then:
-        adminPerms != null && adminPerms.size() == 22
-        managerPerms != null && managerPerms.size() == 16
-        userPerms != null && userPerms.size() == 12
+        userPerms > 0
+        managerPerms > userPerms
+        adminPerms >  managerPerms
+
+
     }
 }

@@ -1,21 +1,14 @@
 package org.spsu.accounting.resource
 
-import io.dropwizard.auth.Auth
 import org.skife.jdbi.v2.DBI
-import org.spsu.accounting.data.dao.DAO
 import org.spsu.accounting.data.dao.UserDAO
-import org.spsu.accounting.data.dao.impl.DAOImpl
 import org.spsu.accounting.data.dao.impl.UserDAOImpl
 import org.spsu.accounting.data.dbi.UserDBI
 import org.spsu.accounting.data.domain.UserDO
 import org.spsu.accounting.resource.base.BaseResource
 
 import javax.servlet.http.HttpServletRequest
-import javax.ws.rs.GET
-import javax.ws.rs.POST
-import javax.ws.rs.Path
-import javax.ws.rs.PathParam
-import javax.ws.rs.Produces
+import javax.ws.rs.*
 import javax.ws.rs.core.Context
 import javax.ws.rs.core.MediaType
 import javax.ws.rs.core.Response

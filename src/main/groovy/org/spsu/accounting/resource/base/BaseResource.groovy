@@ -10,12 +10,10 @@ import org.spsu.accounting.data.dao.DAO
 import org.spsu.accounting.data.domain.BaseDO
 
 import javax.servlet.http.HttpServletRequest
-import javax.ws.rs.GET
-import javax.ws.rs.Path
-import javax.ws.rs.PathParam
-import javax.ws.rs.Produces
-import javax.ws.rs.WebApplicationException
+import javax.ws.rs.*
 import javax.ws.rs.core.MediaType
+import javax.ws.rs.core.Response
+
 /**
  * Created by bpeel on 1/28/15.
  */
@@ -223,5 +221,3 @@ abstract class BaseResource<T extends DAO<BaseDO>> {
         return doObj
     }
 }
-
-import javax.ws.rs.core.Response

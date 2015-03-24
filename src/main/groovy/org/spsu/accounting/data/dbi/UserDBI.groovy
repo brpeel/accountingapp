@@ -1,13 +1,8 @@
 package org.spsu.accounting.data.dbi
 
-import org.skife.jdbi.v2.sqlobject.Bind
-import org.skife.jdbi.v2.sqlobject.BindBean
-import org.skife.jdbi.v2.sqlobject.GetGeneratedKeys
-import org.skife.jdbi.v2.sqlobject.SqlQuery
-import org.skife.jdbi.v2.sqlobject.SqlUpdate
+import org.skife.jdbi.v2.sqlobject.*
 import org.skife.jdbi.v2.sqlobject.customizers.RegisterMapper
 import org.skife.jdbi.v2.sqlobject.helpers.MapResultAsBean
-import org.spsu.accounting.data.domain.AccountDO
 import org.spsu.accounting.data.domain.UserDO
 import org.spsu.accounting.data.mapper.UserDOMapper
 
@@ -18,7 +13,11 @@ interface UserDBI{
 
 	@SqlQuery("""
     select *,
-        ARRAY(select user_type_id from user_membership where user_id = accounting_user.id and membership_start <= now() and membership_end is null or membership_end >= now()) as roles
+          (select max(user_type_id)
+            from user_membership
+            where user_id = accounting_user.id
+                and membership_start <= now()
+                 and membership_end is null or membership_end >= now()) as role
     from accounting_user where username = :username""")
 	@MapResultAsBean
 	UserDO get(@Bind("username") String username)
@@ -26,21 +25,33 @@ interface UserDBI{
 
     @SqlQuery("""
     select *,
-        ARRAY(select user_type_id from user_membership where user_id = accounting_user.id and membership_start <= now() and membership_end is null or membership_end >= now()) as roles
+          (select max(user_type_id)
+            from user_membership
+            where user_id = accounting_user.id
+                and membership_start <= now()
+                 and membership_end is null or membership_end >= now()) as role
     from accounting_user where id = :id""")
     @MapResultAsBean
     UserDO get(@Bind("id") int id)
 
     @SqlQuery("""
     select *,
-        ARRAY(select user_type_id from user_membership where user_id = accounting_user.id and membership_start <= now() and membership_end is null or membership_end >= now()) as roles
+          (select max(user_type_id)
+            from user_membership
+            where user_id = accounting_user.id
+                and membership_start <= now()
+                 and membership_end is null or membership_end >= now()) as role
     from accounting_user where active = true""")
     @MapResultAsBean
     List<UserDO> getAll()
 
     @SqlQuery("""
     select *,
-        ARRAY(select user_type_id from user_membership where user_id = accounting_user.id and membership_start <= now() and membership_end is null or membership_end >= now()) as roles
+          (select max(user_type_id)
+            from user_membership
+            where user_id = accounting_user.id
+                and membership_start <= now()
+                 and membership_end is null or membership_end >= now()) as role
     from accounting_user""")
     @MapResultAsBean
     List<UserDO> getAllIncludingInactive()
@@ -48,7 +59,11 @@ interface UserDBI{
 
     @SqlQuery("""with accuser as (
                     select *,
-                    ARRAY(select user_type_id from user_membership where user_id = accounting_user.id and membership_start <= now() and membership_end is null or membership_end >= now()) as roles
+                      (select max(user_type_id)
+                        from user_membership
+                        where user_id = accounting_user.id
+                            and membership_start <= now()
+                             and membership_end is null or membership_end >= now()) as role
                     from accounting_user where username = :username and active = true
                 ),
                 passwd as (

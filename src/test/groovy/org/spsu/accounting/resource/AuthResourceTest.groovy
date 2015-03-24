@@ -1,12 +1,9 @@
 package org.spsu.accounting.resource
 
-import org.apache.http.HttpRequest
-import org.joda.time.DateTime
 import org.spsu.accounting.data.dao.UserDAO
 import org.spsu.accounting.data.domain.UserDO
 import spock.lang.Specification
 
-import javax.servlet.http.HttpServletRequest
 import javax.ws.rs.core.Response
 
 /**

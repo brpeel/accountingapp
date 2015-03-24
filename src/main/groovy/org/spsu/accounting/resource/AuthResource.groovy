@@ -1,16 +1,12 @@
 package org.spsu.accounting.resource
 
 import com.fasterxml.jackson.annotation.JsonProperty
-import io.dropwizard.auth.Auth
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.spsu.accounting.data.dao.UserDAO
-import org.spsu.accounting.data.domain.PermissionSet
 import org.spsu.accounting.data.domain.UserDO
-import org.spsu.accounting.data.domain.UserRole
 
 import javax.servlet.http.HttpServletRequest
-import javax.ws.rs.GET
 import javax.ws.rs.POST
 import javax.ws.rs.Path
 import javax.ws.rs.Produces

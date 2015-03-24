@@ -2,7 +2,6 @@ package org.spsu.accounting.data.dbi
 
 import org.spsu.accounting.data.DBConnection
 import org.spsu.accounting.data.domain.AccountDO
-import spock.lang.Shared
 import spock.lang.Specification
 
 import java.sql.Timestamp

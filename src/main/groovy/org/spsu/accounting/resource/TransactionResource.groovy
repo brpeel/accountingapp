@@ -4,19 +4,17 @@ import org.skife.jdbi.v2.DBI
 import org.spsu.accounting.data.dao.DAO
 import org.spsu.accounting.data.dao.impl.ActiveDAOImpl
 import org.spsu.accounting.data.dao.impl.DAOImpl
+import org.spsu.accounting.data.dao.impl.TransactionDAOImpl
 import org.spsu.accounting.data.dbi.AccountDBI
 import org.spsu.accounting.data.dbi.TransactionDBI
-import org.spsu.accounting.data.dbi.UserDBI
+import org.spsu.accounting.data.dbi.TransactionEntryDBI
 import org.spsu.accounting.data.domain.AccountDO
 import org.spsu.accounting.data.domain.TransactionDO
-import org.spsu.accounting.data.domain.UserDO
 import org.spsu.accounting.resource.base.BaseResource
 
 import javax.servlet.http.HttpServletRequest
-import javax.ws.rs.GET
 import javax.ws.rs.POST
 import javax.ws.rs.Path
-import javax.ws.rs.PathParam
 import javax.ws.rs.Produces
 import javax.ws.rs.core.Context
 import javax.ws.rs.core.MediaType
@@ -31,19 +29,17 @@ class TransactionResource extends BaseResource<DAO<TransactionDO>> {
     @Override
     protected DAO createDAO(DBI jdbi) {
         accountDAO = new ActiveDAOImpl<AccountDO>(dbi: jdbi.onDemand(AccountDBI))
-        return new DAOImpl<TransactionDO>(dbi: jdbi.onDemand(TransactionDBI))
+        return new TransactionDAOImpl(dbi: jdbi.onDemand(TransactionDBI), entryDBI: jdbi.onDemand(TransactionEntryDBI))
     }
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    Response create( @Context HttpServletRequest request, Map req){
+    Response create( @Context HttpServletRequest request, TransactionDO trans){
 
         int userid = request.getAttribute("userid")
-        TransactionDO transactionDO = new TransactionDO();
-        transactionDO.reportedBy = userid
-        setObjectValues(transactionDO, req)
+        trans.reportedBy = userid
 
-        return postObject(transactionDO)
+        return postObject(trans)
     }
 
 

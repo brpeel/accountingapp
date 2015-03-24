@@ -1,19 +1,12 @@
 package org.spsu.accounting.data.dbi
 
-import org.skife.jdbi.v2.sqlobject.Bind
-import org.skife.jdbi.v2.sqlobject.BindBean
-import org.skife.jdbi.v2.sqlobject.GetGeneratedKeys
-import org.skife.jdbi.v2.sqlobject.SqlQuery
-import org.skife.jdbi.v2.sqlobject.SqlUpdate
-import org.skife.jdbi.v2.sqlobject.customizers.Define
+import org.skife.jdbi.v2.sqlobject.*
 import org.skife.jdbi.v2.sqlobject.customizers.RegisterMapper
 import org.skife.jdbi.v2.sqlobject.helpers.MapResultAsBean
-import org.skife.jdbi.v2.sqlobject.stringtemplate.UseStringTemplate3StatementLocator
 import org.spsu.accounting.data.domain.TransactionDO
 import org.spsu.accounting.data.mapper.TransactionDOMapper
 
 import java.sql.Timestamp
-
 
 //@UseStringTemplate3StatementLocator
 @RegisterMapper(TransactionDOMapper.class)

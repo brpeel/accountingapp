@@ -1,7 +1,5 @@
 package org.spsu.accounting.resource.base
 
-import org.skife.jdbi.v2.DBI
-import org.spsu.accounting.data.dao.DAO
 import org.spsu.accounting.data.domain.TestDO
 import spock.lang.Specification
 

@@ -3,8 +3,9 @@ package org.spsu.accounting.resource.base
 import org.spsu.accounting.data.dao.ActiveDAO
 import org.spsu.accounting.data.domain.BaseDO
 
-import javax.ws.rs.*
-import javax.ws.rs.core.MediaType
+import javax.ws.rs.DELETE
+import javax.ws.rs.PathParam
+import javax.ws.rs.WebApplicationException
 import javax.ws.rs.core.Response
 
 /**

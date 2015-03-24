@@ -2,7 +2,6 @@ package org.spsu.accounting.resource
 
 import org.spsu.accounting.data.dao.ActiveDAO
 import org.spsu.accounting.data.dao.DAO
-import org.spsu.accounting.resource.AccountResource
 import spock.lang.Specification
 
 import javax.servlet.http.HttpServletRequest

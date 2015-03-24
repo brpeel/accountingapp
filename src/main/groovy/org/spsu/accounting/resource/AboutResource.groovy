@@ -1,9 +1,5 @@
 package org.spsu.accounting.resource
 
-import org.skife.jdbi.v2.DBI
-import org.spsu.accounting.data.dao.DAO
-import org.spsu.accounting.resource.base.BaseResource
-
 import javax.ws.rs.GET
 import javax.ws.rs.Path
 import javax.ws.rs.Produces

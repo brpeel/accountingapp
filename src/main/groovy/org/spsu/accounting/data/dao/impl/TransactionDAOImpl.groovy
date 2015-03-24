@@ -5,7 +5,6 @@ import org.spsu.accounting.data.dao.TransactionDAO
 import org.spsu.accounting.data.dbi.DocumentDBI
 import org.spsu.accounting.data.dbi.TransactionEntryDBI
 import org.spsu.accounting.data.domain.BaseDO
-import org.spsu.accounting.data.domain.DocumentDO
 import org.spsu.accounting.data.domain.TransactionDO
 import org.spsu.accounting.data.domain.TransactionEntryDO
 
@@ -55,7 +54,8 @@ class TransactionDAOImpl extends DAOImpl<TransactionDO> implements TransactionDA
     def create(TransactionDO object) {
         int id = super.create(object)
         object?.entries?.each {TransactionEntryDO entry ->
-            entryDBI.insert(id, entry)
+            entry.transactionId = id
+            entryDBI.insert(entry)
         }
         return id
     }

@@ -1,12 +1,10 @@
 package org.spsu.accounting.resource
 
-import com.fasterxml.jackson.annotation.JsonProperty
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.spsu.accounting.data.dao.UserDAO
 import org.spsu.accounting.data.domain.PermissionSet
 import org.spsu.accounting.data.domain.UserDO
-import org.spsu.accounting.data.domain.UserRole
 
 import javax.servlet.http.HttpServletRequest
 import javax.ws.rs.GET
@@ -31,15 +29,19 @@ class MenuResource {
     @Produces(MediaType.APPLICATION_JSON)
     public getActions(@Context HttpServletRequest request){
 
-        int userid = request.getAttribute("userid")
+        Map data = determinePermissions(/*request.getAttribute("userid")*/1)
+        data."username" = request.getAttribute("username")
 
-        UserDO user = dao.get(userid)
-
-        UserRole maxRole = user.maxRole()
-        Set permissions = PermissionSet.getPermissions(maxRole)
-        Set mainMenu = PermissionSet.getPermissionsByGroup(maxRole)."MainMenu"
-
-        return Response.ok().entity(["menuItems":mainMenu, "permissions":permissions, "username":request.getAttribute("username")]).build()
+        return Response.ok().entity(data).build()
     }
 
+    private Map determinePermissions(int userid){
+        UserDO user = dao.get(userid)
+
+        int role = user.role
+        Set permissions = PermissionSet.getPermissions(role)
+        Set mainMenu = PermissionSet.getPermissionsByGroup(role)."MainMenu"
+
+        return ["menuItems":mainMenu, "permissions":permissions]
+    }
 }

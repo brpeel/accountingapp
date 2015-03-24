@@ -2,7 +2,6 @@ package org.spsu.accounting.data.domain
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.annotation.JsonPropertyOrder
 import com.fasterxml.jackson.annotation.JsonSetter
 import io.dropwizard.validation.ValidationMethod
 import org.joda.time.DateTime

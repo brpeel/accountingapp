@@ -1,9 +1,6 @@
 package org.spsu.accounting.data.domain
 
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.annotation.JsonSetter
-import com.fasterxml.jackson.databind.deser.impl.SetterlessProperty
-import com.sun.org.apache.bcel.internal.generic.INSTANCEOF
 
 /**
  * Created by bpeel on 3/14/15.
@@ -20,7 +17,7 @@ final class Permission {
     int order
 
     @JsonProperty("user_type_id")
-    UserRole minRole
+    int role
 
     @JsonProperty("label")
     String label
@@ -42,11 +39,6 @@ final class Permission {
     int hashCode() {
         return (!permission ? 0 : permission.hashCode())
     }
-
-    @JsonSetter("minRole")
-    public void setMinRole(String role){
-        minRole = UserRole.determineRole(role)
-    }
 }
 
 
@@ -54,7 +46,7 @@ public enum PermissionSet {
 
     INSTANCE
 
-    private final static HashMap<UserRole, HashSet<Permission>> permissions = [:]
+    private final static HashMap<Integer, HashSet<Permission>> permissions = [:]
 
     public static void addPermissions(List<Permission> perms){
         if (perms == null)
@@ -63,27 +55,27 @@ public enum PermissionSet {
     }
 
     public static void addPermission(Permission permission){
-        Set rolePerms = permissions.get(permission.minRole)
+        Set rolePerms = permissions.get(permission.role)
         if (rolePerms == null){
             rolePerms = new HashSet<Permission>()
-            permissions.put(permission.minRole, rolePerms)
+            permissions.put(permission.role, rolePerms)
         }
         rolePerms.add(permission)
     }
 
-    public static boolean hasPermission(UserRole role, Permission permission){
+    public static boolean hasPermission(Integer role, Permission permission){
         Set<Permission> rolePerms = getPermissions(role)
         return rolePerms && rolePerms.contains(permission)
     }
 
-    public static boolean hasPermission(UserRole role, String permission){
+    public static boolean hasPermission(Integer role, String permission){
         return hasPermission(role, new Permission(permission))
     }
 
-    public static Set<Permission> getPermissions(UserRole role){
+    public static Set<Permission> getPermissions(Integer role){
         final Set<Permission> rolePerms = []
 
-        permissions.collect {UserRole uRole, Set perms ->
+        permissions.collect {Integer uRole, Set perms ->
             if(uRole <= role)
                rolePerms.addAll(perms)
         }
@@ -91,7 +83,7 @@ public enum PermissionSet {
         return rolePerms
     }
 
-    public static Map<String, Set<Permission>> getPermissionsByGroup(UserRole role){
+    public static Map<String, Set<Permission>> getPermissionsByGroup(Integer role){
         Set rolePerms = getPermissions(role)
         final Map<String, Set<Permission>> groupPermissions = [:]
 
