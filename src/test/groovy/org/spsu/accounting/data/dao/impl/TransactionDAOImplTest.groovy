@@ -95,7 +95,7 @@ class TransactionDAOImplTest extends Specification {
 
         then:
         1 * dbi.insert(_)
-        4 * entryDBI.insert(_,_)
+        4 * entryDBI.insert(_)
     }
 
     def "The user must have the ability to upload one or more source documents for each transaction"() {
