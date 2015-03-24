@@ -26,7 +26,6 @@ function CreateTransController($rootScope, $scope, $http, $window, $location) {
         $http.post('api/transaction',trans)
             .success(function(data, status, headers, config){
 
-                console.log(JSON.stringify(data))
                 $location.path("/transaction")
             })
             .

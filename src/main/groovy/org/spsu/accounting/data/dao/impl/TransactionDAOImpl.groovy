@@ -32,6 +32,15 @@ class TransactionDAOImpl extends DAOImpl<TransactionDO> implements TransactionDA
         return trans
     }
 
+    public List<TransactionDO> all(){
+        List<TransactionDO> trans = dbi.getAll()
+        trans?.each(){ TransactionDO t ->
+            if (t.id)
+                t.entries = entryDBI.getEntries(t.id)
+        }
+    }
+
+
     List<TransactionDO> search(Integer id, String keyword = null, DateTime startRange = null, DateTime endRange = null){
         return search(id?.toString(), keyword, startRange, endRange)
     }
