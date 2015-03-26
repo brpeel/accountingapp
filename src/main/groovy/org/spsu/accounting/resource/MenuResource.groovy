@@ -29,7 +29,7 @@ class MenuResource {
     @Produces(MediaType.APPLICATION_JSON)
     public getActions(@Context HttpServletRequest request){
 
-        Map data = determinePermissions(/*request.getAttribute("userid")*/1)
+        Map data = determinePermissions(request.getAttribute("userid"))
         data."username" = request.getAttribute("username")
 
         return Response.ok().entity(data).build()
