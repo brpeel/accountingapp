@@ -14,6 +14,7 @@ drop table if exists account cascade;
 drop table if exists accounting_trans_entry cascade;
 drop table if exists entry_log cascade;
 drop table if exists user_password cascade;
+drop table if exists account_seq cascade;
 
 drop table if exists token cascade;
 
@@ -26,7 +27,7 @@ CREATE TABLE token
   CONSTRAINT pk_session_id PRIMARY KEY (id)
 );
 
--- Create Table: accounting_trans_Entry
+-- Create Table accounting_trans_Entry
 --------------------------------------------------------------------------------
 CREATE TABLE accounting_trans_entry
 (
@@ -40,7 +41,7 @@ CREATE TABLE accounting_trans_entry
 
 
 
--- Create Table: accounting_trans
+-- Create Table accounting_trans
 --------------------------------------------------------------------------------
 CREATE TABLE accounting_trans
 (
@@ -55,7 +56,7 @@ CREATE TABLE accounting_trans
 );
 
 
--- Create Table: accounting_trans_Document
+-- Create Table accounting_trans_Document
 --------------------------------------------------------------------------------
 CREATE TABLE accounting_trans_document
 (
@@ -65,7 +66,7 @@ CREATE TABLE accounting_trans_document
   ,CONSTRAINT PK_accounting_trans_document_id PRIMARY KEY (id)
 );
 
--- Create Table: Account
+-- Create Table Account
 --------------------------------------------------------------------------------
 CREATE TABLE account
 (
@@ -76,13 +77,13 @@ CREATE TABLE account
   ,added TIMESTAMP NOT NULL
   ,active BOOLEAN NOT NULL
   ,added_by INTEGER NOT NULL
+  ,category VARCHAR(250) NOT NULL
   ,subcategory VARCHAR(250)  NULL
   ,CONSTRAINT PK_Account_id PRIMARY KEY (id)
 );
 
 
-
--- Create Table: Account_Statement
+-- Create Table Account_Statement
 --------------------------------------------------------------------------------
 CREATE TABLE account_statement
 (
@@ -93,7 +94,7 @@ CREATE TABLE account_statement
 
 
 
--- Create Table: Statement
+-- Create Table Statement
 --------------------------------------------------------------------------------
 CREATE TABLE statement
 (
@@ -104,7 +105,7 @@ CREATE TABLE statement
 
 
 
--- Create Table: User
+-- Create Table User
 --------------------------------------------------------------------------------
 CREATE TABLE accounting_user
 (
@@ -129,7 +130,7 @@ CREATE TABLE user_password
   password_set TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
--- Create Table: User_Membership
+-- Create Table User_Membership
 --------------------------------------------------------------------------------
 CREATE TABLE user_membership
 (
@@ -142,7 +143,7 @@ CREATE TABLE user_membership
   ,CONSTRAINT PK_User_Membership PRIMARY KEY (user_id, user_type_id)
 );
 
--- Create Table: user_permission
+-- Create Table user_permission
 --------------------------------------------------------------------------------
 CREATE TABLE user_permission
 (
@@ -157,7 +158,7 @@ CREATE TABLE user_permission
 );
 
 
--- Create Table: User_Type
+-- Create Table User_Type
 --------------------------------------------------------------------------------
 CREATE TABLE user_type
 (
@@ -166,7 +167,7 @@ CREATE TABLE user_type
   ,CONSTRAINT PK_User_Type_type PRIMARY KEY (type)
 );
 
--- Create Table: trans_log
+-- Create Table trans_log
 --------------------------------------------------------------------------------
 CREATE TABLE trans_log
 (
@@ -177,7 +178,7 @@ CREATE TABLE trans_log
   ,CONSTRAINT PK_trans_log_id PRIMARY KEY (id)
 );
 
--- Create Table: entry_log
+-- Create Table entry_log
 --------------------------------------------------------------------------------
 CREATE TABLE entry_log
 (
@@ -190,75 +191,75 @@ CREATE TABLE entry_log
   ,CONSTRAINT PK_entry_log_id PRIMARY KEY (id)
 );
 
--- Create Foreign Key: accounting_trans.reported_by -> User.id
+-- Create Foreign Key accounting_trans.reported_by -> User.id
 ALTER TABLE accounting_trans ADD CONSTRAINT FK_accounting_trans_reported_by_User_id FOREIGN KEY (reported_by) REFERENCES Accounting_User(id);
 
 
--- Create Foreign Key: accounting_trans.approved_by -> User.id
+-- Create Foreign Key accounting_trans.approved_by -> User.id
 ALTER TABLE accounting_trans ADD CONSTRAINT FK_accounting_trans_approved_by_User_id FOREIGN KEY (approved_by) REFERENCES Accounting_User(id);
 
 
--- Create Foreign Key: Account.added_by -> User.id
+-- Create Foreign Key Account.added_by -> User.id
 ALTER TABLE Account ADD CONSTRAINT FK_Account_added_by_User_id FOREIGN KEY (added_by) REFERENCES Accounting_User(id);
 
 
--- Create Foreign Key: accounting_trans_Document.trans_id -> accounting_trans.id
+-- Create Foreign Key accounting_trans_Document.trans_id -> accounting_trans.id
 ALTER TABLE accounting_trans_document ADD CONSTRAINT FK_accounting_trans_document_trans_id FOREIGN KEY (trans_id) REFERENCES accounting_trans(id);
 
--- Create Foreign Key: accounting_trans_Entry.trans_id -> accounting_trans.id
+-- Create Foreign Key accounting_trans_Entry.trans_id -> accounting_trans.id
 ALTER TABLE accounting_trans_entry ADD CONSTRAINT FK_accounting_trans_entry_trans_id FOREIGN KEY (trans_id) REFERENCES accounting_trans(id);
 
 
--- Create Foreign Key: User_Membership.user_type_id -> User_Type.id
+-- Create Foreign Key User_Membership.user_type_id -> User_Type.id
 ALTER TABLE User_Membership ADD CONSTRAINT FK_User_Membership_user_type FOREIGN KEY (user_type_id) REFERENCES User_Type(type);
 
 
--- Create Foreign Key: User_Membership.user_id -> User.id
+-- Create Foreign Key User_Membership.user_id -> User.id
 ALTER TABLE User_Membership ADD CONSTRAINT FK_User_Membership_user_id_User_id FOREIGN KEY (user_id) REFERENCES Accounting_User(id);
 
 
--- Create Foreign Key: User_Membership.added_by -> User.id
+-- Create Foreign Key User_Membership.added_by -> User.id
 ALTER TABLE User_Membership ADD CONSTRAINT FK_User_Membership_added_by_User_id FOREIGN KEY (added_by) REFERENCES Accounting_User(id);
 
--- Create Foreign Key: User_Membership.user_type_id -> User_Type.id--
+-- Create Foreign Key User_Membership.user_type_id -> User_Type.id--
 ALTER TABLE user_permission ADD CONSTRAINT FK_User_permission_user_type FOREIGN KEY (user_type_id) REFERENCES User_Type(type);
 
--- Create Foreign Key: Account_Statement.statement_id -> Statement.id
+-- Create Foreign Key Account_Statement.statement_id -> Statement.id
 ALTER TABLE Account_Statement ADD CONSTRAINT FK_Account_Statement_statement_id_Statement_id FOREIGN KEY (statement_id) REFERENCES Statement(id);
 
 
--- Create Foreign Key: Account_Statement.account_id -> Account.id
+-- Create Foreign Key Account_Statement.account_id -> Account.id
 ALTER TABLE Account_Statement ADD CONSTRAINT FK_Account_Statement_account_id_Account_id FOREIGN KEY (account_id) REFERENCES Account(id);
 
 
--- Create Foreign Key: accounting_trans_Entry.account_id -> Account.id
+-- Create Foreign Key accounting_trans_Entry.account_id -> Account.id
 ALTER TABLE accounting_trans_Entry ADD CONSTRAINT FK_accounting_trans_Entry_account_id_Account_id FOREIGN KEY (account_id) REFERENCES Account(id);
 
 
--- Create Foreign Key: trans_log.trans_id -> accounting_trans.id
+-- Create Foreign Key trans_log.trans_id -> accounting_trans.id
 ALTER TABLE trans_log ADD CONSTRAINT FK_trans_log_trans_id FOREIGN KEY (trans_id) REFERENCES accounting_trans(id);
 
 
--- Create Foreign Key: entry_log.accounting_trans_logid -> trans_log.id
+-- Create Foreign Key entry_log.accounting_trans_logid -> trans_log.id
 ALTER TABLE entry_log ADD CONSTRAINT FK_entry_log_trans_log_id FOREIGN KEY (accounting_trans_logid) REFERENCES trans_log(id);
 
 
--- Create Foreign Key: entry_log.entry_id -> accounting_trans_Entry.id
+-- Create Foreign Key entry_log.entry_id -> accounting_trans_Entry.id
 ALTER TABLE entry_log ADD CONSTRAINT FK_entry_log_entry_id FOREIGN KEY (entry_id) REFERENCES accounting_trans_Entry(id);
 
 
--- Create Foreign Key: trans_log.changed_by -> Accounting_User.id
+-- Create Foreign Key trans_log.changed_by -> Accounting_User.id
 ALTER TABLE trans_log ADD CONSTRAINT FK_trans_log_changed_by_Accounting_User_id FOREIGN KEY (changed_by) REFERENCES Accounting_User(id);
 
 
--- Create Foreign Key: entry_log.changed_by -> Accounting_User.id
+-- Create Foreign Key entry_log.changed_by -> Accounting_User.id
 ALTER TABLE entry_log ADD CONSTRAINT FK_entry_log_changed_by_Accounting_User_id FOREIGN KEY (changed_by) REFERENCES Accounting_User(id);
 
--- Create Foreign Key: entry_log.changed_by -> Accounting_User.id
+-- Create Foreign Key entry_log.changed_by -> Accounting_User.id
 ALTER TABLE token ADD CONSTRAINT FK_token_user_id FOREIGN KEY (user_id) REFERENCES Accounting_User(id);
 
 
--- Create Foreign Key: user_password.userid -> User.id
+-- Create Foreign Key user_password.userid -> User.id
 ALTER TABLE user_password ADD CONSTRAINT FK_User_Password_User_id FOREIGN KEY (user_id) REFERENCES Accounting_User(id);
 
 insert into user_type (type, description)  values (100, 'Administrator user');
@@ -330,52 +331,61 @@ insert into user_permission (permission_group, permission, group_order, user_typ
 insert into user_permission (permission_group, permission, group_order, user_type_id, label, style) values ('Account', 'createAccount', 0, 100, 'Add Account', 'fa fa-plus-square');
 insert into user_permission (permission_group, permission, group_order, user_type_id, label, style) values ('Account', 'removeAccount', 1, 100, 'Deactivate Account', 'fa fa-minus-square');
 
-
 --Assets
-insert into account (id, name, initial_balance, normal_side, added, active, added_by, subcategory)
-  select 101, 'Cash', 0.00, 'Credit', now(), true, id, 'Asset'
+insert into account (id, name, initial_balance, normal_side, added, active, added_by, category, subcategory)
+  select 101, 'Cash', 0.00, 'Credit', now(), true, id, 'Asset', NULL
   from accounting_user where username = 'brpeela';
 
-insert into account (id, name, initial_balance, normal_side, added, active, added_by, subcategory)
-  select 142, 'Office Supplies', 0.00, 'Credit', now(), true, id, 'Asset'
+insert into account (id, name, initial_balance, normal_side, added, active, added_by, category, subcategory)
+  select 102, 'Office Supplies', 0.00, 'Credit', now(), true, id, 'Asset', null
   from accounting_user where username = 'brpeela';
 
 --Revenues
-insert into account (id, name, initial_balance, normal_side, added, active, added_by, subcategory)
-  select 401, 'Professional Fees', 0.00, 'Credit', now(), true, id, 'Revenue'
+insert into account (id, name, initial_balance, normal_side, added, active, added_by, category, subcategory)
+  select 501, 'Professional Fees', 0.00, 'Credit', now(), true, id, 'Revenue', null
   from accounting_user where username = 'brpeela';
 
 --Liabilities
-insert into account (id, name, initial_balance, normal_side, added, active, added_by, subcategory)
-  select 202, 'Accounts Payable', 0.00, 'Credit', now(), true, id, 'Liability'
+insert into account (id, name, initial_balance, normal_side, added, active, added_by, category, subcategory)
+  select 202, 'Accounts Payable', 0.00, 'Credit', now(), true, id, 'Liability', null
   from accounting_user where username = 'brpeela';
 
---Owner's Equity
-insert into account (id, name, initial_balance, normal_side, added, active, added_by, subcategory)
-  select 311, 'George Fielding, Capital', 20000.00, 'Credit', now(), true, id, 'Owner Equity'
+--Owners Equity
+insert into account (id, name, initial_balance, normal_side, added, active, added_by, category, subcategory)
+  select 300, 'George Fielding, Capital', 20000.00, 'Credit', now(), true, id, 'Owner Equity', null
   from accounting_user where username = 'brpeela';
 
-insert into account (id, name, initial_balance, normal_side, added, active, added_by, subcategory)
-  select 312, 'George Fielding, Drawing', 0.00, 'Debit', now(), true, id, 'Owner Equity'
+insert into account (id, name, initial_balance, normal_side, added, active, added_by, category, subcategory)
+  select 301, 'George Fielding, Drawing', 0.00, 'Debit', now(), true, id, 'Owner Equity', null
   from accounting_user where username = 'brpeela';
 
 --Expenses
-insert into account (id, name, initial_balance, normal_side, added, active, added_by, subcategory)
-  select 511, 'Wages Expense', 0.00, 'Debit', now(), true, id, 'Expense'
+insert into account (id, name, initial_balance, normal_side, added, active, added_by, category, subcategory)
+  select 401, 'Wages Expense', 0.00, 'Debit', now(), true, id, 'Expense', null
   from accounting_user where username = 'brpeela';
-insert into account (id, name, initial_balance, normal_side, added, active, added_by, subcategory)
-  select 521, 'Rent Expense', 0.00, 'Debit', now(), true, id, 'Expense'
+insert into account (id, name, initial_balance, normal_side, added, active, added_by, category, subcategory)
+  select 402, 'Rent Expense', 0.00, 'Debit', now(), true, id, 'Expense', null
   from accounting_user where username = 'brpeela';
-insert into account (id, name, initial_balance, normal_side, added, active, added_by, subcategory)
-  select 525, 'Telephone Expense', 0.00, 'Debit', now(), true, id, 'Expense'
+insert into account (id, name, initial_balance, normal_side, added, active, added_by, category, subcategory)
+  select 403, 'Telephone Expense', 0.00, 'Debit', now(), true, id, 'Expense', null
   from accounting_user where username = 'brpeela';
-insert into account (id, name, initial_balance, normal_side, added, active, added_by, subcategory)
-  select 533, 'Utilities Expense', 0.00, 'Debit', now(), true, id, 'Expense'
+insert into account (id, name, initial_balance, normal_side, added, active, added_by, category, subcategory)
+  select 404, 'Utilities Expense', 0.00, 'Debit', now(), true, id, 'Expense', null
   from accounting_user where username = 'brpeela';
-insert into account (id, name, initial_balance, normal_side, added, active, added_by, subcategory)
-  select 534, 'Charitable Contributions Expense', 0.00, 'Debit', now(), true, id, 'Expense'
+insert into account (id, name, initial_balance, normal_side, added, active, added_by, category, subcategory)
+  select 405, 'Charitable Contributions Expense', 0.00, 'Debit', now(), true, id, 'Expense', null
   from accounting_user where username = 'brpeela';
-insert into account (id, name, initial_balance, normal_side, added, active, added_by, subcategory)
-  select 538, 'Automobile Expense', 0.00, 'Debit', now(), true, id, 'Expense'
+insert into account (id, name, initial_balance, normal_side, added, active, added_by, category, subcategory)
+  select 406, 'Automobile Expense', 0.00, 'Debit', now(), true, id, 'Expense', null
   from accounting_user where username = 'brpeela';
+
+
+CREATE TABLE account_seq(
+  category VARCHAR(250) NOT NULL,
+  seq int NOT NULL DEFAULT 0,
+  CONSTRAINT PK_Account_Seq PRIMARY KEY (category)
+);
+
+insert into account_seq (seq, category)
+  select max(id) + 1, category from account group by category;
 

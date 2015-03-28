@@ -18,17 +18,19 @@ class DBConnection {
 
     static synchronized def <SqlObjectType> SqlObjectType onDemand(Class<SqlObjectType> SqlObjectType){
 
-        JdbcConnectionPool ds = JdbcConnectionPool.create("jdbc:h2:mem:test2","username","password");
-        dbi = new DBI(ds)
+        if (!dbi) {
+            JdbcConnectionPool ds = JdbcConnectionPool.create("jdbc:h2:mem:test2", "username", "password");
+            dbi = new DBI(ds)
 
-        File file = new File("./scripts/database_create.sql");
-        String sql = file.text
+            File file = new File("./scripts/database_create.sql");
+            String sql = file.text
 
-        sql = sql.replaceAll("BIGSERIAL", "bigint auto_increment")
+            sql = sql.replaceAll("BIGSERIAL", "bigint auto_increment")
 
-        Handle h = dbi.open()
-        h.execute(sql)
-
+            Handle h = dbi.open()
+            h.execute(sql)
+            h.close()
+        }
         return dbi.onDemand(SqlObjectType)
     }
 
@@ -67,5 +69,10 @@ class DBConnection {
     static void execute(String sql){
         Handle h = dbi.open()
         h.execute(sql)
+    }
+
+    static def query(String sql){
+        Handle h = dbi.open()
+        return h.select(sql)
     }
 }

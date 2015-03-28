@@ -29,7 +29,10 @@ public class AccountDO extends ActiveBaseDO{
     @NotNull
 	int addedBy
 
-	@JsonProperty("subcategory")
+    @JsonProperty("category")
+    String category
+
+    @JsonProperty("subcategory")
 	String subcategory
 
     public void setInitialBalance(String amount){
