@@ -9,12 +9,52 @@ function CreateTransController($rootScope, $scope, $http, $window, $location) {
 
     $scope.errormessage = null;
     $rootScope.accounts = [];
+    $rootScope.transaction = null;
+    $rootScope.status = "Reported";
+    $rootScope.showSave = true;
+    $rootScope.showSubmit = false;
+    $rootScope.showApprove = false;
 
     $scope.fetchOptions = function() {
-
         $http.get('/api/account/all').success(function(data){
             $rootScope.accounts = data;
         });
+    };
+
+    $scope.fetchTrans = function() {
+        var id = $location.search().id
+        if (typeof id == "undefined" || !id)
+            return;
+
+        console.log('Fetching Transaction Id with id :'+id)
+        $http.get('/api/transaction/'+id)
+            .success(function(data){
+                console.log('Trans = '+JSON.stringify(data))
+                $rootScope.tForm.description = data.description
+                $rootScope.tForm.entry = data.entries
+                $rootScope.transaction = data.id;
+                var status = data.status.toLocaleLowerCase();
+
+                if (status == "reported"){
+                    $rootScope.showSave = false;
+                    $rootScope.showSubmit = true;
+                    $rootScope.showApprove = false;
+                }
+                else if (status == "submitted"){
+                    $rootScope.showSave = false;
+                    $rootScope.showSubmit = false;
+                    $rootScope.showApprove = true;
+                }
+                else {
+                    $rootScope.showSave = false;
+                    $rootScope.showSubmit = false;
+                    $rootScope.showApprove = false;
+                }
+            })
+            .error(function(data, status, headers, config) {
+
+                $scope.errormessage = data;
+            });;
     };
 
     $scope.save = function(){
@@ -42,5 +82,21 @@ function CreateTransController($rootScope, $scope, $http, $window, $location) {
     $rootScope.removeEntry = function(index){
         $rootScope.tForm.entry.splice(index,1)
     };
+
+    $rootScope.submit = function(){
+        console.log('Submit Transaction = '+$rootScope.transaction)
+    };
+
+    $rootScope.approve = function(){
+        console.log('Approve Transaction = '+$rootScope.transaction)
+
+    };
+
+    $rootScope.reject = function(){
+        console.log('Reject Transaction = '+$rootScope.transaction)
+
+    };
+
+    $scope.fetchTrans()
     $scope.fetchOptions()
 };

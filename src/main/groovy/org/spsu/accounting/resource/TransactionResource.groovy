@@ -1,5 +1,6 @@
 package org.spsu.accounting.resource
 
+import io.dropwizard.jersey.PATCH
 import org.skife.jdbi.v2.DBI
 import org.spsu.accounting.data.dao.DAO
 import org.spsu.accounting.data.dao.impl.ActiveDAOImpl
@@ -16,6 +17,7 @@ import javax.servlet.http.HttpServletRequest
 import javax.ws.rs.POST
 import javax.ws.rs.Path
 import javax.ws.rs.Produces
+import javax.ws.rs.QueryParam
 import javax.ws.rs.core.Context
 import javax.ws.rs.core.MediaType
 import javax.ws.rs.core.Response
@@ -42,6 +44,35 @@ class TransactionResource extends BaseResource<DAO<TransactionDO>> {
         return postObject(trans)
     }
 
+    @PATCH
+    @Path("submit")
+    @Produces(MediaType.APPLICATION_JSON)
+    Response submit( @Context HttpServletRequest request, @QueryParam("id") int id){
+        int userid = request.getAttribute("userid")
+
+        TransactionDO trans = get(id)
+
+    }
+
+    @PATCH
+    @Path("approve")
+    @Produces(MediaType.APPLICATION_JSON)
+    Response approve( @Context HttpServletRequest request, @QueryParam("id") int id){
+        int userid = request.getAttribute("userid")
+
+        TransactionDO trans = get(id)
+    }
+
+    @PATCH
+    @Path("reject")
+    @Produces(MediaType.APPLICATION_JSON)
+    Response reject( @Context HttpServletRequest request, @QueryParam("id") int id){
+        return transition(request, id, "Reject")
+    }
+
+    Response transition(HttpServletRequest request, int id, String status){
 
 
+
+    }
 }

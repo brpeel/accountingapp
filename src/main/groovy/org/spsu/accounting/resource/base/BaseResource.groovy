@@ -7,7 +7,12 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.spsu.accounting.data.dao.ActiveDAO
 import org.spsu.accounting.data.dao.DAO
+import org.spsu.accounting.data.dao.UserDAO
+import org.spsu.accounting.data.dao.impl.UserDAOImpl
+import org.spsu.accounting.data.dbi.UserDBI
 import org.spsu.accounting.data.domain.BaseDO
+import org.spsu.accounting.data.domain.PermissionSet
+import org.spsu.accounting.data.domain.UserDO
 
 import javax.servlet.http.HttpServletRequest
 import javax.ws.rs.*
@@ -22,6 +27,7 @@ abstract class BaseResource<T extends DAO<BaseDO>> {
     Logger logger = LoggerFactory.getLogger(getClass())
 
     protected T dao;
+    protected UserDAO userDAO;
     ObjectMapper mapper
 
     public void register(Environment environment, DBI jdbi){
@@ -35,6 +41,9 @@ abstract class BaseResource<T extends DAO<BaseDO>> {
             dao.validator = environment.getValidator()
             dao.objectMapper = environment.getObjectMapper()
         }
+
+        userDAO = new UserDAOImpl<UserDO>(dbi: jdbi.onDemand(UserDBI))
+
         mapper = environment.getObjectMapper()
     }
 
@@ -220,4 +229,13 @@ abstract class BaseResource<T extends DAO<BaseDO>> {
 
         return doObj
     }
+
+    protected UserDO getUserId(HttpServletRequest request){
+
+        UserDO user = userDAO.get(request.getAttribute("userid"))
+        if (!user)
+            throw new WebApplicationException(Response.Status.FORBIDDEN)
+        return user
+    }
+
 }

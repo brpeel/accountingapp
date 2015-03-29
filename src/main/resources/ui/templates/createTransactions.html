@@ -55,13 +55,22 @@
         <div class="form-group form-inline col-xs-10">
             <div class="col-md-2"></div>
             <div class="col-md-2">
-                <button type="button" class="btn btn-default" ng-click="addEntry()">Add Entry</button>
+                <button type="button" class="btn btn-default" ng-click="addEntry()" ng-show="showSave">Add Entry</button>
             </div>
             <div class="col-md-2"></div>
             <div class="col-md-2">
-                <button type="submit" class="btn btn-primary" ng-click="save()">Submit</button>
+                <button type="submit" class="btn btn-primary" ng-click="save()" ng-show="showSave">Submit</button>
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary" ng-click="submit()" ng-show="showSubmit">Submit</button>
             </div>
             <div class="col-md-2"></div>
+            <div class="col-md-2">
+                <button type="approve" class="btn btn-primary" ng-click="approve()" ng-show="showApprove">Approve</button>
+            </div>
+            <div class="col-md-2">
+                <button type="reject" class="btn btn-primary" ng-click="reject()"ng-show="showApprove">Reject</button>
+            </div>
         </div>
     </form>
 

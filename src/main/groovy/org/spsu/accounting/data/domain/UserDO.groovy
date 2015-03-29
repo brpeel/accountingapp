@@ -26,4 +26,7 @@ public class UserDO extends ActiveBaseDO{
     @JsonProperty("role")
     int role
 
+    public boolean hasPermission(Permission permission){
+        return PermissionSet.hasPermission(role, permission)
+    }
 }

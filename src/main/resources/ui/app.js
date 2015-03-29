@@ -25,6 +25,10 @@
                 templateUrl : 'ui/templates/transactions.html',
                 controller  : 'transactionController'
             })
+            .when('/transaction/*', {
+                templateUrl : 'ui/templates/transaction.html',
+                controller  : 'editTransController'
+            })
             .when('/createTrans', {
                 templateUrl : 'ui/templates/createTransactions.html',
                 controller  : 'createTransController'
@@ -108,6 +112,12 @@
     accountingApp.controller('transactionController', function($rootScope, $scope, $http, $window, $location) {
         var controller = new TransactionController($rootScope, $scope, $http,  $window, $location)
 
+    });
+
+    accountingApp.controller('editTransController', function($rootScope, $scope, $http,  $window, $location) {
+        // create a message to display in our view
+        console.log('In Edit transaction controller')
+        var controller = new EditTransController($rootScope, $scope, $http,  $window, $location)
     });
 
     accountingApp.controller('createTransController', function($rootScope, $scope, $http,  $window, $location) {
