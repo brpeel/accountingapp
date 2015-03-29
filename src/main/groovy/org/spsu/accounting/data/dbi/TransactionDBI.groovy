@@ -42,4 +42,19 @@ interface TransactionDBI{
                 where id = :id""")
 	int update(@BindBean TransactionDO doBean)
 
+
+    @SqlUpdate("""update accounting_trans set
+                    approved_by = :user,
+                    approved = now(),
+                    status = 'Approved'
+                where id = :id""")
+    int approve(@Bind("id") int id, @Bind("user") int userid)
+
+    @SqlUpdate("""update accounting_trans set
+                    approved_by = null,
+                    approved = null,
+                    status = 'Rejected'
+                where id = :id""")
+    int reject(@Bind("id") int id, @Bind("user") int userid)
+
 }

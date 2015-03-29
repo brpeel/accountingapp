@@ -11,6 +11,7 @@ import org.spsu.accounting.data.dbi.TransactionDBI
 import org.spsu.accounting.data.dbi.TransactionEntryDBI
 import org.spsu.accounting.data.domain.AccountDO
 import org.spsu.accounting.data.domain.TransactionDO
+import org.spsu.accounting.data.domain.UserDO
 import org.spsu.accounting.resource.base.BaseResource
 
 import javax.servlet.http.HttpServletRequest
@@ -45,34 +46,25 @@ class TransactionResource extends BaseResource<DAO<TransactionDO>> {
     }
 
     @PATCH
-    @Path("submit")
-    @Produces(MediaType.APPLICATION_JSON)
-    Response submit( @Context HttpServletRequest request, @QueryParam("id") int id){
-        int userid = request.getAttribute("userid")
-
-        TransactionDO trans = get(id)
-
-    }
-
-    @PATCH
     @Path("approve")
     @Produces(MediaType.APPLICATION_JSON)
     Response approve( @Context HttpServletRequest request, @QueryParam("id") int id){
-        int userid = request.getAttribute("userid")
 
-        TransactionDO trans = get(id)
+        int userid = request.getAttribute("userid")
+        dao.approve(id, userid)
+
+        return Response.ok().build()
     }
 
     @PATCH
     @Path("reject")
     @Produces(MediaType.APPLICATION_JSON)
     Response reject( @Context HttpServletRequest request, @QueryParam("id") int id){
-        return transition(request, id, "Reject")
+
+        int userid = request.getAttribute("userid")
+        dao.reject(id, userid)
+
+        return Response.ok().build()
     }
 
-    Response transition(HttpServletRequest request, int id, String status){
-
-
-
-    }
 }

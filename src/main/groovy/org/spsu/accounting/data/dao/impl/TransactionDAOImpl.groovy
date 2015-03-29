@@ -7,6 +7,7 @@ import org.spsu.accounting.data.dbi.TransactionEntryDBI
 import org.spsu.accounting.data.domain.BaseDO
 import org.spsu.accounting.data.domain.TransactionDO
 import org.spsu.accounting.data.domain.TransactionEntryDO
+import org.spsu.accounting.data.domain.UserDO
 
 import javax.ws.rs.WebApplicationException
 import javax.ws.rs.core.Response
@@ -170,5 +171,20 @@ class TransactionDAOImpl extends DAOImpl<TransactionDO> implements TransactionDA
     boolean creditsEqualDebits(TransactionDO obj){
 
         return obj.sumCredits() == obj.sumDebits()
+    }
+
+
+    @Override
+    void approve(int id, UserDO user) {
+        user.requirePermission("ApproveTrans")
+        TransactionDO trans = get(id, true)
+        dbi.approve(id, user.id)
+    }
+
+    @Override
+    void reject(int id, UserDO user) {
+        user.requirePermission("RejectTrans")
+        TransactionDO trans = get(id, true)
+        dbi.reject(id, user.id)
     }
 }

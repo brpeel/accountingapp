@@ -4,16 +4,21 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import org.joda.time.DateTime
 import org.spsu.accounting.data.DBConnection
 import org.spsu.accounting.data.dbi.DocumentDBI
+import org.spsu.accounting.data.dbi.PermissionDBI
 import org.spsu.accounting.data.dbi.TransactionDBI
 import org.spsu.accounting.data.dbi.TransactionEntryDBI
 import org.spsu.accounting.data.domain.TransactionDO
 import org.spsu.accounting.data.domain.TransactionEntryDO
+import org.spsu.accounting.data.domain.UserDO
 import org.spsu.accounting.resource.TransactionResource
 import spock.lang.Specification
 import spock.lang.Unroll
+import sun.security.provider.certpath.OCSPResponse
 
 import javax.validation.Validation
 import javax.validation.ValidatorFactory
+import javax.ws.rs.WebApplicationException
+import javax.ws.rs.core.Response
 
 /**
  * Created by bpeel on 3/22/15.
@@ -33,6 +38,8 @@ class TransactionDAOImplTest extends Specification {
 
     void setupSpec(){
         //stubbedDBI = DBConnection.onDemand(TransactionDBI)
+        PermissionDAOImpl pDao = new PermissionDAOImpl(dbi: DBConnection.onDemand(PermissionDBI))
+        pDao.loadPermissions()
     }
 
     TransactionDO newTrans(Integer id){
@@ -168,4 +175,68 @@ class TransactionDAOImplTest extends Specification {
         result?.description?.toLowerCase() =~ "test"
     }
 
+    def "Managers can approve transactions"(){
+        given:
+        UserDO user = new UserDO(id: 2, role:50)
+
+        dao.dbi = DBConnection.onDemand(TransactionDBI)
+        DBConnection.clearTable("accounting_trans")
+        transaction.reportedBy = 1
+        int transId = dao.create(transaction)
+
+        when:
+        dao.approve(transId, user)
+        transaction = dao.get(transId)
+
+        then:
+        transaction.status == "Approved"
+        transaction.approvedBy == user.id
+        transaction.approved != null
+    }
+
+    def "Managers can reject transactions"(){
+        given:
+        UserDO user = new UserDO(id:2, role:50)
+
+        dao.dbi = DBConnection.onDemand(TransactionDBI)
+        DBConnection.clearTable("accounting_trans")
+        transaction.reportedBy = 1
+        int transId = dao.create(transaction)
+
+        when:
+        dao.reject(transId, user)
+        transaction = dao.get(transId)
+
+        then:
+        transaction.status == "Rejected"
+        transaction.approved == null
+        transaction.approvedBy == null
+    }
+
+    def "Ordinary Users cannot approve transactions"(){
+        given:
+        UserDO user = new UserDO(id: 3, role:10)
+
+        when:
+        dao.approve(1, user)
+
+        then:
+        0 * dbi.update(_)
+        WebApplicationException exception = thrown(WebApplicationException)
+        exception.response.status == Response.Status.FORBIDDEN.statusCode
+    }
+
+    def "Ordinary Users cannot reject transactions"(){
+        given:
+        UserDO user = new UserDO(id:3, role:10)
+
+        when:
+        dao.reject(1, user)
+
+        then:
+        0 * dbi.update(_)
+
+        WebApplicationException exception = thrown(WebApplicationException)
+        exception.response.status == Response.Status.FORBIDDEN.statusCode
+    }
 }

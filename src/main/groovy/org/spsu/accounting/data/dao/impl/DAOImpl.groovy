@@ -28,11 +28,18 @@ public class DAOImpl<T extends BaseDO> implements DAO<T> {
     }
 
     @Override
-    public T get(id){
-        if (id == null)
-            return null
+    public T get(id, boolean required = false){
+        if (id == null) {
+            if (!required)
+                return null
+            throw new WebApplicationException(Response.status(Response.Status.NOT_FOUND).entity("Id not set").build());
+        }
 
-        return dbi.get(id)
+        T object = dbi.get(id)
+        if (!object && required)
+            throw new WebApplicationException(Response.status(Response.Status.NOT_FOUND).build());
+
+        return object
     }
 
     @Override

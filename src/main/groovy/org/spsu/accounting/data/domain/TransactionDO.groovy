@@ -6,10 +6,10 @@ import org.joda.time.DateTime
 public class TransactionDO extends BaseDO{
 
 	@JsonProperty("reported_by")
-	int reportedBy
+	Integer reportedBy
 
 	@JsonProperty("approved_by")
-	int approvedBy
+	Integer approvedBy
 
 	@JsonProperty("reported")
 	DateTime reported

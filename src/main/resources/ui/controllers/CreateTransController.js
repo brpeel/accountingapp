@@ -12,7 +12,6 @@ function CreateTransController($rootScope, $scope, $http, $window, $location) {
     $rootScope.transaction = null;
     $rootScope.status = "Reported";
     $rootScope.showSave = true;
-    $rootScope.showSubmit = false;
     $rootScope.showApprove = false;
 
     $scope.fetchOptions = function() {
@@ -36,18 +35,11 @@ function CreateTransController($rootScope, $scope, $http, $window, $location) {
                 var status = data.status.toLocaleLowerCase();
 
                 if (status == "reported"){
-                    $rootScope.showSave = false;
-                    $rootScope.showSubmit = true;
+                    $rootScope.showSave = true;
                     $rootScope.showApprove = false;
-                }
-                else if (status == "submitted"){
-                    $rootScope.showSave = false;
-                    $rootScope.showSubmit = false;
-                    $rootScope.showApprove = true;
                 }
                 else {
                     $rootScope.showSave = false;
-                    $rootScope.showSubmit = false;
                     $rootScope.showApprove = false;
                 }
             })
@@ -83,18 +75,32 @@ function CreateTransController($rootScope, $scope, $http, $window, $location) {
         $rootScope.tForm.entry.splice(index,1)
     };
 
-    $rootScope.submit = function(){
-        console.log('Submit Transaction = '+$rootScope.transaction)
-    };
-
     $rootScope.approve = function(){
         console.log('Approve Transaction = '+$rootScope.transaction)
+        $http.patch('api/transaction/approve?id=transaction'+trans,trans)
+            .success(function(data, status, headers, config){
 
+                $location.path("/transactions")
+            })
+            .
+            error(function(data, status, headers, config) {
+
+                $scope.errormessage = data;
+            });
     };
 
     $rootScope.reject = function(){
         console.log('Reject Transaction = '+$rootScope.transaction)
+        $http.patch('api/transaction/reject?id=transaction'+trans,trans)
+            .success(function(data, status, headers, config){
 
+                $location.path("/transactions")
+            })
+            .
+            error(function(data, status, headers, config) {
+
+                $scope.errormessage = data;
+            });
     };
 
     $scope.fetchTrans()

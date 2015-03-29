@@ -69,7 +69,14 @@ public enum PermissionSet {
     }
 
     public static boolean hasPermission(Integer role, String permission){
-        return hasPermission(role, new Permission(permission))
+        permission = permission?.toLowerCase()
+
+        boolean hasPermission = false
+        getPermissions(role)?.each(){ Permission perm ->
+            if (perm.permission.toLowerCase() == permission)
+                hasPermission = true
+        }
+        return hasPermission
     }
 
     public static Set<Permission> getPermissions(Integer role){

@@ -3,6 +3,9 @@ package org.spsu.accounting.data.domain
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
 
+import javax.ws.rs.WebApplicationException
+import javax.ws.rs.core.Response
+
 public class UserDO extends ActiveBaseDO{
 
 	@JsonProperty("username")
@@ -26,7 +29,13 @@ public class UserDO extends ActiveBaseDO{
     @JsonProperty("role")
     int role
 
-    public boolean hasPermission(Permission permission){
+    public boolean hasPermission(String permission){
         return PermissionSet.hasPermission(role, permission)
+    }
+
+    public void requirePermission(String permission){
+        if (!hasPermission(permission))
+            throw new WebApplicationException(Response.status(Response.Status.FORBIDDEN).build());
+
     }
 }

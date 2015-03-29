@@ -19,6 +19,8 @@ interface DAO<T extends BaseDO>{
 
     T get(id) throws SQLException
 
+    T get(id, boolean required) throws SQLException
+
     def create(T obj) throws SQLException
 
     int save(T obj) throws SQLException
