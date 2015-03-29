@@ -13,6 +13,16 @@ function CreateTransController($rootScope, $scope, $http, $window, $location) {
     $rootScope.status = "Reported";
     $rootScope.showSave = true;
     $rootScope.showApprove = false;
+    var canApprove = false;
+
+    var permissions = $rootScope.permissions
+    for (var i in permissions){
+        var p = permissions[i]
+        console.log("Checking permission : "+ p.permission)
+        if (p.permission == "ApproveTrans"){
+            canApprove = true
+        }
+    }
 
     $scope.fetchOptions = function() {
         $http.get('/api/account/all').success(function(data){
@@ -40,7 +50,7 @@ function CreateTransController($rootScope, $scope, $http, $window, $location) {
                 }
                 else {
                     $rootScope.showSave = false;
-                    $rootScope.showApprove = false;
+                    $rootScope.showApprove = canApprove;
                 }
             })
             .error(function(data, status, headers, config) {
