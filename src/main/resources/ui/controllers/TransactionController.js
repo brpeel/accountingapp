@@ -1,62 +1,27 @@
 'use strict';
 
-var TransactionController = function($rootScope, $scope, $http, $window, $location) {
+var TransactionController = function($rootScope, $scope, $http, $window, $location, $filter, ngTableParams) {
 
+    var data = [];
 
-    $scope.createLabel = null;
-    $scope.createIcon = null;
-    var permissions = $rootScope.permissions;
-    for (var i in permissions){
-        var p = permissions[i]
-        if (p.permission == "createTrans"){
-            $scope.createLabel = p.label
-            $scope.createIcon = p.style
-        }
-    };
+    $http.get('/api/transaction/all').success(function (transactions) {
 
-    $scope.fetchTrans = function() {
+        data = transactions;
 
-    };
-    $http.get('/api/transaction/all').success(function(data){
-        var grid_data = []
+        $scope.tableParams = new ngTableParams({
+            page: 1,            // show first page
+            count: 10           // count per page
+        }, {
+            total: data.length, // length of data
+            getData: function($defer, params) {
+                // use build-in angular filter
 
-        for (var i in data) {
-            var trans = data[i]
-            console.log('Trans = '+JSON.stringify(trans))
-            var credits = 0.0
-            var debits = 0.0
-            var accounts = ""
+                var orderedData = params.sorting() ?
+                    $filter('orderBy')(data, params.orderBy()) :
+                    data;
 
-            for (var j in trans.entries){
-                var entry = trans.entries[j]
-                console.log('Entry = '+JSON.stringify(entry))
-
-                if (entry.debit)
-                    debits += entry.amount
-                else
-                    credits += entry.amount
-
-                if (accounts == "")
-                    accounts = entry.accountid
-                else
-                    accounts = ", "+entry.accountid
+                $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
             }
-
-
-            grid_data.push({TransId: trans.id,
-                Description: trans.description,
-                Reported: trans.reported,
-                Status: trans.status,
-                TotalCredits: credits,
-                TotalDedits: debits,
-                ApprovedBy: (trans.approved_by == 0 ? null : trans.approved_by),
-                Approved: trans.approved,
-                Accounts: accounts
-            })
-        }
-
-        $scope.myData = grid_data;
+        });
     });
-
-    $scope.fetchTrans();
 };

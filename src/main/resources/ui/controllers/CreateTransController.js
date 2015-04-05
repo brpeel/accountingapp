@@ -1,5 +1,5 @@
 'use strict';
-function CreateTransController($rootScope, $scope, $http, $window, $location) {
+function CreateTransController($rootScope, $scope, $http, $window, $location, $routeParams) {
 
     var self = this;
 
@@ -11,18 +11,6 @@ function CreateTransController($rootScope, $scope, $http, $window, $location) {
     $rootScope.accounts = [];
     $rootScope.transaction = null;
     $rootScope.status = "Reported";
-    $rootScope.showSave = true;
-    $rootScope.showApprove = false;
-    var canApprove = false;
-
-    var permissions = $rootScope.permissions
-    for (var i in permissions){
-        var p = permissions[i]
-        console.log("Checking permission : "+ p.permission)
-        if (p.permission == "ApproveTrans"){
-            canApprove = true
-        }
-    }
 
     $scope.fetchOptions = function() {
         $http.get('/api/account/all').success(function(data){
@@ -30,38 +18,15 @@ function CreateTransController($rootScope, $scope, $http, $window, $location) {
         });
     };
 
-    $scope.fetchTrans = function() {
-        var id = $location.search().id
-        if (typeof id == "undefined" || !id)
-            return;
-
-        console.log('Fetching Transaction Id with id :'+id)
-        $http.get('/api/transaction/'+id)
-            .success(function(data){
-                console.log('Trans = '+JSON.stringify(data))
-                $rootScope.tForm.description = data.description
-                $rootScope.tForm.entry = data.entries
-                $rootScope.transaction = data.id;
-                var status = data.status.toLocaleLowerCase();
-
-                if (status == "reported"){
-                    $rootScope.showSave = true;
-                    $rootScope.showApprove = false;
-                }
-                else {
-                    $rootScope.showSave = false;
-                    $rootScope.showApprove = canApprove;
-                }
-            })
-            .error(function(data, status, headers, config) {
-
-                $scope.errormessage = data;
-            });;
-    };
 
     $scope.save = function(){
         console.log('Save Transaction');
+
         var trans = {description:$scope.tForm.description, entries:$scope.tForm.entry};
+
+        var id = $routeParams.id
+        if (typeof id != "undefined" && id)
+            trans.id = id
 
         console.log('Trans = '+JSON.stringify(trans))
 
@@ -85,34 +50,6 @@ function CreateTransController($rootScope, $scope, $http, $window, $location) {
         $rootScope.tForm.entry.splice(index,1)
     };
 
-    $rootScope.approve = function(){
-        console.log('Approve Transaction = '+$rootScope.transaction)
-        $http.patch('api/transaction/approve?id=transaction'+trans,trans)
-            .success(function(data, status, headers, config){
 
-                $location.path("/transactions")
-            })
-            .
-            error(function(data, status, headers, config) {
-
-                $scope.errormessage = data;
-            });
-    };
-
-    $rootScope.reject = function(){
-        console.log('Reject Transaction = '+$rootScope.transaction)
-        $http.patch('api/transaction/reject?id=transaction'+trans,trans)
-            .success(function(data, status, headers, config){
-
-                $location.path("/transactions")
-            })
-            .
-            error(function(data, status, headers, config) {
-
-                $scope.errormessage = data;
-            });
-    };
-
-    $scope.fetchTrans()
     $scope.fetchOptions()
 };

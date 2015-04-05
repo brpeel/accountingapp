@@ -16,6 +16,7 @@ import org.spsu.accounting.resource.base.BaseResource
 
 import javax.servlet.http.HttpServletRequest
 import javax.ws.rs.POST
+import javax.ws.rs.PUT
 import javax.ws.rs.Path
 import javax.ws.rs.Produces
 import javax.ws.rs.QueryParam
@@ -45,8 +46,16 @@ class TransactionResource extends BaseResource<DAO<TransactionDO>> {
         return postObject(trans)
     }
 
-    @PATCH
-    @Path("approve")
+    @PUT
+    @Path("{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    Response update( @Context HttpServletRequest request, @QueryParam("id") int id, Map values){
+
+        return super.patchObject(id, values)
+    }
+
+    @PUT
+    @Path("approve/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     Response approve( @Context HttpServletRequest request, @QueryParam("id") int id){
 
@@ -56,8 +65,8 @@ class TransactionResource extends BaseResource<DAO<TransactionDO>> {
         return Response.ok().build()
     }
 
-    @PATCH
-    @Path("reject")
+    @PUT
+    @Path("reject/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     Response reject( @Context HttpServletRequest request, @QueryParam("id") int id){
 

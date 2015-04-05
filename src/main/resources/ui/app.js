@@ -1,6 +1,6 @@
 	// create the module and name it accountingApp
 	//var accountingApp = angular.module('accountingApp', ['ngRoute', 'accountingApp.about']);
-	var accountingApp = angular.module('accountingApp', ['ngRoute', 'ui.grid']);
+	var accountingApp = angular.module('accountingApp', ['ngRoute', 'ui.grid', 'ngTable']);
 
 	// configure our routes
 	accountingApp.config(function($routeProvider) {
@@ -25,8 +25,8 @@
                 templateUrl : 'ui/templates/transactions.html',
                 controller  : 'transactionController'
             })
-            .when('/transaction/*', {
-                templateUrl : 'ui/templates/transaction.html',
+            .when('/transaction/:id', {
+                templateUrl : 'ui/templates/createTransactions.html',
                 controller  : 'editTransController'
             })
             .when('/createTrans', {
@@ -52,10 +52,11 @@
             .when('/', {
                 templateUrl : 'ui/templates/home.html',
                 controller  : 'HomeController'
-            })
-            .otherwise({
-                redirectTo: '/'
-            });
+            }//)
+           // .otherwise({
+    //            redirectTo: '/'
+    //        }
+    );
 	}).run( function($rootScope, $location, $window) {
 
         // register listener to watch route changes
@@ -109,15 +110,15 @@
 
 	});
 
-    accountingApp.controller('transactionController', function($rootScope, $scope, $http, $window, $location) {
-        var controller = new TransactionController($rootScope, $scope, $http,  $window, $location)
+    accountingApp.controller('transactionController', function($rootScope, $scope, $http, $window, $location, $filter, ngTableParams) {
+        var controller = new TransactionController($rootScope, $scope, $http,  $window, $location, $filter, ngTableParams)
 
     });
 
-    accountingApp.controller('editTransController', function($rootScope, $scope, $http,  $window, $location) {
+    accountingApp.controller('editTransController', function($rootScope, $scope, $http,  $window, $location, $routeParams) {
         // create a message to display in our view
         console.log('In Edit transaction controller')
-        var controller = new EditTransController($rootScope, $scope, $http,  $window, $location)
+        var controller = new EditTransController($rootScope, $scope, $http,  $window, $location, $routeParams)
     });
 
     accountingApp.controller('createTransController', function($rootScope, $scope, $http,  $window, $location) {

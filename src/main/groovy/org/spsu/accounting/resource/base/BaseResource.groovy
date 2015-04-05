@@ -147,7 +147,7 @@ abstract class BaseResource<T extends DAO<BaseDO>> {
         if (id == null)
             throw new WebApplicationException(createResponse(Response.Status.BAD_REQUEST, "The id url parameter is required"))
 
-        if (!values.id || values.id != id)
+        if (values.id && values.id != id)
             throw new WebApplicationException(createResponse(Response.Status.BAD_REQUEST, "The id url parameter must match the id in the request body"))
     }
 
