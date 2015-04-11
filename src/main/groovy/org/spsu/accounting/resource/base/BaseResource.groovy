@@ -174,7 +174,7 @@ abstract class BaseResource<T extends DAO<BaseDO>> {
             throw new WebApplicationException(createResponse(Response.Status.BAD_REQUEST, "Empty request body"))
     }
 
-    protected int getUser(HttpServletRequest request){
+    protected int getUserId(HttpServletRequest request){
 
         Integer userid = request.getAttribute("userid")
         if (userid == null)
@@ -230,11 +230,11 @@ abstract class BaseResource<T extends DAO<BaseDO>> {
         return doObj
     }
 
-    protected UserDO getUserId(HttpServletRequest request){
+    protected UserDO getUser(HttpServletRequest request){
 
-        UserDO user = userDAO.get(request.getAttribute("userid"))
+        UserDO user = userDAO.get(getUserId(request))
         if (!user)
-            throw new WebApplicationException(Response.Status.FORBIDDEN)
+            throw new WebApplicationException(Response.Status.UNAUTHORIZED)
         return user
     }
 

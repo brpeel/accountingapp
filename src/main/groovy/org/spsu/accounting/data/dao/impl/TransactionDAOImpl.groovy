@@ -56,6 +56,8 @@ class TransactionDAOImpl extends DAOImpl<TransactionDO> implements TransactionDA
         Timestamp start = (!startRange ? null : new Timestamp(startRange.millis))
         Timestamp end = (!endRange ? null : new Timestamp(endRange.millis))
 
+        logger.info("Executing search using => id:$id, keyword:$keyword, start: $start, end:$end")
+
         return dbi.search(id, keyword, start, end)
 
     }
@@ -147,6 +149,9 @@ class TransactionDAOImpl extends DAOImpl<TransactionDO> implements TransactionDA
         if (!creditsEqualDebits(obj))
             messages.add("Total credits must equal total debits")
 
+        if (accountIsCreditedAndDebited(obj))
+            messages.add("Transaction must never allow debiting and crediting of the same account")
+
         obj.entries?.each { TransactionEntryDO entry ->
             List msgs = super.validateObject(entry)
             if (msgs)
@@ -173,6 +178,17 @@ class TransactionDAOImpl extends DAOImpl<TransactionDO> implements TransactionDA
         return obj.sumCredits() == obj.sumDebits()
     }
 
+    boolean accountIsCreditedAndDebited(TransactionDO obj){
+        Set<Integer> creditAccounts = obj.creditAccounts()
+        Set<Integer> debitAccounts = obj.debitAccounts()
+
+        boolean accountInBoth = false
+        debitAccounts?.each{ it ->
+            accountInBoth = accountInBoth || creditAccounts.contains(it)
+        }
+
+        return accountInBoth
+    }
 
     @Override
     void approve(int id, UserDO user) {

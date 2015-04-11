@@ -59,6 +59,26 @@ public class TransactionDO extends BaseDO{
         }
     }
 
+    Set<Integer> debitAccounts(){
+        Set<Integer> accounts = new HashSet<Integer>()
+        entries?.each {def entry ->
+            if (entry && entry.debit)
+                accounts.add(entry.accountId)
+        }
+        return accounts
+    }
+
+
+    Set<Integer> creditAccounts(){
+        Set<Integer> accounts = new HashSet<Integer>()
+        entries?.each {def entry ->
+            if (entry && !entry.debit)
+                accounts.add(entry.accountId)
+        }
+        return accounts
+    }
+
+
     Float sumDebits(){
         float amount = 0
         if (!entries)

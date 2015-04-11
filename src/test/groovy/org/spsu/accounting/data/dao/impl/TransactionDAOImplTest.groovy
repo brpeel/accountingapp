@@ -13,7 +13,6 @@ import org.spsu.accounting.data.domain.UserDO
 import org.spsu.accounting.resource.TransactionResource
 import spock.lang.Specification
 import spock.lang.Unroll
-import sun.security.provider.certpath.OCSPResponse
 
 import javax.validation.Validation
 import javax.validation.ValidatorFactory
@@ -36,13 +35,13 @@ class TransactionDAOImplTest extends Specification {
     TransactionDO transaction
     TransactionResource resource
 
-    void setupSpec(){
+    void setupSpec() {
         //stubbedDBI = DBConnection.onDemand(TransactionDBI)
         PermissionDAOImpl pDao = new PermissionDAOImpl(dbi: DBConnection.onDemand(PermissionDBI))
         pDao.loadPermissions()
     }
 
-    TransactionDO newTrans(Integer id){
+    TransactionDO newTrans(Integer id) {
         TransactionDO transaction
         if (id)
             transaction = new TransactionDO(id: id, reportedBy: 1, description: "Test transaction")
@@ -51,7 +50,7 @@ class TransactionDAOImplTest extends Specification {
 
         transaction.entries = []
         transaction.entries.add(new TransactionEntryDO(amount: 100, debit: false, accountId: 1))
-        transaction.entries.add(new TransactionEntryDO(amount: 100, debit: true, accountId: 1))
+        transaction.entries.add(new TransactionEntryDO(amount: 100, debit: true, accountId: 2))
 
         return transaction
     }
@@ -85,17 +84,17 @@ class TransactionDAOImplTest extends Specification {
         msg == expectedMsg
 
         where:
-        creditEntry                                       | debitEntry                                       | expectedMsg
-        null                                              | null                                             | "Transaction must have credit and debt account entries"
-        new TransactionEntryDO(amount: 100, debit: false) | new TransactionEntryDO(amount: 200, debit: true) | "Total credits must equal total debits"
-        new TransactionEntryDO(amount: 100, debit: false) | new TransactionEntryDO(amount: 100, debit: true) | null
+        creditEntry                                                     | debitEntry                                                     | expectedMsg
+        null                                                            | null                                                           | "Transaction must have credit and debt account entries"
+        new TransactionEntryDO(accountId: 1, amount: 100, debit: false) | new TransactionEntryDO(accountId: 2, amount: 200, debit: true) | "Total credits must equal total debits"
+        new TransactionEntryDO(accountId: 3, amount: 100, debit: false) | new TransactionEntryDO(accountId: 4, amount: 100, debit: true) | null
 
     }
 
     def "System should allow recording of more than one debit or credit for each transaction"() {
         given:
-        transaction.entries.add(new TransactionEntryDO(amount: 200, debit: false, accountId: 2))
-        transaction.entries.add(new TransactionEntryDO(amount: 200, debit: true, accountId: 2))
+        transaction.entries.add(new TransactionEntryDO(amount: 200, debit: false, accountId: 3))
+        transaction.entries.add(new TransactionEntryDO(amount: 200, debit: true, accountId: 4))
 
         when:
         dao.create(transaction)
@@ -107,25 +106,25 @@ class TransactionDAOImplTest extends Specification {
 
     def "The user must have the ability to upload one or more source documents for each transaction"() {
         given:
-        documentDBI.get(_,_) >> null
+        documentDBI.get(_, _) >> null
 
         when:
         dao.addDocument(1, "something")
         dao.addDocument(1, "something new")
 
         then:
-        2 * documentDBI.insert(_,_)
+        2 * documentDBI.insert(_, _)
     }
 
     def "The user must have the ability to remove documents"() {
         given:
-        documentDBI.get(_,_) >> null
+        documentDBI.get(_, _) >> null
 
         when:
         dao.removeDocument(1, "something")
 
         then:
-        1 * documentDBI.delete(_,_)
+        1 * documentDBI.delete(_, _)
     }
 
     def "Each transaction will automatically be assigned the current date and time when the transaction was recorded"() {
@@ -160,6 +159,7 @@ class TransactionDAOImplTest extends Specification {
         int newid = dao.create(newTrans())
         int diffname = dao.create(newTrans())
 
+        DBConnection.execute("update accounting_trans set reported = '2015-03-15' where id = $id")
         DBConnection.execute("update accounting_trans set id = 10, reported = '2015-01-01' where id = $oldid")
         DBConnection.execute("update accounting_trans set id = 11, reported = '2016-01-01' where id = $newid")
         DBConnection.execute("update accounting_trans set id = 12, description = 'Some other desc' where id = $diffname")
@@ -175,9 +175,9 @@ class TransactionDAOImplTest extends Specification {
         result?.description?.toLowerCase() =~ "test"
     }
 
-    def "Managers can approve transactions"(){
+    def "Managers can approve transactions"() {
         given:
-        UserDO user = new UserDO(id: 2, role:50)
+        UserDO user = new UserDO(id: 2, role: 50)
 
         dao.dbi = DBConnection.onDemand(TransactionDBI)
         DBConnection.clearTable("accounting_trans")
@@ -194,9 +194,9 @@ class TransactionDAOImplTest extends Specification {
         transaction.approved != null
     }
 
-    def "Managers can reject transactions"(){
+    def "Managers can reject transactions"() {
         given:
-        UserDO user = new UserDO(id:2, role:50)
+        UserDO user = new UserDO(id: 2, role: 50)
 
         dao.dbi = DBConnection.onDemand(TransactionDBI)
         DBConnection.clearTable("accounting_trans")
@@ -213,9 +213,9 @@ class TransactionDAOImplTest extends Specification {
         transaction.approvedBy == null
     }
 
-    def "Ordinary Users cannot approve transactions"(){
+    def "Ordinary Users cannot approve transactions"() {
         given:
-        UserDO user = new UserDO(id: 3, role:10)
+        UserDO user = new UserDO(id: 3, role: 10)
 
         when:
         dao.approve(1, user)
@@ -226,9 +226,9 @@ class TransactionDAOImplTest extends Specification {
         exception.response.status == Response.Status.FORBIDDEN.statusCode
     }
 
-    def "Ordinary Users cannot reject transactions"(){
+    def "Ordinary Users cannot reject transactions"() {
         given:
-        UserDO user = new UserDO(id:3, role:10)
+        UserDO user = new UserDO(id: 3, role: 10)
 
         when:
         dao.reject(1, user)
@@ -238,5 +238,19 @@ class TransactionDAOImplTest extends Specification {
 
         WebApplicationException exception = thrown(WebApplicationException)
         exception.response.status == Response.Status.FORBIDDEN.statusCode
+    }
+
+    def "Transaction must never allow debiting and crediting of the same account in a given transaction"() {
+        given:
+        transaction.entries.add(new TransactionEntryDO(amount: 200, debit: false, accountId: 1))
+        transaction.entries.add(new TransactionEntryDO(amount: 200, debit: true, accountId: 1))
+
+
+        when:
+        List<String> msgs =  dao.validateObject(transaction)
+        Set<String> msgSet = msgs?.toSet()
+
+        then:
+        msgSet.contains("Transaction must never allow debiting and crediting of the same account")
     }
 }

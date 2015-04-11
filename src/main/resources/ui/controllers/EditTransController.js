@@ -97,13 +97,12 @@ function EditTransController($rootScope, $scope, $http, $window, $location, $rou
         var trans = {description:$scope.tForm.description, entries:$scope.tForm.entry};
         var id = $rootScope.transaction
 
-        $http.put('api/transaction/approve?id='+id,trans)
+        $http.put('api/transaction/approve/id='+id,trans)
             .success(function(data, status, headers, config){
 
                 $location.path("/transactions")
             })
-            .
-            error(function(data, status, headers, config) {
+            .error(function(data, status, headers, config) {
 
                 $scope.errormessage = data;
             });
@@ -113,13 +112,12 @@ function EditTransController($rootScope, $scope, $http, $window, $location, $rou
         console.log('Reject Transaction = '+$rootScope.transaction)
         var trans = {description:$scope.tForm.description, entries:$scope.tForm.entry};
         var id = $rootScope.transaction
-        $http.put('api/transaction/reject?id='+id,trans)
+        $http.put('api/transaction/reject/id='+id,trans)
             .success(function(data, status, headers, config){
 
                 $location.path("/transactions")
             })
-            .
-            error(function(data, status, headers, config) {
+            .error(function(data, status, headers, config) {
 
                 $scope.errormessage = data;
             });

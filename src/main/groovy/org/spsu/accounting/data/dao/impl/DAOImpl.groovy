@@ -52,7 +52,7 @@ public class DAOImpl<T extends BaseDO> implements DAO<T> {
         if (!existing){
             List validationMessages = validateObject(object)
 
-            if (validationMessages)
+            if (validationMessages && validationMessages.size() > 0)
                 throw new WebApplicationException(Response.status(Response.Status.BAD_REQUEST).entity(validationMessages).build());
             def id = dbi.insert(object)
             return object.id = id
