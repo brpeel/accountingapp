@@ -10,7 +10,7 @@
         </div>
         <div class="panel panel-default">
             <div class="panel-heading">Entries:</div>
-            <div id="entryGroup" ng-repeat="item in tForm.entry" class="form-inline panel-body">
+                <div id="entryGroup" ng-repeat="item in tForm.entry" class="form-inline panel-body">
                 <div class="form-group col-md-4">
                     <label for="account">Account</label>
 
@@ -25,8 +25,8 @@
 
                     <div class="input-group">
                         <div class="input-group-addon">$</div>
-                        <input type="number" ng-model="item.amount" class="form-control" name="amount"
-                               id="amount" placeholder="Enter Amount"/>
+                        <input type="text" ng-model="item.amount" class="form-control" name="amount"
+                               id="amount"/>
                     </div>
                 </div>
 
@@ -47,27 +47,29 @@
                 <div class="col-md-1" ng-if="tForm.entry.length>1">
                     <button type="button" class="btn btn-default" ng-click="removeEntry(item)">Delete</button>
                 </div>
+
+            </div>
+
+        </div>
+        <div class="form-group form-inline col-xs-10">
+            <div class="center-block">
+                <button type="button" class="btn btn-default" ng-click="addEntry()" ng-show="showSave">Add Entry</button>
             </div>
         </div>
-
         <div class="form-group form-inline col-xs-10">
             <div class="col-md-2"></div>
             <div class="col-md-2">
-                <button type="button" class="btn btn-default" ng-click="addEntry()" ng-show="showSave">Add Entry</button>
+                <button type="button" class="btn btn-link" ng-click="cancel()">Cancel</button>
             </div>
-            <div class="col-md-2"></div>
+
             <div class="col-md-2">
                 <button type="submit" class="btn btn-primary" ng-click="save()" ng-show="showSave">Submit</button>
             </div>
             <div class="col-md-2">
-                <button type="submit" class="btn btn-primary" ng-click="submit()" ng-show="showSubmit">Submit</button>
-            </div>
-            <div class="col-md-2"></div>
-            <div class="col-md-2">
-                <button type="approve" class="btn btn-primary" ng-click="approve()" ng-show="showApprove">Approve</button>
+                <button type="approve" class="btn btn-success" ng-click="approve()" ng-show="showApprove">Approve</button>
             </div>
             <div class="col-md-2">
-                <button type="reject" class="btn btn-primary" ng-click="reject()"ng-show="showApprove">Reject</button>
+                <button type="reject" class="btn btn-danger" ng-click="reject()"ng-show="showApprove">Reject</button>
             </div>
         </div>
     </form>

@@ -11,13 +11,21 @@ function CreateTransController($rootScope, $scope, $http, $window, $location, $r
     $rootScope.accounts = [];
     $rootScope.transaction = null;
     $rootScope.status = "Reported";
+    var permissions = $rootScope.permissions
+    for (var i in permissions){
+        var p = permissions[i]
+        console.log("Checking permission : "+ p.permission)
+        if (p.permission == "createTrans"){
+            console.log("Found")
+            $rootScope.showSave = true
+        }
+    }
 
     $scope.fetchOptions = function() {
         $http.get('/api/account/all').success(function(data){
             $rootScope.accounts = data;
         });
     };
-
 
     $scope.save = function(){
         console.log('Save Transaction');
@@ -41,6 +49,12 @@ function CreateTransController($rootScope, $scope, $http, $window, $location, $r
                 $scope.errormessage = data;
             });
     };
+
+
+    $rootScope.cancel = function(){
+        $location.path("/transactions")
+    };
+
 
     $rootScope.addEntry = function(){
         $rootScope.tForm.entry.push({accountid:null, amount:null, debit:null})

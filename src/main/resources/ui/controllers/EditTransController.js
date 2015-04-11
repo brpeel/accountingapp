@@ -71,7 +71,7 @@ function EditTransController($rootScope, $scope, $http, $window, $location, $rou
         console.log('Save Transaction');
         var trans = {description:$scope.tForm.description, entries:$scope.tForm.entry};
         var id = $rootScope.transaction
-        $http.put('api/transaction/'+id,trans)
+        $http.put('api/transaction/update/'+id,trans)
             .success(function(data, status, headers, config){
 
                 $location.path("/transactions")

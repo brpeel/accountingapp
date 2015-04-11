@@ -47,7 +47,7 @@ class TransactionResource extends BaseResource<DAO<TransactionDO>> {
     }
 
     @PUT
-    @Path("update/{id}")
+    @Path("/update/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     Response update( @Context HttpServletRequest request, @QueryParam("id") int id, Map values){
 
