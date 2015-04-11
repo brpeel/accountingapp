@@ -389,3 +389,64 @@ CREATE TABLE account_seq(
 insert into account_seq (seq, category)
   select max(id) + 1, category from account group by category;
 
+
+insert into accounting_trans (reported_by, approved_by, reported, approved, status, description)
+  select 1, 4, now(), now(), 'Approved', 'Fielding invested cash to start the business, $20,000'
+  UNION ALL select 1, 4, now(), now(), 'Approved', 'Paid Bollhorst Real Estate for December office rent, $1,000'
+  UNION ALL select 1, 4, now(), now(), 'Approved', 'Received cash from Aaron Patton, a client, for services, $2,500'
+  UNION ALL select 1, 4, now(), now(), 'Approved', 'Paid T.Z. Anderson Electric for December heating and light, $75'
+  UNION ALL select 1, 4, now(), now(), 'Approved', 'Received cash Andrew Conder, a client, for services, $2,000'
+  UNION ALL select 1, 4, now(), now(), 'Approved', 'Paid Fichters Super Service for gasoline and oil purchases for the company car, $60'
+  UNION ALL select 1, 4, now(), now(), 'Approved', 'Paid Hillenburg Staffing for temporary secretarial services during the past two weeks, $600'
+  UNION ALL select 1, 4, now(), now(), 'Approved', 'Bought office supplies from Bowers Office Supply on account, $280'
+  UNION ALL select 1, 4, now(), now(), 'Approved', 'Paid Mitchell Telephone Co. for business calls during the past month, 100'
+  UNION ALL select 1, 4, now(), now(), 'Approved', 'Fielding withdrew cash for personal use, $1,100'
+  UNION ALL select 1, 4, now(), now(), 'Approved', 'Made donation to the National Multiple Sclerosis, $100'
+  UNION ALL select 1, 4, now(), now(), 'Approved', 'Received cash from Billy Walters, a client, for services, $2,000'
+  UNION ALL select 1, 4, now(), now(), 'Approved', 'Paid Hillenburg Staffing for temporary secretarial services during the the past two weeks, $600'
+  UNION ALL select 1, 4, now(), now(), 'Approved', 'Made payment on account to Bowers Office Supply, $100'
+;
+
+insert into accounting_trans_entry (trans_id, account_id, amount, debit)
+  select 5, 101, 20000, true
+  UNION select 5, 300, 20000, false
+
+  UNION select 6, 402, 1000, true
+  UNION select 6, 101, 1000, false
+
+  UNION select 7, 101, 2500, true
+  UNION select 7, 501, 2500, false
+
+  UNION select 8, 404, 75, true
+  UNION select 8, 101, 75, false
+
+  UNION select 9, 101, 2000, true
+  UNION select 9, 501, 2000, false
+
+  UNION select 10, 406, 60, true
+  UNION select 10, 101, 60, false
+
+  UNION select 11, 401, 600, true
+  UNION select 11, 101, 600, false
+
+  UNION select 12, 102, 280, true
+  UNION select 12, 202, 280, false
+
+  UNION select 13, 403, 100, true
+  UNION select 13, 101, 100, false
+
+  UNION select 14, 301, 1100, true
+  UNION select 14, 101, 1100, false
+
+  UNION select 15, 405, 100, true
+  UNION select 15, 101, 100, false
+
+  UNION select 16, 101, 2000, true
+  UNION select 16, 501, 2000, false
+
+  UNION select 17, 401, 600, true
+  UNION select 17, 101, 600, false
+
+  UNION select 18, 202, 100, true
+  UNION select 18, 101, 100, false;
+;
