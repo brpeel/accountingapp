@@ -57,4 +57,6 @@ interface TransactionDBI{
                 where id = :id""")
     int reject(@Bind("id") int id, @Bind("user") int userid)
 
+
+
 }

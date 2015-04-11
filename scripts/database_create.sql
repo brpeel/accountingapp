@@ -73,6 +73,7 @@ CREATE TABLE account
    id SERIAL NOT NULL
   ,name VARCHAR(250) NOT NULL
   ,initial_balance DECIMAL(15, 2) NOT NULL
+  ,balance DECIMAL(15, 2) NOT NULL
   ,normal_side VARCHAR(10) NOT NULL
   ,added TIMESTAMP NOT NULL
   ,active BOOLEAN NOT NULL
@@ -82,7 +83,16 @@ CREATE TABLE account
   ,CONSTRAINT PK_Account_id PRIMARY KEY (id)
 );
 
-
+-- Create Table Account
+--------------------------------------------------------------------------------
+CREATE TABLE account_balance
+(
+   id SERIAL NOT NULL
+  ,balance DECIMAL(15, 2) NOT NULL
+  ,year INTEGER NOT NULL
+  ,month INTEGER NOT NULL
+  ,CONSTRAINT PK_Account_id PRIMARY KEY (id)
+);
 -- Create Table Account_Statement
 --------------------------------------------------------------------------------
 CREATE TABLE account_statement

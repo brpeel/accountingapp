@@ -62,6 +62,9 @@ class TransactionResource extends BaseResource<DAO<TransactionDO>> {
         UserDO user = getUser(request)
         dao.approve(id, user)
 
+        //Adjust account balances
+
+
         return Response.ok().build()
     }
 

@@ -35,5 +35,4 @@ interface AccountDBI{
     @SqlQuery("""select seq from account_seq where category = :category""")
     int getSeq(@Bind("category") String category)
 
-
 }

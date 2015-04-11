@@ -12,4 +12,6 @@ interface AccountDAO extends ActiveDAO<AccountDO> {
 
     @Override
     def create(AccountDO account)
+
+    def postTransaction(int transId)
 }

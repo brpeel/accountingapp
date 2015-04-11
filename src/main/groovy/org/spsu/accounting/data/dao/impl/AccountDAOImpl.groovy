@@ -62,4 +62,9 @@ class AccountDAOImpl  extends ActiveDAOImpl<AccountDO> implements AccountDAO{
             return messages
         return null
     }
+
+    @Override
+    def postTransaction(int transId) {
+
+    }
 }
