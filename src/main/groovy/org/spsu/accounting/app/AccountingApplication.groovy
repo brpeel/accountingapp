@@ -71,13 +71,13 @@ class AccountingApplication extends Application<AccountingApplicationConfigurati
 
         final DBI jdbi = createDBI(configuration, environment)
         StartDAO db = new StartDAO(dbi: jdbi.onDemand(StartDBI))
-        logger.info("DB connected = "+(db.test() == 1))
+        logger.info("DB connected = " + (db.test() == 1))
 
         MailConfig mailConfig = configuration.mail
         mailServer = new MailServerImpl(mailConfig)
 
         //registerHealthChecks(configuration, environment, jdbi)
-        PermissionDAO permissionDAO = new PermissionDAOImpl(dbi:jdbi.onDemand(PermissionDBI))
+        PermissionDAO permissionDAO = new PermissionDAOImpl(dbi: jdbi.onDemand(PermissionDBI))
         permissionDAO.loadPermissions()
         registerResources(environment, jdbi)
 
@@ -85,7 +85,7 @@ class AccountingApplication extends Application<AccountingApplicationConfigurati
             mailServer.send(mailConfig.username, "Application Started : ${this.class.simpleName}", "Application Started : ${this.class.simpleName}")
     }
 
-    private DBI createDBI(AccountingApplicationConfiguration configuration, Environment environment){
+    private DBI createDBI(AccountingApplicationConfiguration configuration, Environment environment) {
 
         final DBIFactory factory = new DBIFactory();
 
@@ -93,13 +93,13 @@ class AccountingApplication extends Application<AccountingApplicationConfigurati
         //return null;
     }
 
-    private void registerHealthChecks(AccountingApplicationConfiguration configuration, Environment environment, DBI jdbi){
+    private void registerHealthChecks(AccountingApplicationConfiguration configuration, Environment environment, DBI jdbi) {
 
         def healthDBI = (jdbi ? jdbi.onDemand(HealthCheckDBI) : null)
         //environment.healthChecks().register("database", new DatabaseHealthCheck(healthDBI));
     }
 
-    private void registerResources(Environment environment, DBI jdbi){
+    private void registerResources(Environment environment, DBI jdbi) {
 
 
         environment.jersey().register(new MenuResource(dao: new UserDAOImpl<UserDO>(dbi: jdbi.onDemand(UserDBI))))
@@ -114,10 +114,10 @@ class AccountingApplication extends Application<AccountingApplicationConfigurati
 
     }
 
-    private void registerAuth(Environment environment, DBI jdbi){
+    private void registerAuth(Environment environment, DBI jdbi) {
 
         UserDAO userDAO = new UserDAOImpl(dbi: jdbi.onDemand(UserDBI))
-        environment.jersey().register(new BasicAuthProvider<UserDO>(new AccountingAuthenticator(dao:userDAO), "SUPER SECRET STUFF"));
+        environment.jersey().register(new BasicAuthProvider<UserDO>(new AccountingAuthenticator(dao: userDAO), "SUPER SECRET STUFF"));
 
         environment.servlets().addFilter("SessionFilter", new SessionFilter(dao: userDAO))
                 .addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST), true, "/*");
@@ -129,7 +129,7 @@ class AccountingApplication extends Application<AccountingApplicationConfigurati
         environment.servlets().setSessionHandler(new SessionHandler())
     }
 
-    private void register(BaseResource resource, Environment environment){
+    private void register(BaseResource resource, Environment environment) {
         environment.jersey().register(resource)
     }
 

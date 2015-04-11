@@ -16,6 +16,7 @@ public abstract class BaseMapper<T> implements ResultSetMapper<T> {
     private class DOField{
 
         public final boolean isPrimitive
+        public final boolean isDecimal
         public final String fieldName
         public final String jsonAnnotation
         public final String strippedName
@@ -24,6 +25,7 @@ public abstract class BaseMapper<T> implements ResultSetMapper<T> {
         public DOField(Field field){
 
             this.isPrimitive = field.getType().isPrimitive()
+
             this.fieldName = field.name
             JsonProperty jsonAnnotation = field.getAnnotation(JsonProperty.class)
             if (jsonAnnotation) {

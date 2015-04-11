@@ -1,7 +1,5 @@
 <modal title="Login form" visible="showLogon" class="col-md-6">
-    <div class="alert alert-danger" ng-show="errormessage">
-        <strong>Error!</strong> {{errormessage}}
-    </div>
+
     <form role="logonForm">
         <div class="form-group">
             <label for="userId">Username</label>
@@ -16,5 +14,7 @@
             <a ng-click="resetPassword()">I forgot my password. Please reset it</a>
         </div>
     </form>
-
+    <div class="alert alert-danger" ng-show="errormessage">
+        <strong>Error!</strong> {{errormessage}}
+    </div>
 </modal>

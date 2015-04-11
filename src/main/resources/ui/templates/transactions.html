@@ -27,8 +27,10 @@
             <td data-title="'TransId'"><a href="#transaction/{{trans.id}}">{{trans.id}}</a></td>
             <td data-title="'Description'">{{trans.description}}</td>
             <td data-title="'Status'">{{trans.status}}</td>
-            <td data-title="'TotalCredits'">{{trans.credits}}</td>
-            <td data-title="'TotalDedits'">{{trans.debits}}</td>
+            <td data-title="'TotalCredits'" align="right">{{trans.credits}}</td>
+            <td data-title="'TotalDedits'" align="right">{{trans.debits}}</td>
+            <td data-title="'AddedBy'">{{trans.reported_by}}</td>
+            <td data-title="'Added'">{{trans.reported}}</td>
             <td data-title="'ApprovedBy'">{{trans.approved_by}}</td>
             <td data-title="'Approved'">{{trans.approved}}</td>
             <td data-title="'Accounts'">{{trans.accounts}}</td>

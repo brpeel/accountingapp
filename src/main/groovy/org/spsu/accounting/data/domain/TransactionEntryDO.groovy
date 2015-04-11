@@ -1,6 +1,8 @@
 package org.spsu.accounting.data.domain
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.databind.annotation.JsonSerialize
+import org.spsu.accounting.data.serial.MoneySerializer
 
 public class TransactionEntryDO extends BaseDO{
 
@@ -11,7 +13,8 @@ public class TransactionEntryDO extends BaseDO{
 	int accountId
 
 	@JsonProperty("amount")
-	Float amount
+    @JsonSerialize(using = MoneySerializer.class)
+	BigDecimal amount
 
     @JsonProperty("debit")
     boolean debit

@@ -4,7 +4,10 @@ import com.fasterxml.jackson.annotation.JsonGetter
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.annotation.JsonSetter
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import org.joda.time.DateTime
+import org.spsu.accounting.data.serial.DateTimeSerializer
+import org.spsu.accounting.data.serial.MoneySerializer
 
 public class TransactionDO extends BaseDO{
 
@@ -16,10 +19,12 @@ public class TransactionDO extends BaseDO{
 	Integer approvedBy
 
 	@JsonProperty("reported")
-	DateTime reported
+    @JsonSerialize(using = DateTimeSerializer)
+    DateTime reported
 
 	@JsonProperty("approved")
-	DateTime approved
+    @JsonSerialize(using = DateTimeSerializer)
+    DateTime approved
 
 	@JsonProperty("status")
 	String status
@@ -79,8 +84,8 @@ public class TransactionDO extends BaseDO{
     }
 
 
-    Float sumDebits(){
-        float amount = 0
+    BigDecimal sumDebits(){
+        BigDecimal amount = 0
         if (!entries)
             return 0;
         entries?.each {def entry ->
@@ -91,8 +96,8 @@ public class TransactionDO extends BaseDO{
         return amount
     }
 
-    Float sumCredits(){
-        float amount = 0
+    BigDecimal sumCredits(){
+        BigDecimal amount = 0
         if (!entries)
             return 0;
         entries?.each {def entry ->
@@ -108,14 +113,16 @@ public class TransactionDO extends BaseDO{
     }
 
     @JsonGetter
-    public Float debits(){
-        Float debits = sumDebits()
+    @JsonSerialize(using = MoneySerializer.class)
+    public BigDecimal debits(){
+        BigDecimal debits = sumDebits()
         return debits
     }
 
     @JsonGetter
-    public Float credits(){
-        Float debits = sumCredits()
+    @JsonSerialize(using = MoneySerializer.class)
+    public BigDecimal credits(){
+        BigDecimal debits = sumCredits()
         return debits
     }
 

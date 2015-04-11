@@ -3,8 +3,11 @@ package org.spsu.accounting.data.domain
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.annotation.JsonSetter
+import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import io.dropwizard.validation.ValidationMethod
 import org.joda.time.DateTime
+import org.spsu.accounting.data.serial.DateTimeSerializer
+import org.spsu.accounting.data.serial.MoneySerializer
 
 import javax.validation.constraints.NotNull
 
@@ -16,13 +19,15 @@ public class AccountDO extends ActiveBaseDO{
 
 	@JsonProperty("initial_balance")
     @NotNull
-	Float initialBalance = 0.0
+    @JsonSerialize(using = MoneySerializer.class)
+	BigDecimal initialBalance = 0.0
 
 	@JsonProperty("normal_side")
     @NotNull
 	String normalSide
 
 	@JsonProperty("added")
+    @JsonSerialize(using = DateTimeSerializer)
 	DateTime added
 
 	@JsonProperty("added_by")
@@ -36,7 +41,7 @@ public class AccountDO extends ActiveBaseDO{
 	String subcategory
 
     public void setInitialBalance(String amount){
-        this.initialBalance = Float.parseFloat(amount)
+        this.initialBalance = new BigDecimal(amount)
     }
 
     @ValidationMethod(message="normal side must be either debit or credit")
