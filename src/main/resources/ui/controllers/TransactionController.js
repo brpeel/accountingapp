@@ -4,6 +4,19 @@ var TransactionController = function($rootScope, $scope, $http, $window, $locati
 
     var data = [];
 
+    $scope.createLabel = null
+    $scope.createIcon = null
+    var permissions = $rootScope.permissions
+    for (var i in permissions){
+        var p = permissions[i]
+        console.log("Checking permission : "+ p.permission)
+        if (p.permission == "createTrans"){
+            console.log("Found")
+            $scope.createLabel = p.label
+            $scope.createIcon = p.style
+        }
+    }
+
     $http.get('/api/transaction/all').success(function (transactions) {
 
         data = transactions;
