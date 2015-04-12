@@ -352,11 +352,11 @@ insert into account (id, name, initial_balance, normal_side, added, active, adde
 
 --Owners Equity
 insert into account (id, name, initial_balance, normal_side, added, active, added_by, category, subcategory)
-  select 300, 'George Fielding, Capital', 20000.00, 'Credit', now(), true, id, 'Owner Equity', null
+  select 300, 'George Fielding, Capital', 20000.00, 'Credit', now(), true, id, 'Owner Equity', 'Investment'
   from accounting_user where username = 'brpeela';
 
 insert into account (id, name, initial_balance, normal_side, added, active, added_by, category, subcategory)
-  select 301, 'George Fielding, Drawing', 0.00, 'Debit', now(), true, id, 'Owner Equity', null
+  select 301, 'George Fielding, Drawing', 0.00, 'Debit', now(), true, id, 'Owner Equity', 'Withdraw'
   from accounting_user where username = 'brpeela';
 
 --Expenses

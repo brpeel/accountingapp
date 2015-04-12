@@ -18,14 +18,11 @@ import java.sql.Timestamp
 /**
  * Created by bpeel on 4/11/15.
  */
-@Path("report")
-class IncomeStatementResource {
-    static final Logger logger =  LoggerFactory.getLogger(IncomeStatementResource)
-
-    AccountStatementDBI dbi
+@Path("report/income")
+class IncomeStatementResource extends ReportResource{
 
     @GET
-    @Path("/income/{year}/{month}")
+    @Path("/{year}/{month}")
     @Produces(MediaType.APPLICATION_JSON)
     public IncomeStatement getStatement(@PathParam("year") int year, @PathParam("month") int month){
 
@@ -39,10 +36,5 @@ class IncomeStatementResource {
         return statement
     }
 
-    private List<AccountStatement> getAccounts(int year, int month, String types){
-        DateTime start = new DateTime(year, month, 1, 0, 0)
-        DateTime end = start.plusMonths(1)
 
-        return dbi.getBalances(new Timestamp(start.millis), new Timestamp(end.millis), types, "<")
-    }
 }
