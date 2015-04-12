@@ -4,6 +4,7 @@ import org.skife.jdbi.v2.sqlobject.Bind
 import org.skife.jdbi.v2.sqlobject.SqlQuery
 import org.skife.jdbi.v2.sqlobject.customizers.Define
 import org.skife.jdbi.v2.sqlobject.customizers.RegisterMapper
+import org.skife.jdbi.v2.sqlobject.stringtemplate.UseStringTemplate3StatementLocator
 import org.spsu.accounting.data.domain.AccountStatement
 import org.spsu.accounting.data.mapper.AccountStatementMapper
 
@@ -12,6 +13,7 @@ import java.sql.Timestamp
 /**
  * Created by bpeel on 4/11/15.
  */
+@UseStringTemplate3StatementLocator
 @RegisterMapper(AccountStatementMapper.class)
 interface AccountStatementDBI {
 
@@ -28,10 +30,10 @@ interface AccountStatementDBI {
       JOIN accounting_trans trans
         ON trans.id = entry.trans_id
     WHERE account.category in (<types>)
-          AND trans.reported >= :start
-          AND trans.reported < :endDate
-    GROUP BY account_id, category, account.name""")
-    List<AccountStatement> getBalances(@Bind("startDate") Timestamp year, @Bind("endDate") Timestamp end, @Define("types") types)
+          AND trans.reported >= :startDate
+          AND trans.reported <operator> :endDate
+    GROUP BY account.id, account.name, account.category, account.subcategory""")
+    List<AccountStatement> getBalances(@Bind("startDate") Timestamp start, @Bind("endDate") Timestamp end, @Define("types") types, @Define("operator") op)
 
 
 }

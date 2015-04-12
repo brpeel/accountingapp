@@ -44,6 +44,11 @@
                 controller  : 'createAccountController'
             })
 
+            //reports
+            .when('/incomeStatement',{
+                templateUrl : 'ui/templates/incomeStatement.html',
+                controller  : 'incomeStatementController'
+            })
             // route for the about page
             .when('/about', {
                 templateUrl : 'ui/templates/about.html',
@@ -136,6 +141,11 @@
         var controller = new CreateAccountControler($rootScope, $scope, $http,  $window, $location)
     });
 
+    accountingApp.controller('incomeStatementController', function($rootScope, $scope, $http,  $window, $location) {
+        // create a message to display in our view
+        console.log('income statement controller')
+        var controller = new IncomeStatementController($rootScope, $scope, $http,  $window, $location)
+    });
 
 
     accountingApp.factory('httpRequestInterceptor', function ($q,  $window, $location) {

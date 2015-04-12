@@ -73,7 +73,6 @@ CREATE TABLE account
    id SERIAL NOT NULL
   ,name VARCHAR(250) NOT NULL
   ,initial_balance DECIMAL(15, 2) NOT NULL
-  ,balance DECIMAL(15, 2) NOT NULL
   ,normal_side VARCHAR(10) NOT NULL
   ,added TIMESTAMP NOT NULL
   ,active BOOLEAN NOT NULL
@@ -83,16 +82,7 @@ CREATE TABLE account
   ,CONSTRAINT PK_Account_id PRIMARY KEY (id)
 );
 
--- Create Table Account
---------------------------------------------------------------------------------
-CREATE TABLE account_balance
-(
-   id SERIAL NOT NULL
-  ,balance DECIMAL(15, 2) NOT NULL
-  ,year INTEGER NOT NULL
-  ,month INTEGER NOT NULL
-  ,CONSTRAINT PK_Account_id PRIMARY KEY (id)
-);
+
 -- Create Table Account_Statement
 --------------------------------------------------------------------------------
 CREATE TABLE account_statement
@@ -400,21 +390,21 @@ insert into account_seq (seq, category)
   select max(id) + 1, category from account group by category;
 
 
-insert into accounting_trans (reported_by, approved_by, reported, approved, status, description)
-  select 1, 4, now(), now(), 'Approved', 'Fielding invested cash to start the business, $20,000'
-  UNION ALL select 1, 4, now(), now(), 'Approved', 'Paid Bollhorst Real Estate for December office rent, $1,000'
-  UNION ALL select 1, 4, now(), now(), 'Approved', 'Received cash from Aaron Patton, a client, for services, $2,500'
-  UNION ALL select 1, 4, now(), now(), 'Approved', 'Paid T.Z. Anderson Electric for December heating and light, $75'
-  UNION ALL select 1, 4, now(), now(), 'Approved', 'Received cash Andrew Conder, a client, for services, $2,000'
-  UNION ALL select 1, 4, now(), now(), 'Approved', 'Paid Fichters Super Service for gasoline and oil purchases for the company car, $60'
-  UNION ALL select 1, 4, now(), now(), 'Approved', 'Paid Hillenburg Staffing for temporary secretarial services during the past two weeks, $600'
-  UNION ALL select 1, 4, now(), now(), 'Approved', 'Bought office supplies from Bowers Office Supply on account, $280'
-  UNION ALL select 1, 4, now(), now(), 'Approved', 'Paid Mitchell Telephone Co. for business calls during the past month, 100'
-  UNION ALL select 1, 4, now(), now(), 'Approved', 'Fielding withdrew cash for personal use, $1,100'
-  UNION ALL select 1, 4, now(), now(), 'Approved', 'Made donation to the National Multiple Sclerosis, $100'
-  UNION ALL select 1, 4, now(), now(), 'Approved', 'Received cash from Billy Walters, a client, for services, $2,000'
-  UNION ALL select 1, 4, now(), now(), 'Approved', 'Paid Hillenburg Staffing for temporary secretarial services during the the past two weeks, $600'
-  UNION ALL select 1, 4, now(), now(), 'Approved', 'Made payment on account to Bowers Office Supply, $100'
+insert into accounting_trans (id, reported_by, approved_by, reported, approved, status, description)
+  select 5, 1, 4, now(), now(), 'Approved', 'Fielding invested cash to start the business, $20,000'
+  UNION ALL select 6, 1, 4, now(), now(), 'Approved', 'Paid Bollhorst Real Estate for December office rent, $1,000'
+  UNION ALL select 7, 1, 4, now(), now(), 'Approved', 'Received cash from Aaron Patton, a client, for services, $2,500'
+  UNION ALL select 8, 1, 4, now(), now(), 'Approved', 'Paid T.Z. Anderson Electric for December heating and light, $75'
+  UNION ALL select 9, 1, 4, now(), now(), 'Approved', 'Received cash Andrew Conder, a client, for services, $2,000'
+  UNION ALL select 10, 1, 4, now(), now(), 'Approved', 'Paid Fichters Super Service for gasoline and oil purchases for the company car, $60'
+  UNION ALL select 11, 1, 4, now(), now(), 'Approved', 'Paid Hillenburg Staffing for temporary secretarial services during the past two weeks, $600'
+  UNION ALL select 12, 1, 4, now(), now(), 'Approved', 'Bought office supplies from Bowers Office Supply on account, $280'
+  UNION ALL select 13, 1, 4, now(), now(), 'Approved', 'Paid Mitchell Telephone Co. for business calls during the past month, 100'
+  UNION ALL select 14, 1, 4, now(), now(), 'Approved', 'Fielding withdrew cash for personal use, $1,100'
+  UNION ALL select 15, 1, 4, now(), now(), 'Approved', 'Made donation to the National Multiple Sclerosis, $100'
+  UNION ALL select 16, 1, 4, now(), now(), 'Approved', 'Received cash from Billy Walters, a client, for services, $2,000'
+  UNION ALL select 17, 1, 4, now(), now(), 'Approved', 'Paid Hillenburg Staffing for temporary secretarial services during the the past two weeks, $600'
+  UNION ALL select 18, 1, 4, now(), now(), 'Approved', 'Made payment on account to Bowers Office Supply, $100'
 ;
 
 insert into accounting_trans_entry (trans_id, account_id, amount, debit)
@@ -460,3 +450,5 @@ insert into accounting_trans_entry (trans_id, account_id, amount, debit)
   UNION select 18, 202, 100, true
   UNION select 18, 101, 100, false;
 ;
+
+ALTER SEQUENCE accounting_trans_id_seq RESTART WITH 105;

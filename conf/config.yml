@@ -40,7 +40,7 @@ database:
   user: accounting_user
 
   # the password
-  password: accounting_user
+  password: password
 
   # the JDBC URL
   url: jdbc:postgresql://localhost:5432/Accounting
