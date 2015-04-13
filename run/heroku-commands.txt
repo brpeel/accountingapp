@@ -13,3 +13,4 @@ heroku logs
 
 #Url
 https://accountingspsu.herokuapp.com/ui
+
