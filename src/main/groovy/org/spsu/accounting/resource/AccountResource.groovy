@@ -32,7 +32,7 @@ public class AccountResource extends BaseResource<ActiveDAO<AccountDO>> {
 
         validatePostRequest(values)
 
-        int userid = getUser(request)
+        int userid = getUser(request)?.id
 
         AccountDO item = new AccountDO(values);
         item.addedBy = userid

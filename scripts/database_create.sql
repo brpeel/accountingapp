@@ -451,4 +451,4 @@ insert into accounting_trans_entry (trans_id, account_id, amount, debit)
   UNION select 18, 101, 100, false;
 ;
 
-ALTER SEQUENCE accounting_trans_id_seq RESTART WITH 105;
+--ALTER SEQUENCE accounting_trans_id_seq RESTART WITH 105;

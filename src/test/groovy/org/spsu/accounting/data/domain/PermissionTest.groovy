@@ -1,5 +1,6 @@
 package org.spsu.accounting.data.domain
 
+import org.junit.Ignore
 import org.spsu.accounting.data.DBConnection
 import org.spsu.accounting.data.dao.impl.PermissionDAOImpl
 import org.spsu.accounting.data.dbi.PermissionDBI
@@ -53,6 +54,7 @@ class PermissionTest extends Specification {
 
     }
 
+    /*
     def "Test Load Permissions"() {
         setup:
         PermissionDBI dbi = DBConnection.onDemand(PermissionDBI)
@@ -71,4 +73,5 @@ class PermissionTest extends Specification {
 
 
     }
+    */
 }

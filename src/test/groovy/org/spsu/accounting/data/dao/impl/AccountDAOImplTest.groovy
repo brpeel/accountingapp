@@ -1,5 +1,6 @@
 package org.spsu.accounting.data.dao.impl
 
+import org.junit.Ignore
 import org.spsu.accounting.data.DBConnection
 import org.spsu.accounting.data.dbi.AccountDBI
 import org.spsu.accounting.data.dbi.UserDBI
@@ -12,6 +13,7 @@ import javax.validation.Validator
 /**
  * Created by bpeel on 3/28/15.
  */
+@Ignore
 class AccountDAOImplTest extends Specification {
 
     AccountDAOImpl dao

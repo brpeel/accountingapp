@@ -1,5 +1,6 @@
 package org.spsu.accounting.resource
 
+import org.junit.Ignore
 import org.spsu.accounting.data.DBConnection
 import org.spsu.accounting.data.dao.impl.UserDAOImpl
 import org.spsu.accounting.data.dbi.UserDBI
@@ -9,6 +10,7 @@ import spock.lang.Specification
 /**
  * Created by bpeel on 3/23/15.
  */
+@Ignore
 class MenuResourceTest extends Specification {
 
     MenuResource resource

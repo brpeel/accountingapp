@@ -2,6 +2,8 @@ package org.spsu.accounting.resource
 
 import org.spsu.accounting.data.dao.ActiveDAO
 import org.spsu.accounting.data.dao.DAO
+import org.spsu.accounting.data.dao.UserDAO
+import org.spsu.accounting.data.domain.UserDO
 import spock.lang.Specification
 
 import javax.servlet.http.HttpServletRequest
@@ -15,12 +17,16 @@ class AccountResourceTest extends Specification {
 
     AccountResource resource
     DAO dao
+    UserDAO userDAO
 
     void setup() {
         dao = Mock(ActiveDAO)
         dao.create(_) >> 1000
 
-        resource = new AccountResource(dao: dao)
+        userDAO = Mock(UserDAO)
+        userDAO.get(_) >> new UserDO(id:1)
+
+        resource = new AccountResource(dao: dao, userDAO: userDAO)
     }
 
     def "create Account"() {

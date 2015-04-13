@@ -2,6 +2,7 @@ package org.spsu.accounting.data.dao.impl
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.joda.time.DateTime
+import org.junit.Ignore
 import org.spsu.accounting.data.DBConnection
 import org.spsu.accounting.data.dbi.DocumentDBI
 import org.spsu.accounting.data.dbi.PermissionDBI
@@ -23,6 +24,7 @@ import javax.ws.rs.core.Response
  * Created by bpeel on 3/22/15.
  */
 @Unroll
+@Ignore
 class TransactionDAOImplTest extends Specification {
 
     //static TransactionDBI stubbedDBI
