@@ -18,7 +18,7 @@ abstract class ReportResource {
 
     AccountStatementDBI dbi
 
-    private List<AccountStatement> getAccounts(int year, int month, String types){
+    protected List<AccountStatement> getAccounts(int year, int month, String types){
         DateTime start = new DateTime(year, month, 1, 0, 0)
         DateTime end = start.plusMonths(1)
 
