@@ -37,8 +37,8 @@ class OwnerEquityResourceTest extends Specification {
         result.netIncome == 3965.00
         result.endingBalance() == 22865.00
         result.accountName == "George Fielding, Capital"
-        result.start == "April 01, 2015"
-        result.end == "April 30, 2015"
+        result.startDate == "April 01, 2015"
+        result.endDate == "April 30, 2015"
 
     }
 }
