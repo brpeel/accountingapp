@@ -9,13 +9,14 @@ import spock.lang.Specification
 /**
  * Created by bpeel on 3/23/15.
  */
-@Ignore
+
 class PermissionDAOImplTest extends Specification {
 
     PermissionDAOImpl dao
     PermissionDBI dbi
     void setup(){
-        dbi = DBConnection.onDemand(PermissionDBI)
+
+        dbi = DBConnection.openConnection("Perm").onDemand(PermissionDBI)
         dao = new PermissionDAOImpl(dbi: dbi)
     }
 

@@ -35,5 +35,4 @@ interface AccountStatementDBI {
     GROUP BY account.id, account.name, account.category, account.subcategory""")
     List<AccountStatement> getBalances(@Bind("startDate") Timestamp start, @Bind("endDate") Timestamp end, @Define("types") types, @Define("operator") op)
 
-
 }

@@ -1,15 +1,17 @@
 package org.spsu.accounting.utils.mail
 
+import spock.lang.Ignore
 import spock.lang.Specification
 
 /**
  * Created by brettpeel on 2/22/15.
  */
+@Ignore
 class MailServerImplTest extends Specification {
     void setup() {
 
     }
-/*
+
     def "Send"() {
         given:
         MailConfig conf = new MailConfig()
@@ -22,5 +24,4 @@ class MailServerImplTest extends Specification {
         true
 
     }
-*/
 }

@@ -12,39 +12,38 @@ import org.slf4j.LoggerFactory
 class DBConnection {
 
     private static Logger logger = LoggerFactory.getLogger(DBConnection)
-    private static DBI dbi
+    private DBI dbi
 
     private DBConnection(){}
 
-    static synchronized def <SqlObjectType> SqlObjectType onDemand(Class<SqlObjectType> SqlObjectType){
+    public static DBConnection openConnection(String dbname){
+        JdbcConnectionPool ds = JdbcConnectionPool.create("jdbc:h2:mem:${dbname}", "username", "password");
+        DBConnection connection = new DBConnection()
+        connection.dbi = new DBI(ds)
 
-        if (!dbi) {
-            JdbcConnectionPool ds = JdbcConnectionPool.create("jdbc:h2:mem:test2", "username", "password");
-            dbi = new DBI(ds)
+        File file = new File("./scripts/database_create.sql");
+        String sql = file.text
 
-            File file = new File("./scripts/database_create.sql");
-            String sql = file.text
+        sql = sql.replaceAll("BIGSERIAL", "bigint auto_increment")
 
-            sql = sql.replaceAll("BIGSERIAL", "bigint auto_increment")
+        Handle h = connection.dbi.open()
+        h.execute(sql)
+        h.close()
 
-            Handle h = dbi.open()
-            h.execute(sql)
-            h.close()
-        }
+        return connection
+    }
+
+    def <SqlObjectType> SqlObjectType onDemand(Class<SqlObjectType> SqlObjectType){
+
         return dbi.onDemand(SqlObjectType)
     }
 
-    static synchronized def <SqlObjectType> SqlObjectType onDemand(Class<SqlObjectType> SqlObjectType, String dbUrl, String user, String password){
-        dbi = new DBI(dbUrl, user, password)
-        return dbi.onDemand(SqlObjectType)
-    }
-
-    static void clearTable(String table){
+    void clearTable(String table){
         Handle h = dbi.open()
         h.execute("delete from $table")
     }
 
-    static void clearTables(String... tables){
+    void clearTables(String... tables){
         if (!tables)
             return
         final Handle h = dbi.open()
@@ -52,26 +51,26 @@ class DBConnection {
     }
 
 
-    static def minFieldValue(String table, String field){
+    def minFieldValue(String table, String field){
         return getField("select min($field) as $field from $table", field)
     }
 
-    static def maxFieldValue(String table, String field){
+    def maxFieldValue(String table, String field){
         return getField("select max($field) as $field from $table", field)
     }
 
-    static private def getField(String sql, String field){
+    private def getField(String sql, String field){
         Handle h = dbi.open()
         def rows = h.select(sql)
         return rows[0]?."$field"
     }
 
-    static void execute(String sql){
+    void execute(String sql){
         Handle h = dbi.open()
         h.execute(sql)
     }
 
-    static def query(String sql){
+    def query(String sql){
         Handle h = dbi.open()
         return h.select(sql)
     }

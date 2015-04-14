@@ -14,7 +14,6 @@ import java.sql.Timestamp
 /**
  * Created by bpeel on 3/5/15.
  */
-@Ignore
 class UserDAOImplTest extends Specification {
 
     @Shared
@@ -109,7 +108,7 @@ class UserDAOImplTest extends Specification {
     def "Get"(){
 
         given:
-        UserDBI dbi = DBConnection.onDemand(UserDBI)
+        UserDBI dbi = DBConnection.openConnection("UserDAO").onDemand(UserDBI)
 
         when:
         UserDO user = dbi.get(1)

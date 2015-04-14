@@ -13,15 +13,20 @@ import javax.validation.Validator
 /**
  * Created by bpeel on 3/28/15.
  */
-@Ignore
+
 class AccountDAOImplTest extends Specification {
 
+    static DBConnection db
     AccountDAOImpl dao
     AccountDBI dbi
 
+    void setupSpec(){
+        db = DBConnection.openConnection("AccountDAO")
+    }
 
     void setup() {
-        dbi = DBConnection.onDemand(AccountDBI)
+
+        dbi = db.onDemand(AccountDBI)
 
         Validator validator = Mock(Validator)
         validator.validate(_) >> new HashSet<ConstraintViolation<AccountDO>>()

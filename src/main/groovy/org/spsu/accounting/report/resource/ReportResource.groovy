@@ -5,6 +5,7 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.spsu.accounting.data.dbi.AccountStatementDBI
 import org.spsu.accounting.data.domain.AccountStatement
+import org.spsu.accounting.report.data.Period
 
 import java.sql.Timestamp
 
@@ -19,9 +20,13 @@ abstract class ReportResource {
     AccountStatementDBI dbi
 
     protected List<AccountStatement> getAccounts(int year, int month, String types){
-        DateTime start = new DateTime(year, month, 1, 0, 0)
-        DateTime end = start.plusMonths(1)
 
-        return dbi.getBalances(new Timestamp(start.millis), new Timestamp(end.millis), types, "<")
+        Period p = getPeriod(year, month)
+        return dbi.getBalances(p.startTime, p.endTime, types, "<")
     }
+
+    protected Period getPeriod(int year, int month){
+        return new Period(year, month)
+    }
+
 }

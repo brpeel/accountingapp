@@ -4,10 +4,12 @@ import org.apache.commons.lang3.text.WordUtils
 import org.spsu.accounting.data.dao.AccountDAO
 import org.spsu.accounting.data.domain.AccountDO
 import org.spsu.accounting.data.domain.BaseDO
+import org.spsu.accounting.report.data.Period
 
 import javax.ws.rs.WebApplicationException
 import javax.ws.rs.core.Response
 import java.sql.SQLException
+import java.sql.Timestamp
 
 /**
  * Created by bpeel on 3/28/15.
@@ -66,5 +68,9 @@ class AccountDAOImpl  extends ActiveDAOImpl<AccountDO> implements AccountDAO{
     @Override
     def postTransaction(int transId) {
 
+    }
+
+    List<AccountDO> getAccountByType(Period period, String category, String subcategory){
+        return dbi.getAccountByType(period.startTime, period.endTime, category, subcategory)
     }
 }

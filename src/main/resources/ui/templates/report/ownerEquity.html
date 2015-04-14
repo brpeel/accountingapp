@@ -1,0 +1,31 @@
+<div class="panel panel-default col-md-8">
+    <div class="panel-heading text-center"><strong>Income Statement:<br/> For Month Ended {{endDate}}</strong></div>
+
+    <ul class="list-unstyled">
+        <il>
+            <div class="col-md-10">{{accountName}}, {{startDate}}</div>
+            <div class="col-xs-1 text-right">${{startingBalance}}</div>
+        </il>
+        <il>
+            <div class="col-md-10">Investment during the month</div>
+            <div class="col-xs-1 text-right">${{investments}}</div>
+        </il>
+        <il>
+            <div class="col-md-10">Net Income</div>
+            <div class="col-xs-1 text-right"><u>${{netIncome}}</u></div>
+        </il>
+        <il>
+            <div class="col-md-10"></div>
+            <div class="col-xs-1 text-right">${{incomePlusInvestments}}</div>
+        </il>
+        <il>
+            <div class="col-md-10">Withdrawals during the month</div>
+            <div class="col-xs-1 text-right"><u>${{withdrawals}}</u></div>
+        </il>
+
+        <il>
+            <div class="col-md-10"><label><strong>{{accountName}}, {{endDate}}</strong></label></div>
+            <div class="col-xs-1 text-right"><u>${{endingBalance}}</u></div>
+        </il>
+    </ul>
+</div>

@@ -54,10 +54,10 @@ class PermissionTest extends Specification {
 
     }
 
-    /*
     def "Test Load Permissions"() {
         setup:
-        PermissionDBI dbi = DBConnection.onDemand(PermissionDBI)
+        DBConnection db = DBConnection.openConnection("PermissionTest")
+        PermissionDBI dbi = db.onDemand(PermissionDBI)
         PermissionDAOImpl dao = new PermissionDAOImpl(dbi: dbi)
 
         when:
@@ -73,5 +73,4 @@ class PermissionTest extends Specification {
 
 
     }
-    */
 }

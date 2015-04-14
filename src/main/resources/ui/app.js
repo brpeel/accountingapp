@@ -46,8 +46,13 @@
 
             //reports
             .when('/incomeStatement',{
-                templateUrl : 'ui/templates/incomeStatement.html',
+                templateUrl : 'ui/templates/report/incomeStatement.html',
                 controller  : 'incomeStatementController'
+            })
+
+            .when('/ownersEquity',{
+                templateUrl : 'ui/templates/report/ownerEquity.html',
+                controller  : 'ownerEquityController'
             })
             // route for the about page
             .when('/about', {
@@ -141,12 +146,21 @@
         var controller = new CreateAccountControler($rootScope, $scope, $http,  $window, $location)
     });
 
+
+    //################################### REPORTS ####################################
+
     accountingApp.controller('incomeStatementController', function($rootScope, $scope, $http,  $window, $location) {
         // create a message to display in our view
         console.log('income statement controller')
         var controller = new IncomeStatementController($rootScope, $scope, $http,  $window, $location)
     });
 
+
+    accountingApp.controller('ownerEquityController', function($rootScope, $scope, $http,  $window, $location) {
+        // create a message to display in our view
+        console.log('owner equity controller')
+        var controller = new OwnerEquityController($rootScope, $scope, $http,  $window, $location)
+    });
 
     accountingApp.factory('httpRequestInterceptor', function ($q,  $window, $location) {
         return {

@@ -10,32 +10,33 @@ import java.sql.Timestamp
 /**
  * Created by bpeel on 3/3/15.
  */
-@Ignore
 class AccountDBITest extends Specification {
 
     final static Timestamp now = new Timestamp(System.currentTimeMillis())
-    int minId
-    AccountDBI dbi
+    static int minId
+    static AccountDBI dbi
 
-    AccountDO account1 = new AccountDO(name: "Service Revenue", initialBalance: 0, normalSide: 'debit', active: true, addedBy: 1, subcategory: "Revenue")
-    AccountDO account2 = new AccountDO(name: "Investment Revenue", initialBalance: 1000, normalSide: 'debit', active: true, addedBy: 1, subcategory: "Revenue")
-    AccountDO account3 = new AccountDO(name: "Investment Inactive", initialBalance: 1000, normalSide: 'debit', active: true, addedBy: 1, subcategory: "Revenue")
+    static AccountDO account1 = new AccountDO(name: "Service Revenue", initialBalance: 0, normalSide: 'debit', active: true, addedBy: 1, category: "Revenue")
+    static AccountDO account2 = new AccountDO(name: "Investment Revenue", initialBalance: 1000, normalSide: 'debit', active: true, addedBy: 1, category: "Revenue")
+    static AccountDO account3 = new AccountDO(name: "Investment Inactive", initialBalance: 1000, normalSide: 'debit', active: true, addedBy: 1, category: "Revenue")
 
-    void setup() {
-        dbi = DBConnection.onDemand(AccountDBI)
-        DBConnection.clearTable("account")
+    void setupSpec() {
+        DBConnection db = DBConnection.openConnection("AccountDBI")
+        dbi = db.onDemand(AccountDBI)
+        db.clearTable("accounting_trans_entry")
+        db.clearTable("account")
 
         dbi.insert(account1)
-        account1.id = DBConnection.maxFieldValue("account","id")
+        account1.id = db.maxFieldValue("account","id")
 
         dbi.insert(account2)
-        account2.id = DBConnection.maxFieldValue("account","id")
+        account2.id = db.maxFieldValue("account","id")
 
         account3.active = false
         dbi.insert(account3)
-        account3.id = DBConnection.maxFieldValue("account","id")
+        account3.id = db.maxFieldValue("account","id")
 
-        minId = DBConnection.minFieldValue("account","id")
+        minId = db.minFieldValue("account","id")
     }
 
     def "Get"() {

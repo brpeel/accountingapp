@@ -10,7 +10,6 @@ import spock.lang.Specification
 /**
  * Created by bpeel on 3/23/15.
  */
-@Ignore
 class MenuResourceTest extends Specification {
 
     MenuResource resource
@@ -19,7 +18,7 @@ class MenuResourceTest extends Specification {
 
 
     void setup(){
-        dbi = DBConnection.onDemand(UserDBI)
+        dbi = DBConnection.openConnection("MenuResource").onDemand(UserDBI)
         dao = new UserDAOImpl<UserDO> (dbi: dbi)
 
         resource = new MenuResource(dao: dao)

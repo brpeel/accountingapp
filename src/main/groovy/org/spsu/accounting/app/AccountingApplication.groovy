@@ -21,11 +21,14 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.spsu.accounting.auth.AccountingAuthenticator
 import org.spsu.accounting.auth.SessionFilter
+import org.spsu.accounting.data.dao.AccountDAO
 import org.spsu.accounting.data.dao.PermissionDAO
 import org.spsu.accounting.data.dao.UserDAO
+import org.spsu.accounting.data.dao.impl.AccountDAOImpl
 import org.spsu.accounting.data.dao.impl.PermissionDAOImpl
 import org.spsu.accounting.data.dao.impl.StartDAO
 import org.spsu.accounting.data.dao.impl.UserDAOImpl
+import org.spsu.accounting.data.dbi.AccountDBI
 import org.spsu.accounting.data.dbi.AccountStatementDBI
 import org.spsu.accounting.data.dbi.HealthCheckDBI
 import org.spsu.accounting.data.dbi.PermissionDBI
@@ -33,6 +36,7 @@ import org.spsu.accounting.data.dbi.StartDBI
 import org.spsu.accounting.data.dbi.UserDBI
 import org.spsu.accounting.data.domain.UserDO
 import org.spsu.accounting.report.resource.IncomeStatementResource
+import org.spsu.accounting.report.resource.OwnerEquityResource
 import org.spsu.accounting.resource.*
 import org.spsu.accounting.resource.base.BaseResource
 import org.spsu.accounting.utils.mail.MailConfig
@@ -124,6 +128,13 @@ class AccountingApplication extends Application<AccountingApplicationConfigurati
         AccountStatementDBI statementDBI = jdbi.onDemand(AccountStatementDBI)
 
         environment.jersey().register(new IncomeStatementResource(dbi: statementDBI))
+
+        AccountDBI accountDBI = jdbi.onDemand(AccountDBI)
+        AccountDAO accountDAO = new AccountDAOImpl(dbi:accountDBI)
+        accountDAO.validator = environment.getValidator()
+        accountDAO.objectMapper = environment.getObjectMapper()
+
+        environment.jersey().register(new OwnerEquityResource(dbi: statementDBI, accountDAO: accountDAO))
     }
     private void registerAuth(Environment environment, DBI jdbi) {
 

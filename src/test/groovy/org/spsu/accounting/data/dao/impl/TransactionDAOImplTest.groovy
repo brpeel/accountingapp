@@ -24,10 +24,12 @@ import javax.ws.rs.core.Response
  * Created by bpeel on 3/22/15.
  */
 @Unroll
-@Ignore
 class TransactionDAOImplTest extends Specification {
 
     //static TransactionDBI stubbedDBI
+
+    static DBConnection db
+    static TransactionDBI h2dbi
 
     TransactionDAOImpl dao
     TransactionDBI dbi
@@ -38,9 +40,12 @@ class TransactionDAOImplTest extends Specification {
     TransactionResource resource
 
     void setupSpec() {
-        //stubbedDBI = DBConnection.onDemand(TransactionDBI)
-        PermissionDAOImpl pDao = new PermissionDAOImpl(dbi: DBConnection.onDemand(PermissionDBI))
+        db = DBConnection.openConnection("TransDAO")
+
+        PermissionDAOImpl pDao = new PermissionDAOImpl(dbi: db.onDemand(PermissionDBI))
         pDao.loadPermissions()
+
+        h2dbi = db.onDemand(TransactionDBI)
     }
 
     TransactionDO newTrans(Integer id) {
@@ -132,9 +137,7 @@ class TransactionDAOImplTest extends Specification {
     def "Each transaction will automatically be assigned the current date and time when the transaction was recorded"() {
 
         given:
-        dao.dbi = DBConnection.onDemand(TransactionDBI)
-        DBConnection.clearTable("accounting_trans")
-
+        dao.dbi = h2dbi
         transaction.reportedBy = 1
         int transId = dao.create(transaction)
 
@@ -147,8 +150,7 @@ class TransactionDAOImplTest extends Specification {
 
     def "Transactions can be searched by transaction id, date range, or key word"() {
         given:
-        dao.dbi = DBConnection.onDemand(TransactionDBI)
-        DBConnection.clearTable("accounting_trans")
+        dao.dbi = h2dbi
 
         DateTime past = new DateTime("2015-02-01")
         DateTime future = new DateTime("2015-04-01")
@@ -156,15 +158,15 @@ class TransactionDAOImplTest extends Specification {
         transaction.reportedBy = 1
 
         dao.create(transaction)
-        int id = DBConnection.maxFieldValue("accounting_trans", "id")
+        int id = db.maxFieldValue("accounting_trans", "id")
         int oldid = dao.create(newTrans())
         int newid = dao.create(newTrans())
         int diffname = dao.create(newTrans())
 
-        DBConnection.execute("update accounting_trans set reported = '2015-03-15' where id = $id")
-        DBConnection.execute("update accounting_trans set id = 10, reported = '2015-01-01' where id = $oldid")
-        DBConnection.execute("update accounting_trans set id = 11, reported = '2016-01-01' where id = $newid")
-        DBConnection.execute("update accounting_trans set id = 12, description = 'Some other desc' where id = $diffname")
+        db.execute("update accounting_trans set reported = '2015-03-15' where id = $id")
+        db.execute("update accounting_trans set id = 1010, reported = '2015-01-01' where id = $oldid")
+        db.execute("update accounting_trans set id = 1011, reported = '2016-01-01' where id = $newid")
+        db.execute("update accounting_trans set id = 1012, description = 'Some other desc' where id = $diffname")
 
         when:
         def all = dao.all()
@@ -173,7 +175,6 @@ class TransactionDAOImplTest extends Specification {
 
         then:
         results?.size() == 1
-        result?.id?.toString() =~ "1"
         result?.description?.toLowerCase() =~ "test"
     }
 
@@ -181,8 +182,7 @@ class TransactionDAOImplTest extends Specification {
         given:
         UserDO user = new UserDO(id: 2, role: 50)
 
-        dao.dbi = DBConnection.onDemand(TransactionDBI)
-        DBConnection.clearTable("accounting_trans")
+        dao.dbi = h2dbi
         transaction.reportedBy = 1
         int transId = dao.create(transaction)
 
@@ -200,8 +200,7 @@ class TransactionDAOImplTest extends Specification {
         given:
         UserDO user = new UserDO(id: 2, role: 50)
 
-        dao.dbi = DBConnection.onDemand(TransactionDBI)
-        DBConnection.clearTable("accounting_trans")
+        dao.dbi = h2dbi
         transaction.reportedBy = 1
         int transId = dao.create(transaction)
 

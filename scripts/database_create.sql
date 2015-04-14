@@ -408,47 +408,34 @@ insert into accounting_trans (id, reported_by, approved_by, reported, approved, 
 ;
 
 insert into accounting_trans_entry (trans_id, account_id, amount, debit)
-  select 5, 101, 20000, true
-  UNION select 5, 300, 20000, false
-
-  UNION select 6, 402, 1000, true
-  UNION select 6, 101, 1000, false
-
-  UNION select 7, 101, 2500, true
-  UNION select 7, 501, 2500, false
-
-  UNION select 8, 404, 75, true
-  UNION select 8, 101, 75, false
-
-  UNION select 9, 101, 2000, true
-  UNION select 9, 501, 2000, false
-
-  UNION select 10, 406, 60, true
-  UNION select 10, 101, 60, false
-
-  UNION select 11, 401, 600, true
-  UNION select 11, 101, 600, false
-
-  UNION select 12, 102, 280, true
-  UNION select 12, 202, 280, false
-
-  UNION select 13, 403, 100, true
-  UNION select 13, 101, 100, false
-
-  UNION select 14, 301, 1100, true
-  UNION select 14, 101, 1100, false
-
-  UNION select 15, 405, 100, true
-  UNION select 15, 101, 100, false
-
-  UNION select 16, 101, 2000, true
-  UNION select 16, 501, 2000, false
-
-  UNION select 17, 401, 600, true
-  UNION select 17, 101, 600, false
-
-  UNION select 18, 202, 100, true
-  UNION select 18, 101, 100, false;
+  select id, 101, 20000.00, true from accounting_trans where description = 'Fielding invested cash to start the business, $20,000'
+  union select id, 300, 20000.00, false from accounting_trans where description = 'Fielding invested cash to start the business, $20,000'
+  union select id, 101, 1000.00, false from accounting_trans where description = 'Paid Bollhorst Real Estate for December office rent, $1,000'
+  union select id, 402, 1000.00, true from accounting_trans where description = 'Paid Bollhorst Real Estate for December office rent, $1,000'
+  union select id, 501, 2500.00, false from accounting_trans where description = 'Received cash from Aaron Patton, a client, for services, $2,500'
+  union select id, 101, 2500.00, true from accounting_trans where description = 'Received cash from Aaron Patton, a client, for services, $2,500'
+  union select id, 404, 75.00, true from accounting_trans where description = 'Paid T.Z. Anderson Electric for December heating and light, $75'
+  union select id, 101, 75.00, false from accounting_trans where description = 'Paid T.Z. Anderson Electric for December heating and light, $75'
+  union select id, 501, 2000.00, false from accounting_trans where description = 'Received cash Andrew Conder, a client, for services, $2,000'
+  union select id, 101, 2000.00, true from accounting_trans where description = 'Received cash Andrew Conder, a client, for services, $2,000'
+  union select id, 101, 60.00, false from accounting_trans where description = 'Paid Fichters Super Service for gasoline and oil purchases for the company car, $60'
+  union select id, 406, 60.00, true from accounting_trans where description = 'Paid Fichters Super Service for gasoline and oil purchases for the company car, $60'
+  union select id, 401, 600.00, true from accounting_trans where description = 'Paid Hillenburg Staffing for temporary secretarial services during the past two weeks, $600'
+  union select id, 101, 600.00, false from accounting_trans where description = 'Paid Hillenburg Staffing for temporary secretarial services during the past two weeks, $600'
+  union select id, 102, 280.00, true from accounting_trans where description = 'Bought office supplies from Bowers Office Supply on account, $280'
+  union select id, 202, 280.00, false from accounting_trans where description = 'Bought office supplies from Bowers Office Supply on account, $280'
+  union select id, 403, 100.00, true from accounting_trans where description = 'Paid Mitchell Telephone Co. for business calls during the past month, 100'
+  union select id, 101, 100.00, false from accounting_trans where description = 'Paid Mitchell Telephone Co. for business calls during the past month, 100'
+  union select id, 301, 1100.00, true from accounting_trans where description = 'Fielding withdrew cash for personal use, $1,100'
+  union select id, 101, 1100.00, false from accounting_trans where description = 'Fielding withdrew cash for personal use, $1,100'
+  union select id, 405, 100.00, true from accounting_trans where description = 'Made donation to the National Multiple Sclerosis, $100'
+  union select id, 101, 100.00, false from accounting_trans where description = 'Made donation to the National Multiple Sclerosis, $100'
+  union select id, 501, 2000.00, false from accounting_trans where description = 'Received cash from Billy Walters, a client, for services, $2,000'
+  union select id, 101, 2000.00, true from accounting_trans where description = 'Received cash from Billy Walters, a client, for services, $2,000'
+  union select id, 101, 600.00, false from accounting_trans where description = 'Paid Hillenburg Staffing for temporary secretarial services during the the past two weeks, $600'
+  union select id, 401, 600.00, true from accounting_trans where description = 'Paid Hillenburg Staffing for temporary secretarial services during the the past two weeks, $600'
+  union select id, 101, 100.00, false from accounting_trans where description = 'Made payment on account to Bowers Office Supply, $100'
+  union select id, 202, 100.00, true from accounting_trans where description = 'Made payment on account to Bowers Office Supply, $100'
 ;
 
 --ALTER SEQUENCE accounting_trans_id_seq RESTART WITH 105;
