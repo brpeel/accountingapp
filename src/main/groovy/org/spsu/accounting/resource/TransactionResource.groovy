@@ -63,10 +63,12 @@ class TransactionResource extends BaseResource<DAO<TransactionDO>> {
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    Response create( @Context HttpServletRequest request, TransactionDO trans){
+    Response create( @Context HttpServletRequest request, Map data){
 
         int userid = request.getAttribute("userid")
-        trans.reportedBy = userid
+        data."reportedBy" = userid
+
+        TransactionDO trans = new TransactionDO(data)
 
         return postObject(trans)
     }
@@ -74,15 +76,15 @@ class TransactionResource extends BaseResource<DAO<TransactionDO>> {
     @PUT
     @Path("/update/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    Response update( @Context HttpServletRequest request, @QueryParam("id") int id, Map values){
+    Response update( @Context HttpServletRequest request, @PathParam("id") int id, Map values){
 
         return super.patchObject(id, values)
     }
 
     @PUT
-    @Path("approve/{id}")
+    @Path("/approve/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    Response approve( @Context HttpServletRequest request, @QueryParam("id") int id){
+    Response approve( @Context HttpServletRequest request, @PathParam("id") int id){
 
         UserDO user = getUser(request)
         dao.approve(id, user)
@@ -94,9 +96,9 @@ class TransactionResource extends BaseResource<DAO<TransactionDO>> {
     }
 
     @PUT
-    @Path("reject/{id}")
+    @Path("/reject/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    Response reject( @Context HttpServletRequest request, @QueryParam("id") int id){
+    Response reject( @Context HttpServletRequest request, @PathParam("id") int id){
 
         UserDO user = getUser(request)
         dao.reject(id, user)

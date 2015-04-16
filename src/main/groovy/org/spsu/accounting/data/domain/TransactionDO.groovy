@@ -35,19 +35,7 @@ public class TransactionDO extends BaseDO{
     List<TransactionEntryDO> entries = []
 
     List<DocumentDO> documents = []
-/*
-*
-*
-* transactionId
 
-	@JsonProperty("accountid")
-	int accountId
-
-	@JsonProperty("amount")
-	Float amount
-
-    @JsonProperty("debit")
-    boolean debit*/
     @JsonSetter("entries")
     public void setEntries(Collection col){
 
@@ -58,7 +46,7 @@ public class TransactionDO extends BaseDO{
             return;
         col.each {def e ->
             if (e instanceof Map)
-                entries.add(new TransactionEntryDO(id:e.id, transactionId: e.transid, accountId: e.accountid, amount: e.amount, debit: e.debit))
+                entries.add(mapper.convertValue(e, TransactionEntryDO))
             else
                 entries.add(e)
         }

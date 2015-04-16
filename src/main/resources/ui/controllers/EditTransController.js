@@ -67,6 +67,15 @@ function EditTransController($rootScope, $scope, $http, $window, $location, $rou
             });;
     };
 
+    $rootScope.addEntry = function(){
+        $rootScope.tForm.entry.push({accountid:null, amount:null, debit:null})
+    };
+
+    $rootScope.removeEntry = function(index){
+        $rootScope.tForm.entry.splice(index,1)
+    };
+
+
     $scope.save = function(){
         console.log('Save Transaction');
         var trans = {description:$scope.tForm.description, entries:$scope.tForm.entry};
@@ -83,21 +92,13 @@ function EditTransController($rootScope, $scope, $http, $window, $location, $rou
             });
     };
 
-    $rootScope.addEntry = function(){
-        $rootScope.tForm.entry.push({accountid:null, amount:null, debit:null})
-    };
-
-    $rootScope.removeEntry = function(index){
-        $rootScope.tForm.entry.splice(index,1)
-    };
-
     $rootScope.approve = function(){
         console.log('Approve Transaction = '+$rootScope.transaction)
 
         var trans = {description:$scope.tForm.description, entries:$scope.tForm.entry};
         var id = $rootScope.transaction
 
-        $http.put('api/transaction/approve/id='+id,trans)
+        $http.put('api/transaction/approve/'+id,trans)
             .success(function(data, status, headers, config){
 
                 $location.path("/transactions")
@@ -112,7 +113,7 @@ function EditTransController($rootScope, $scope, $http, $window, $location, $rou
         console.log('Reject Transaction = '+$rootScope.transaction)
         var trans = {description:$scope.tForm.description, entries:$scope.tForm.entry};
         var id = $rootScope.transaction
-        $http.put('api/transaction/reject/id='+id,trans)
+        $http.put('api/transaction/reject/'+id,trans)
             .success(function(data, status, headers, config){
 
                 $location.path("/transactions")

@@ -32,12 +32,6 @@ function CreateTransController($rootScope, $scope, $http, $window, $location, $r
 
         var trans = {description:$scope.tForm.description, entries:$scope.tForm.entry};
 
-        var id = $routeParams.id
-        if (typeof id != "undefined" && id)
-            trans.id = id
-
-        console.log('Trans = '+JSON.stringify(trans))
-
         $http.post('api/transaction',trans)
             .success(function(data, status, headers, config){
 
