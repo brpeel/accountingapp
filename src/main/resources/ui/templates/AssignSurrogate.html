@@ -1,0 +1,15 @@
+<div class="alert alert-danger" ng-show="errormessage">
+    <strong>Error!</strong> {{errormessage}}
+</div>
+<form role="assignSurrogateForm">
+    <div class="form-group col-md-4">
+        <label for="user">User</label>
+
+        <select ng-model="item.id" class="form-control" name="user" id="user"
+                ng-options="item.id as item.username for item in users" required="true">
+            <option value="">Select User</option>
+        </select>
+    </div>
+</form>
+
+<input type="text" pick-a-date="date" placeholder="Select Date" />

@@ -1,5 +1,6 @@
 package org.spsu.accounting.resource
 
+import org.joda.time.DateTime
 import org.skife.jdbi.v2.DBI
 import org.spsu.accounting.data.dao.UserDAO
 import org.spsu.accounting.data.dao.impl.UserDAOImpl
@@ -12,6 +13,7 @@ import javax.ws.rs.*
 import javax.ws.rs.core.Context
 import javax.ws.rs.core.MediaType
 import javax.ws.rs.core.Response
+import java.sql.Timestamp
 
 /**
  * Created by brettpeel on 2/7/15.
@@ -50,6 +52,31 @@ class UserResource extends BaseResource<UserDAO> {
     Response getAll(@PathParam("allowInactive") boolean allowInactive){
         List all = getAllObjects(allowInactive)
         return Response.ok(all).build();
+    }
+
+    @PUT
+    @Path("/assignsurrogate")
+    @Produces(MediaType.APPLICATION_JSON)
+    Response assignSurrogate(@Context HttpServletRequest request, Surrogate membership){
+        int userid = request.getAttribute("userid")
+        UserDO user = this.getObjectById(userid)
+
+        dao.assignSurrogate(membership.userid, membership.startTime, membership.endTime, userid)
+    }
+
+    public static class Surrogate {
+        int userid
+        DateTime start
+        DateTime end
+
+        public Timestamp getStartTime(){
+            return new Timestamp(start.millis)
+        }
+
+        public Timestamp getEndTime(){
+            return new Timestamp(end.millis)
+        }
+
     }
 
 }

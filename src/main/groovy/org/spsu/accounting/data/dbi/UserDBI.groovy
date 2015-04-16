@@ -112,4 +112,8 @@ interface UserDBI{
 
     @SqlQuery("select password_set from user_password where user_id = :id order by id desc limit 1")
     Timestamp getPasswordSet(@Bind("id") int id)
+
+    @SqlUpdate("""insert into user_membership (user_id, user_type_id, membership_start, membership_end, added_by, added)
+                  values (:user, 50, :start, :end, :addedBy, now())""")
+    int assignSurrogate(@Bind("user") int userid, @Bind("start") Timestamp start, @Bind("end") Timestamp end, @Bind("addedBy") int addedBy)
 }

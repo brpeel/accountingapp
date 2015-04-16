@@ -1,9 +1,11 @@
 package org.spsu.accounting.data.dao.impl
 
+import org.joda.time.DateTime
 import org.junit.Ignore
 import org.spsu.accounting.data.DBConnection
 import org.spsu.accounting.data.dbi.UserDBI
 import org.spsu.accounting.data.domain.UserDO
+import org.spsu.accounting.resource.UserResource
 import org.spsu.accounting.utils.mail.MailServer
 import spock.lang.Shared
 import spock.lang.Specification
@@ -17,6 +19,8 @@ import java.sql.Timestamp
 class UserDAOImplTest extends Specification {
 
     @Shared
+    UserDBI h2DBI
+    @Shared
     UserDAOImpl dao
     @Shared
     UserDBI dbi
@@ -24,6 +28,10 @@ class UserDAOImplTest extends Specification {
     UserDO user = new UserDO(id: 1, email: "someemail@server.com")
     @Shared
     MailServer mailServer
+
+    void setupSpec(){
+        h2DBI = DBConnection.openConnection("UserDAO").onDemand(UserDBI)
+    }
 
     void setup() {
         dbi = Mock(UserDBI)
@@ -108,14 +116,37 @@ class UserDAOImplTest extends Specification {
     def "Get"(){
 
         given:
-        UserDBI dbi = DBConnection.openConnection("UserDAO").onDemand(UserDBI)
+
 
         when:
-        UserDO user = dbi.get(1)
-        List<UserDO> users = dbi.getAll()
+        UserDO user = h2DBI.get(1)
+        List<UserDO> users = h2DBI.getAll()
 
         then:
         users.size() > 0
         user?.role == 100
+    }
+
+    def "Assign Surrogate"(){
+
+        given:
+        dao.dbi = h2DBI
+
+        int userid = 0
+        int manager = 0
+        dao.all().each { UserDO u->
+            if (u.role < 50)
+                userid = u.id
+            else if (u.role == 50)
+                manager = u.id
+        }
+        UserResource.Surrogate sur = new UserResource.Surrogate(userid: userid, start: new DateTime(), end: (new DateTime()).plusDays(15))
+
+        when:
+        dao.assignSurrogate(sur.userid, sur.startTime, sur.endTime, manager)
+        UserDO user = dao.get(userid)
+
+        then:
+        user?.role == 50
     }
 }

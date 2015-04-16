@@ -1,6 +1,6 @@
 	// create the module and name it accountingApp
 	//var accountingApp = angular.module('accountingApp', ['ngRoute', 'accountingApp.about']);
-	var accountingApp = angular.module('accountingApp', ['ngRoute', 'ui.grid', 'ngTable']);
+	var accountingApp = angular.module('accountingApp', ['ngRoute', 'ui.grid', 'ngTable', 'angular-datepicker']);
 
 	// configure our routes
 	accountingApp.config(function($routeProvider) {
@@ -45,6 +45,12 @@
             .when('/createAccount', {
                 templateUrl : 'ui/templates/createAccount.html',
                 controller  : 'createAccountController'
+            })
+
+            //Users
+            .when('/assignsurrogate', {
+                templateUrl : 'ui/templates/assignSurrogate.html',
+                controller  : 'assignSurrogateController'
             })
 
             //reports
@@ -123,6 +129,8 @@
 
 	});
 
+    //################################### Accounts and Transactions ####################################
+
     accountingApp.controller('transactionController', function($rootScope, $scope, $http, $window, $location, $filter, ngTableParams) {
         var controller = new TransactionController($rootScope, $scope, $http,  $window, $location, $filter, ngTableParams)
 
@@ -155,6 +163,12 @@
         var controller = new CreateAccountControler($rootScope, $scope, $http,  $window, $location)
     });
 
+    //################################### USERS ####################################
+
+    accountingApp.controller('assignSurrogateController', function($rootScope, $scope, $http,  $window, $location) {
+
+        var controller = new AssignSurrogateController($rootScope, $scope, $http,  $window, $location)
+    });
 
     //################################### REPORTS ####################################
 

@@ -3,8 +3,11 @@ package org.spsu.accounting.data.dao.impl
 import org.spsu.accounting.app.AccountingApplication
 import org.spsu.accounting.data.dao.UserDAO
 import org.spsu.accounting.data.domain.UserDO
+import org.spsu.accounting.resource.UserResource
 import org.spsu.accounting.utils.AuthUtils
 import org.spsu.accounting.utils.mail.MailServer
+
+import java.sql.Timestamp
 
 /**
  * Created by brettpeel on 2/7/15.
@@ -106,4 +109,8 @@ class UserDAOImpl extends ActiveDAOImpl<UserDO> implements UserDAO{
         return !passwordExpiration || passwordExpiration + PASSWORD_DURATRION <= now
     }
 
+    @Override
+    void assignSurrogate(int userid, Timestamp start, Timestamp end, int addedBy) {
+        dbi.assignSurrogate(userid, start, end, addedBy)
+    }
 }
