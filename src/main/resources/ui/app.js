@@ -33,7 +33,10 @@
                 templateUrl : 'ui/templates/createTransactions.html',
                 controller  : 'createTransController'
             })
-
+            .when('/accounttrans/:id', {
+                templateUrl : 'ui/templates/accounttrans.html',
+                controller  : 'accountTransController'
+            })
             //Accounts
             .when('/accounts', {
                 templateUrl : 'ui/templates/chartofaccounts.html',
@@ -136,8 +139,14 @@
         var controller = new CreateTransController($rootScope, $scope, $http,  $window, $location)
     });
 
-    accountingApp.controller('chartOfAccountsController', function($rootScope, $scope, $http, $window, $location) {
-        var controller = new ChartOfAccountsController($rootScope, $scope, $http, $window, $location)
+    accountingApp.controller('accountTransController', function($rootScope, $scope, $http,  $window, $location, $routeParams, $filter, ngTableParams) {
+        // create a message to display in our view
+        console.log('In Account transaction controller')
+        var controller = new AccountTransController($rootScope, $scope, $http,  $window, $location, $routeParams, $filter, ngTableParams)
+    });
+
+    accountingApp.controller('chartOfAccountsController', function($rootScope, $scope, $http, $window, $location, $filter, ngTableParams) {
+        var controller = new ChartOfAccountsController($rootScope, $scope, $http, $window, $location, $filter, ngTableParams)
 
     });
 

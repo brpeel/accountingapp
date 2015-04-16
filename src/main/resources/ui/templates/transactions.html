@@ -7,8 +7,8 @@
 
     <table ng-table="tableParams" class="table">
         <tr ng-repeat="trans in $data" ng-class="{ 'emphasis': !trans.approved }">
-            <td data-title="'TransId'"><a href="#transaction/{{trans.id}}">{{trans.id}}</a></td>
-            <td data-title="'Description'">{{trans.description}}</td>
+            <td data-title="'TransId'" ><a href="#transaction/{{trans.id}}">{{trans.id}}</a></td>
+            <td data-title="'Description'" sortable="'1'">{{trans.description}}</td>
             <td data-title="'Status'">{{trans.status}}</td>
             <td data-title="'TotalCredits'" align="right">{{trans.credits}}</td>
             <td data-title="'TotalDedits'" align="right">{{trans.debits}}</td>

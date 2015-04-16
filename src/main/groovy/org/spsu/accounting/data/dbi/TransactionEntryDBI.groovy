@@ -30,4 +30,5 @@ interface TransactionEntryDBI {
 
     @SqlBatch("delete from accounting_trans_entry where id = :id")
     int delete(@Bind("id") int id)
+
 }

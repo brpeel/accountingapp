@@ -4,6 +4,7 @@ import org.skife.jdbi.v2.sqlobject.*
 import org.skife.jdbi.v2.sqlobject.customizers.RegisterMapper
 import org.skife.jdbi.v2.sqlobject.helpers.MapResultAsBean
 import org.spsu.accounting.data.domain.TransactionDO
+import org.spsu.accounting.data.mapper.MapMapper
 import org.spsu.accounting.data.mapper.TransactionDOMapper
 
 import java.sql.Timestamp
@@ -57,6 +58,11 @@ interface TransactionDBI{
                 where id = :id""")
     int reject(@Bind("id") int id, @Bind("user") int userid)
 
-
+    @SqlQuery("""
+    select id, reported_by, approved_by, reported, approved, status, description
+    from accounting_trans
+    where id in (select trans_id from accounting_trans_entry where account_id = :accountId)
+    """)
+    List<TransactionDO> getByAccountId(@Bind("accountId") accountId)
 
 }

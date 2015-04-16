@@ -39,6 +39,7 @@ class TransactionDAOImpl extends DAOImpl<TransactionDO> implements TransactionDA
             if (t.id)
                 t.entries = entryDBI.getEntries(t.id)
         }
+        return trans
     }
 
 

@@ -254,4 +254,17 @@ class TransactionDAOImplTest extends Specification {
         then:
         msgSet.contains("Transaction must never allow debiting and crediting of the same account")
     }
+
+    def "Transactions can be retrieved by account id"(){
+        given:
+        dao.dbi = h2dbi
+        dao.entryDBI = db.onDemand(TransactionEntryDBI)
+
+        when:
+        List<TransactionDO> trans = dao.getByAccountID(101)
+
+        println trans
+        then:
+        trans != null
+    }
 }

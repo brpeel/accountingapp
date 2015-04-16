@@ -2,4 +2,16 @@
     <!--div class="gridStyle" ng-grid="transGrid"></div -->
     <a href="#createAccount" ng-show="createLabel"><i  class="{{createIcon}}">{{createLabel}}</i></a>
 
-    <div id="accountsGrid" ui-grid="{ data: accounts }" class="grid"></div>
+    <table ng-table="tableParams" class="table">
+        <tr ng-repeat="account in $data" ng-class="{ 'emphasis': !account.active }">
+            <td data-title="'Account Id'" ><a href="#accounttrans/{{account.id}}">{{account.id}}</a></td>
+            <td data-title="'Account Name'">{{account.name}}</td>
+            <td data-title="'Active'">{{account.active}}</td>
+            <td data-title="'Category'">{{account.category}}</td>
+            <td data-title="'Sub Category'">{{account.subcategory}}</td>
+            <td data-title="'Initial Balance'" align="right">{{account.initial_balance}}</td>
+            <td data-title="'Normal Side'" align="right">{{account.normal_side}}</td>
+            <td data-title="'AddedBy'">{{account.added_by}}</td>
+            <td data-title="'Added'">{{account.added}}</td>
+        </tr>
+    </table>
