@@ -85,10 +85,10 @@ class TransactionDAOImplTest extends Specification {
 
         when:
         transaction.entries = [creditEntry, debitEntry]
-        String msg = dao.validateObject(transaction)?.get(0)
+        Set msg = dao.validateObject(transaction)
 
         then:
-        msg == expectedMsg
+        !expectedMsg || msg?.contains(expectedMsg)
 
         where:
         creditEntry                                                     | debitEntry                                                     | expectedMsg
@@ -248,23 +248,11 @@ class TransactionDAOImplTest extends Specification {
 
 
         when:
-        List<String> msgs =  dao.validateObject(transaction)
+        Set<String> msgs =  dao.validateObject(transaction)
         Set<String> msgSet = msgs?.toSet()
 
         then:
         msgSet.contains("Transaction must never allow debiting and crediting of the same account")
     }
 
-    def "Transactions can be retrieved by account id"(){
-        given:
-        dao.dbi = h2dbi
-        dao.entryDBI = db.onDemand(TransactionEntryDBI)
-
-        when:
-        List<TransactionDO> trans = dao.getByAccountID(101)
-
-        println trans
-        then:
-        trans != null
-    }
 }

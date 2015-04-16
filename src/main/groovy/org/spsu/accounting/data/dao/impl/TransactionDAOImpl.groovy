@@ -139,9 +139,9 @@ class TransactionDAOImpl extends DAOImpl<TransactionDO> implements TransactionDA
     }
 
     @Override
-    ArrayList<String> validateObject(TransactionDO obj) {
-        ArrayList<String> messages = super.validateObject(obj)
-        messages = messages ? messages : new ArrayList<String>()
+    Set<String> validateObject(TransactionDO obj) {
+        Set<String> messages = super.validateObject(obj)
+        messages = messages ? messages : new HashSet<String>()
 
 
         if (!hasEntry(obj))
@@ -154,7 +154,7 @@ class TransactionDAOImpl extends DAOImpl<TransactionDO> implements TransactionDA
             messages.add("Transaction must never allow debiting and crediting of the same account")
 
         obj.entries?.each { TransactionEntryDO entry ->
-            List msgs = super.validateObject(entry)
+            Set msgs = super.validateObject(entry)
             if (msgs)
                 messages.addAll(msgs)
         }

@@ -84,14 +84,13 @@ public class DAOImpl<T extends BaseDO> implements DAO<T> {
 
 
     @Override
-    ArrayList<String> validateObject(T obj) {
+    Set<String> validateObject(T obj) {
 
-        ArrayList<String> messages = new ArrayList<String>()
+        Set<String> messages = new HashSet<String>()
 
         try {
             Set<ConstraintViolation<T>> violations = validator.validate(obj);
             if (violations.size() > 0) {
-                messages = new ArrayList<String>()
                 for (ConstraintViolation<T> violation : violations)
                     messages.add(violation.getPropertyPath().toString() + " " + violation.getMessage());
             }
@@ -100,7 +99,7 @@ public class DAOImpl<T extends BaseDO> implements DAO<T> {
            messages.add(iae.getMessage())
         }
 
-        if (messages.size() > 0)
+        if (messages?.size() > 0)
             return messages
         return null
     }

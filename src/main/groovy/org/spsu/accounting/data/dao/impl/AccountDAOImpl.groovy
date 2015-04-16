@@ -43,9 +43,9 @@ class AccountDAOImpl  extends ActiveDAOImpl<AccountDO> implements AccountDAO{
     }
 
     @Override
-    ArrayList<String> validateObject(AccountDO obj) {
-        ArrayList<String> messages = super.validateObject(obj)
-        messages = messages ? messages : new ArrayList<String>()
+    Set<String> validateObject(AccountDO obj) {
+        Set<String> messages = super.validateObject(obj)
+        messages = messages ? messages : new HashSet<String>()
 
         String startsWith
         switch (obj.category?.toLowerCase()){

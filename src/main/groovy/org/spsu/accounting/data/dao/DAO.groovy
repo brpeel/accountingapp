@@ -27,6 +27,6 @@ interface DAO<T extends BaseDO>{
 
     int merge(Object id, Map values) throws SQLException
 
-    ArrayList<String> validateObject(T obj)
+    Set<String> validateObject(T obj)
 
 }

@@ -77,7 +77,7 @@ public class TransactionDO extends BaseDO{
         if (!entries)
             return 0;
         entries?.each {def entry ->
-            if (entry && entry.debit)
+            if (entry && entry.debit && entry.amount)
                 amount += entry.amount
         }
 
@@ -89,7 +89,7 @@ public class TransactionDO extends BaseDO{
         if (!entries)
             return 0;
         entries?.each {def entry ->
-            if (entry && !entry.debit)
+            if (entry && !entry.debit && entry.amount)
                 amount += entry.amount
         }
 

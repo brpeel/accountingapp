@@ -67,14 +67,6 @@ function EditTransController($rootScope, $scope, $http, $window, $location, $rou
             });;
     };
 
-    $rootScope.addEntry = function(){
-        $rootScope.tForm.entry.push({accountid:null, amount:null, debit:null})
-    };
-
-    $rootScope.removeEntry = function(index){
-        $rootScope.tForm.entry.splice(index,1)
-    };
-
 
     $scope.save = function(){
         console.log('Save Transaction');
@@ -122,6 +114,14 @@ function EditTransController($rootScope, $scope, $http, $window, $location, $rou
 
                 $scope.errormessage = data;
             });
+    };
+
+    $rootScope.addEntry = function(){
+        $rootScope.tForm.entry.push({accountid:null, amount:null, debit:null})
+    };
+
+    $rootScope.removeEntry = function(index){
+        $rootScope.tForm.entry.splice(index,1)
     };
 
     $scope.fetchTrans()

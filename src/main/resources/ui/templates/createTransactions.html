@@ -1,5 +1,8 @@
 <modal title="CreateTrans form">
 
+    <div class="alert alert-danger" ng-show="errormessage">
+        <strong>Error!</strong> {{errormessage}}
+    </div>
     <form role="createTransForm">
         <div class="form-group">
             <div class="form-group">
@@ -10,12 +13,12 @@
         </div>
         <div class="panel panel-default">
             <div class="panel-heading">Entries:</div>
-                <div id="entryGroup" ng-repeat="item in tForm.entry" class="form-inline panel-body">
+            <div id="entryGroup" ng-repeat="item in tForm.entry" class="form-inline panel-body">
                 <div class="form-group col-md-4">
                     <label for="account">Account</label>
 
                     <select ng-model="item.accountid" class="form-control" name="account" id="account"
-                            ng-options="item.id as item.name for item in accounts">
+                            ng-options="item.id as item.name for item in accounts" required="true">
                         <option value="">Select Account</option>
                     </select>
                 </div>
@@ -26,7 +29,7 @@
                     <div class="input-group">
                         <div class="input-group-addon">$</div>
                         <input type="text" ng-model="item.amount" class="form-control" name="amount"
-                               id="amount"/>
+                               id="amount" required="true"/>
                     </div>
                 </div>
 
@@ -45,7 +48,9 @@
                     </div>
                 </div>
                 <div class="col-md-1" ng-if="tForm.entry.length>1">
-                    <button type="button" class="btn btn-default" ng-click="removeEntry(item)">Delete</button>
+                    <button type="button" class="btn btn-default" ng-click="removeEntry($index)">
+                        Delete
+                    </button>
                 </div>
 
             </div>
@@ -53,7 +58,8 @@
         </div>
         <div class="form-group form-inline col-xs-10">
             <div class="center-block">
-                <button type="button" class="btn btn-default" ng-click="addEntry()" ng-show="showSave">Add Entry</button>
+                <button type="button" class="btn btn-default" ng-click="addEntry()" ng-show="showSave">Add Entry
+                </button>
             </div>
         </div>
         <div class="form-group form-inline col-xs-10">
@@ -66,14 +72,12 @@
                 <button type="submit" class="btn btn-primary" ng-click="save()" ng-show="showSave">Submit</button>
             </div>
             <div class="col-md-2">
-                <button type="approve" class="btn btn-success" ng-click="approve()" ng-show="showApprove">Approve</button>
+                <button type="approve" class="btn btn-success" ng-click="approve()" ng-show="showApprove">Approve
+                </button>
             </div>
             <div class="col-md-2">
-                <button type="reject" class="btn btn-danger" ng-click="reject()"ng-show="showApprove">Reject</button>
+                <button type="reject" class="btn btn-danger" ng-click="reject()" ng-show="showApprove">Reject</button>
             </div>
         </div>
     </form>
-    <div class="alert alert-danger" ng-show="errormessage">
-        <strong>Error!</strong> {{errormessage}}
-    </div>
 </modal>

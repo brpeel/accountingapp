@@ -39,7 +39,7 @@ function CreateTransController($rootScope, $scope, $http, $window, $location, $r
             })
             .
             error(function(data, status, headers, config) {
-
+                console.log(data)
                 $scope.errormessage = data;
             });
     };
