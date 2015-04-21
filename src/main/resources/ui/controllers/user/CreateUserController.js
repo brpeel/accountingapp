@@ -37,7 +37,6 @@ function CreateUserController($rootScope, $scope, $http, $window, $location) {
         $http.post('api/user/',user)
             .success(function(data, status, headers, config){
                 $scope.addAlert('success', 'User has been created. An email will be sent to them with their username and password');
-                $location.path("/users")
             })
             .
             error(function(data, status, headers, config) {

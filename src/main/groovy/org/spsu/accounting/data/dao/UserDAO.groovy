@@ -27,4 +27,8 @@ interface UserDAO extends ActiveDAO<UserDO> {
     void assignSurrogate(int userid, Timestamp start, Timestamp end, int addedBy)
 
     void setRole(int userid, int role, int addedBy)
-}
+
+    List<UserDO> getByType(int role)
+
+    List<UserDO> getSurrogateManagers(int userid)
+ }

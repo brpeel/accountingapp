@@ -48,7 +48,7 @@
             })
 
             //Users
-            .when('/assignsurrogate', {
+            .when('/AssignSurrogate', {
                 templateUrl : 'ui/templates/assignSurrogate.html',
                 controller  : 'assignSurrogateController'
             })

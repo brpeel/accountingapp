@@ -133,4 +133,14 @@ class UserDAOImpl extends ActiveDAOImpl<UserDO> implements UserDAO{
 
         return id
     }
+
+    @Override
+    List<UserDO> getByType(int role) {
+        return dbi.getByType(role)
+    }
+
+    @Override
+    List<UserDO> getSurrogateManagers(int userid) {
+        return dbi.getSurrogateManagers(userid)
+    }
 }

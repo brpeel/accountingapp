@@ -120,4 +120,28 @@ interface UserDBI{
     @SqlUpdate("""insert into user_membership (user_id, user_type_id, membership_start, membership_end, added_by, added)
                   values (:user, :role, now(), null, :addedBy, now())""")
     int setRole(@Bind("user") int userid, @Bind("role") int role, @Bind("addedBy") int addedBy)
+
+
+    @SqlQuery("""
+    select u.*, role
+    from accounting_user u
+        left join (select user_id, max(user_type_id) as role
+                   from user_membership
+                   where membership_start <= now()
+                         and membership_end is null or membership_end >= now()
+                  group by user_id) as Lvl
+                  on lvl.user_id = u.id
+    where lvl.role = :role""")
+    @MapResultAsBean
+    List<UserDO> getByType(@Bind("role") int role)
+
+
+    @SqlQuery("""select distinct u.*, membership_start as startSurrogate, membership_end as endSurrogate
+                from accounting_user u
+                    join user_membership um on u.id = um.user_id
+                where um.membership_end is not null
+                      and um.membership_end >= now()
+                      and um.added_by = :id""")
+    @MapResultAsBean
+    List<UserDO> getSurrogateManagers(@Bind("id") int id)
 }

@@ -3,9 +3,11 @@ package org.spsu.accounting.data.domain
 import com.fasterxml.jackson.annotation.JsonGetter
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
+import org.joda.time.DateTime
 
 import javax.ws.rs.WebApplicationException
 import javax.ws.rs.core.Response
+import java.sql.Timestamp
 
 public class UserDO extends ActiveBaseDO{
 
@@ -29,6 +31,11 @@ public class UserDO extends ActiveBaseDO{
 
     @JsonProperty("role")
     int role
+
+    @JsonIgnore
+    DateTime startSurrogate
+    @JsonIgnore
+    DateTime endSurrogate
 
     public boolean hasPermission(String permission){
         return PermissionSet.hasPermission(role, permission)

@@ -15,6 +15,7 @@ import javax.ws.rs.core.Context
 import javax.ws.rs.core.MediaType
 import javax.ws.rs.core.Response
 import java.sql.Timestamp
+import java.text.SimpleDateFormat
 
 /**
  * Created by brettpeel on 2/7/15.
@@ -91,6 +92,36 @@ class UserResource extends BaseResource<UserDAO> {
     }
 
     @GET
+    @Path("surrogateableusers")
+    @Produces(MediaType.APPLICATION_JSON)
+    Response getSurrogateableUsers(){
+        List all = dao.getByType(10)
+        return Response.ok(all).build();
+    }
+
+    @GET
+    @Path("checksurrogate")
+    @Produces(MediaType.APPLICATION_JSON)
+    Response getSurrogateableUsers(@Context HttpServletRequest request){
+        int userid = request.getAttribute("userid")
+        List all = dao.getSurrogateManagers(userid)
+
+        if (!all || all.size() == 0 )
+            Response.ok().build();
+
+        SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy")
+        List<Map> msgs = []
+        all.each() {UserDO it ->
+
+            String start = (it.startSurrogate ? df.format(new Date(it.startSurrogate.millis)) : "now")
+            String end = (it.endSurrogate ? df.format(new Date(it.endSurrogate.millis)) : "now")
+            msgs << [username: it.username, start:start, end:end ]
+        }
+
+        return Response.ok(msgs).build();
+    }
+
+    @GET
     @Path("/roles")
     @Produces(MediaType.APPLICATION_JSON)
     Response getRoles(){
@@ -102,14 +133,26 @@ class UserResource extends BaseResource<UserDAO> {
         return Response.ok(roles).build();
     }
 
-    @PUT
+    @POST
     @Path("/assignsurrogate")
     @Produces(MediaType.APPLICATION_JSON)
     Response assignSurrogate(@Context HttpServletRequest request, Surrogate membership){
-        int userid = request.getAttribute("userid")
-        UserDO user = this.getObjectById(userid)
 
-        dao.assignSurrogate(membership.userid, membership.startTime, membership.endTime, userid)
+        try {
+            int userid = request.getAttribute("userid")
+            UserDO user = this.getObjectById(userid)
+
+            String msg = membership.validate()
+            if (msg != null)
+                return Response.status(Response.Status.BAD_REQUEST).entity(msg).build()
+
+            dao.assignSurrogate(membership.userid, membership.startTime, membership.endTime, userid)
+        }
+        catch (Exception e){
+            logger.error("Could not assign surrgate manager", e)
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build()
+        }
+        return Response.ok().build()
     }
 
     @PUT
@@ -140,6 +183,11 @@ class UserResource extends BaseResource<UserDAO> {
             return new Timestamp(end.millis)
         }
 
+        public String validate(){
+            if (end.millis < start.plusDays(1).millis)
+               return "End date must be greater than the start date"
+            return null
+        }
     }
 
 }

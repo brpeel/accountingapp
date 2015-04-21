@@ -4,54 +4,70 @@ function AssignSurrogateController($rootScope, $scope, $http, $window, $location
     console.log(JSON.stringify("In Surrogate Controller"));
 
     var self = this;
+    $scope.alerts = [];
+    $rootScope.today = new Date();
+    $rootScope.tomorrow = (new Date())+1;
 
     $rootScope.tForm = {}
 
+    $rootScope.showSave = true;
+
+
+    //createUser editUser
+    var permissions = $rootScope.permissions
+    for (var i in permissions){
+        var p = permissions[i]
+        if (p.permission == "AssignSurrogate"){
+            $rootScope.showSave = true;
+        }
+    }
+
+    $scope.fetchExistingSurrogates = function() {
+        $http.get('/api/user/checksurrogate').success(function(data){
+
+            console.log(JSON.stringify(data))
+            data.forEach(function(obj) {
+                $scope.addAlert('info', obj.username+" is already your surrogate manager from "+obj.start+" until "+obj.end);
+            });
+
+        });
+    };
+
     $scope.fetchOptions = function() {
-        $http.get('/api/user/all').success(function(data){
-            console.log("USers : "+JSON.stringify(data))
+        $http.get('/api/user/surrogateableusers').success(function(data){
             $rootScope.users = data;
         });
     };
 
     $scope.save = function(){
-        console.log('Save Transaction');
+        console.log('Save Surrogate');
 
-        //var surrogate = {userid:$scope.tForm.description, entries:$scope.tForm.entry};
+        var startString = $scope.start;
+        var endString = $scope.end;
+        var surrogate = {userid:$scope.userid, start:startString, end:endString};
 
         $http.post('api/user/assignsurrogate',surrogate)
             .success(function(data, status, headers, config){
-
-                $location.path("/home")
+                $scope.addAlert('success', 'Surrogate has been assigned');
             })
             .
             error(function(data, status, headers, config) {
-                console.log(data)
-                $scope.errormessage = data;
+                if (typeof data == "undefined" || !data || data == "")
+                    $scope.addAlert('danger', "Could not assign surrogate manager. Please contact your administrator");
+                else
+                    $scope.addAlert('danger', data);
             });
     };
 
-
-    $scope.toggleMin = function() {
-        $scope.minDate = $scope.minDate ? null : new Date();
-    };
-    $scope.toggleMin();
-
-    $scope.open = function($event) {
-        console.log("open ")
-        $event.preventDefault();
-        $event.stopPropagation();
-
-        $scope.opened = true;
+    $scope.addAlert = function(type, message) {
+        console.log("Adding alert "+type+" with message "+message);
+        $scope.alerts.push({type: type, msg: message});
     };
 
-    $scope.dateOptions = {
-        formatYear: 'yy',
-        startingDay: 1
+    $scope.closeAlert = function(index) {
+        $scope.alerts.splice(index, 1);
     };
 
-    $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
-    $scope.format = $scope.formats[0];
-
-    $scope.fetchOptions()
+    $scope.fetchOptions();
+    $scope.fetchExistingSurrogates();
 };
