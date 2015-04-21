@@ -5,6 +5,9 @@
     <label for="active">Show Inactive</label>
     <input type="checkbox" ng-model="showInactive" class="form-control" name="active" id="active" onclick="toggle"/>
 </div-->
+
+<a href="#createUser" ng-show="createLabel"><i  class="{{createIcon}}">{{createLabel}}</i></a>
+
 <table ng-table="tableParams" show-filter="true" class="table col-md-10">
     <tr ng-repeat="user in $data" ng-class="{ 'emphasis': !user.active }">
         <td data-title="'UserName'" align="center" sortable="'username'"><a href="#user/{{user.id}}">{{user.username}}</a></td>

@@ -80,8 +80,8 @@ interface UserDBI{
     @SqlUpdate("update accounting_user set login_attempts = login_attempts + 1 where username = :username")
     void setFailedLoginAttempt(@Bind("username") String username)
 
-    @SqlQuery("insert into Accounting_User ( username, first_name, last_name, active, email, login_attempts) \
-	 values ( :username, :firstName, :lastName, :active, now(), :email, :loginAttempts)")
+    @SqlUpdate("insert into Accounting_User ( username, first_name, last_name, active, email, login_attempts) \
+	 values ( :username, :firstName, :lastName, :active, :email, 0)")
     @GetGeneratedKeys
 	int insert(@BindBean UserDO doBean)
 
@@ -116,4 +116,8 @@ interface UserDBI{
     @SqlUpdate("""insert into user_membership (user_id, user_type_id, membership_start, membership_end, added_by, added)
                   values (:user, 50, :start, :end, :addedBy, now())""")
     int assignSurrogate(@Bind("user") int userid, @Bind("start") Timestamp start, @Bind("end") Timestamp end, @Bind("addedBy") int addedBy)
+
+    @SqlUpdate("""insert into user_membership (user_id, user_type_id, membership_start, membership_end, added_by, added)
+                  values (:user, :role, now(), null, :addedBy, now())""")
+    int setRole(@Bind("user") int userid, @Bind("role") int role, @Bind("addedBy") int addedBy)
 }

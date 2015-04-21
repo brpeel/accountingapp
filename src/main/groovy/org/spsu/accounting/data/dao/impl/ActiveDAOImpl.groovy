@@ -32,7 +32,8 @@ class ActiveDAOImpl<T extends ActiveBaseDO> extends DAOImpl implements ActiveDAO
             return dbi.insert(object)
         }
         else if (existing.deleted){
-            return activate(object.id) && this.save(object)
+            activate(object.id)
+            return this.save(object)
         }
 
         throw new SQLException("Object for id $object.id already exists")

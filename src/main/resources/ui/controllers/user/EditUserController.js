@@ -4,19 +4,20 @@ function EditUserController($rootScope, $scope, $http, $window, $location, $rout
     var self = this;
     var userId = $routeParams.id
 
-    $scope.errormessage = null;
+    $scope.alerts = [];
 
     $rootScope.showSave = false;
+    $rootScope.showReset = false;
     $rootScope.accountingUser = {};
 
     var permissions = $rootScope.permissions
-    console.log(JSON.stringify(permissions))
     for (var i in permissions){
         var p = permissions[i]
         console.log("Checking permission : "+ p.permission)
         if (p.permission == "editUser"){
             console.log("Checking permission found "+ p.permission)
             $rootScope.showSave = true;
+            $rootScope.showReset = true;
         }
     };
 
@@ -42,8 +43,9 @@ function EditUserController($rootScope, $scope, $http, $window, $location, $rout
                 $rootScope.accountingUser = data;
             })
             .error(function(data, status, headers, config) {
-
-                $scope.errormessage = data;
+                $scope.addAlert('danger', 'Could not load user data');
+                if (typeof data != "undefined" && data && data != "")
+                    $scope.addAlert('danger', data);
             });
     };
 
@@ -56,34 +58,46 @@ function EditUserController($rootScope, $scope, $http, $window, $location, $rout
             username:accUser.username,
             last_name:accUser.last_name,
             first_name:accUser.first_name,
-            email:accUser.email};
-
+            email:accUser.email,
+            role:accUser.role};
+        $scope.alerts = [];
         $http.put('api/user/update/'+userId,user)
             .success(function(data, status, headers, config){
-
+                $scope.addAlert('success', 'User Saved!');
                 $location.path("/users")
             })
             .
             error(function(data, status, headers, config) {
-
-                $scope.errormessage = data;
+                $scope.addAlert('danger', 'User not saved');
+                if (typeof data != "undefined" && data && data != "")
+                    $scope.addAlert('danger', data);
             });
     };
 
     $scope.reset = function(){
         console.log('Reset User');
         var user = {};
-
+        $scope.alerts = [];
         $http.post('api/user/reset/'+userId)
             .success(function(data, status, headers, config){
-
+                $scope.addAlert('success', 'User login has been created. An email will be sent to them with their new password');
                 $location.path("/users")
             })
             .
             error(function(data, status, headers, config) {
-
-                $scope.errormessage = data;
+                $scope.addAlert('danger', 'User login not reset');
+                if (typeof data != "undefined" && data && data != "")
+                    $scope.addAlert('danger', data);
             });
+    };
+
+    $scope.addAlert = function(type, message) {
+        console.log("Adding alert "+type+" with message "+message);
+        $scope.alerts.push({type: type, msg: message});
+    };
+
+    $scope.closeAlert = function(index) {
+        $scope.alerts.splice(index, 1);
     };
 
     $scope.fetchRoles();

@@ -25,4 +25,6 @@ interface UserDAO extends ActiveDAO<UserDO> {
     boolean isPasswordExpired(UserDO user)
 
     void assignSurrogate(int userid, Timestamp start, Timestamp end, int addedBy)
+
+    void setRole(int userid, int role, int addedBy)
 }

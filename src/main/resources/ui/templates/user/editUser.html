@@ -1,3 +1,12 @@
+<!--div class="alert alert-danger" ng-show="errormessage">
+    <strong>Error!</strong> {{errormessage}}
+</div>
+<div class="alert alert-danger" ng-show="errormessage">
+    <strong>Error!</strong> {{errormessage}}
+</div-->
+<div  class="col-md-8">
+    <div ng-repeat="alert in alerts" class="alert alert-{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</div>
+</div>
 <form role="editUserForm" class="col-md-6">
     <div class="form-group">
         <label for="active">Active</label>
@@ -28,5 +37,5 @@
         </select>
     </div>
     <button class="btn btn-primary" ng-click="save()" ng-show="showSave">Save</button>
-    <button class="btn btn-warning" ng-click="reset()" ng-show="showSave">Reset User Login</button>
+    <button class="btn btn-warning" ng-click="reset()" ng-show="showReset">Reset User Login</button>
 </form>

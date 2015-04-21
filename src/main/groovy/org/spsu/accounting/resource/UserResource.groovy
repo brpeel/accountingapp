@@ -27,6 +27,23 @@ class UserResource extends BaseResource<UserDAO> {
     protected UserDAO createDAO(DBI jdbi) {
         return new UserDAOImpl<UserDO>(dbi: jdbi.onDemand(UserDBI))
     }
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    Response create( @Context HttpServletRequest request, UserDO user){
+
+        try{
+            int userid = request.getAttribute("userid")
+
+            def id = this.createObject(user)
+
+            dao.setRole(id, user.role, userid)
+            return Response.created(buildURI(id)).build()
+        }
+        catch (Exception e){
+            logger.error("Could not create user", e)
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build()
+        }
+    }
 
     @POST
     @Path("/setpassword")
@@ -106,7 +123,7 @@ class UserResource extends BaseResource<UserDAO> {
             return Response.ok().build()
         }
         catch (Exception e){
-            logger.error("Could not reset password", e)
+            logger.error("Could not update user", e)
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build()
         }
     }

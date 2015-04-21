@@ -2,6 +2,7 @@ package org.spsu.accounting.data.dao.impl
 
 import org.spsu.accounting.app.AccountingApplication
 import org.spsu.accounting.data.dao.UserDAO
+import org.spsu.accounting.data.domain.BaseDO
 import org.spsu.accounting.data.domain.UserDO
 import org.spsu.accounting.resource.UserResource
 import org.spsu.accounting.utils.AuthUtils
@@ -112,5 +113,24 @@ class UserDAOImpl extends ActiveDAOImpl<UserDO> implements UserDAO{
     @Override
     void assignSurrogate(int userid, Timestamp start, Timestamp end, int addedBy) {
         dbi.assignSurrogate(userid, start, end, addedBy)
+    }
+
+    @Override
+    void setRole(int userid, int role, int addedBy){
+        dbi.setRole(userid, role, addedBy)
+    }
+
+    @Override
+    def create(BaseDO object) {
+        def id = super.create(object)
+        object.id = id
+
+        String newPassword = AuthUtils.generateString(1, ('A'..'Z').join())+AuthUtils.generateString()
+        this.dbi.resetPassword(AuthUtils.getHash(newPassword), id)
+
+        String body = "Welcome to the ${AccountingApplication.APPLICATION}\n\tYour username is ${object.username}\n\tYour password is ${newPassword}"
+        mailServer.send(object.email, "${AccountingApplication.APPLICATION} account created", body)
+
+        return id
     }
 }
