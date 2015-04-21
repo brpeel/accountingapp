@@ -1,5 +1,6 @@
 package org.spsu.accounting.resource
 
+import groovy.transform.PackageScope
 import org.joda.time.DateTime
 import org.skife.jdbi.v2.DBI
 import org.spsu.accounting.data.dao.UserDAO
@@ -46,12 +47,42 @@ class UserResource extends BaseResource<UserDAO> {
         }
     }
 
+    @POST
+    @Path("/reset/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response reset(int id){
+
+        try {
+            UserDO user = this.getObjectById(id)
+
+            this.dao.resetPassword(user)
+
+            return Response.ok().build()
+        }
+        catch (Exception e){
+            logger.error("Could not reset password", e)
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build()
+        }
+    }
+
     @GET
     @Path("/all/{allowInactive}")
     @Produces(MediaType.APPLICATION_JSON)
     Response getAll(@PathParam("allowInactive") boolean allowInactive){
         List all = getAllObjects(allowInactive)
         return Response.ok(all).build();
+    }
+
+    @GET
+    @Path("/roles")
+    @Produces(MediaType.APPLICATION_JSON)
+    Response getRoles(){
+        List roles =[
+                [role:10,role_name:"User"],
+                [role:50,role_name:"Manager"],
+                [role:100,role_name:"Admin"],
+        ]
+        return Response.ok(roles).build();
     }
 
     @PUT
@@ -64,6 +95,21 @@ class UserResource extends BaseResource<UserDAO> {
         dao.assignSurrogate(membership.userid, membership.startTime, membership.endTime, userid)
     }
 
+    @PUT
+    @Path("/update/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response update(@PathParam("id") int id, Map update){
+
+        try {
+            update.remove("id");
+            this.dao.merge(id, update)
+            return Response.ok().build()
+        }
+        catch (Exception e){
+            logger.error("Could not reset password", e)
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build()
+        }
+    }
     public static class Surrogate {
         int userid
         DateTime start

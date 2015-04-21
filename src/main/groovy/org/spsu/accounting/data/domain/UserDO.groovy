@@ -1,5 +1,6 @@
 package org.spsu.accounting.data.domain
 
+import com.fasterxml.jackson.annotation.JsonGetter
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
 
@@ -37,5 +38,19 @@ public class UserDO extends ActiveBaseDO{
         if (!hasPermission(permission))
             throw new WebApplicationException(Response.status(Response.Status.FORBIDDEN).build());
 
+    }
+
+    @JsonGetter("role_name")
+    public String getRolename(){
+        if (role == 10)
+            return "User"
+
+        if (role == 50)
+            return "Manager"
+
+        if (role == 100)
+            return "Admin"
+
+        return "UNKOWN"
     }
 }

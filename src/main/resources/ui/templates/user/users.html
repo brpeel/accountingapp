@@ -1,0 +1,24 @@
+<div class="alert alert-error" ng-show="error">
+    {{errorMessage}}
+</div>
+<!--div class="form-group col-md-6">
+    <label for="active">Show Inactive</label>
+    <input type="checkbox" ng-model="showInactive" class="form-control" name="active" id="active" onclick="toggle"/>
+</div-->
+<table ng-table="tableParams" show-filter="true" class="table col-md-10">
+    <tr ng-repeat="user in $data" ng-class="{ 'emphasis': !user.active }">
+        <td data-title="'UserName'" align="center" sortable="'username'"><a href="#user/{{user.id}}">{{user.username}}</a></td>
+        <td data-title="'FirstName'" align="center">{{user.first_name}}</td>
+        <td data-title="'LastName'" align="center">{{user.last_name}}</td>
+        <td data-title="'Email'" align="center">{{user.email}}</td>
+        <td data-title="'Role'" align="center" sortable="'role'">{{user.role_name}}</td>
+        <td data-title="'Active'" align="center" filter="{ 'active': 'active' }">{{user.active}}</td>
+    </tr>
+</table>
+<script type="text/ng-template" id="ng-table/filters/active.html">
+    <input type="radio" ng-model="params.filter()[name]" name="filter-active" value="true" checked="true" /> Active
+    <br />
+    <input type="radio" ng-model="params.filter()[name]" name="filter-active" value="false" /> Inactive
+    <br />
+    <input type="radio" ng-model="params.filter()[name]" name="filter-active" value="" /> All
+</script>

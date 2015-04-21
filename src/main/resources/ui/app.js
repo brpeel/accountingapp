@@ -52,6 +52,14 @@
                 templateUrl : 'ui/templates/assignSurrogate.html',
                 controller  : 'assignSurrogateController'
             })
+            .when('/users', {
+                templateUrl : 'ui/templates/user/users.html',
+                controller  : 'userController'
+            })
+            .when('/user/:id', {
+                templateUrl : 'ui/templates/user/editUser.html',
+                controller  : 'editUserController'
+            })
 
             //reports
             .when('/incomeStatement',{
@@ -168,6 +176,17 @@
     accountingApp.controller('assignSurrogateController', function($rootScope, $scope, $http,  $window, $location) {
 
         var controller = new AssignSurrogateController($rootScope, $scope, $http,  $window, $location)
+    });
+
+    accountingApp.controller('userController', function($rootScope, $scope, $http, $window, $location, $filter, ngTableParams) {
+        var controller = new UserController($rootScope, $scope, $http, $window, $location, $filter, ngTableParams)
+
+    });
+    accountingApp.controller('editUserController', function($rootScope, $scope, $http,  $window, $location, $routeParams) {
+
+        console.log('In Edit User controller')
+        var controller = new EditUserController($rootScope, $scope, $http,  $window, $location, $routeParams)
+
     });
 
     //################################### REPORTS ####################################
