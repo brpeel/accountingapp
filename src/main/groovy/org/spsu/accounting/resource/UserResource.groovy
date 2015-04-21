@@ -67,7 +67,7 @@ class UserResource extends BaseResource<UserDAO> {
     @POST
     @Path("/reset/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response reset(int id){
+    public Response reset(@PathParam("id") int id){
 
         try {
             UserDO user = this.getObjectById(id)

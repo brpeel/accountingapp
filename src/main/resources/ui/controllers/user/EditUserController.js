@@ -64,7 +64,6 @@ function EditUserController($rootScope, $scope, $http, $window, $location, $rout
         $http.put('api/user/update/'+userId,user)
             .success(function(data, status, headers, config){
                 $scope.addAlert('success', 'User Saved!');
-                $location.path("/users")
             })
             .
             error(function(data, status, headers, config) {
@@ -80,8 +79,7 @@ function EditUserController($rootScope, $scope, $http, $window, $location, $rout
         $scope.alerts = [];
         $http.post('api/user/reset/'+userId)
             .success(function(data, status, headers, config){
-                $scope.addAlert('success', 'User login has been created. An email will be sent to them with their new password');
-                $location.path("/users")
+                $scope.addAlert('success', 'User login has been reset. An email will be sent to them with their new password');
             })
             .
             error(function(data, status, headers, config) {
