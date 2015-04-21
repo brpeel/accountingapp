@@ -42,6 +42,8 @@ class MenuResource {
         Set permissions = PermissionSet.getPermissions(role)
         Set mainMenu = PermissionSet.getPermissionsByGroup(role)."MainMenu"
 
+
+
         return ["menuItems":mainMenu, "permissions":permissions]
     }
 }

@@ -100,7 +100,11 @@ public enum PermissionSet {
                 perms = new HashSet<Permission>()
                 groupPermissions.put(permission.group, perms)
             }
+
+            if (role == 100 && permission.permission in ['incomeStatement', 'balanceSheet', 'ownersEquity', 'AssignSurrogate'])
+                return
             perms.add(permission)
+
         }
 
         return groupPermissions
