@@ -29,7 +29,8 @@ class MenuResource {
     @Produces(MediaType.APPLICATION_JSON)
     public getActions(@Context HttpServletRequest request){
 
-        Map data = determinePermissions(request.getAttribute("userid"))
+        def userid = request.getAttribute("userid")
+        Map data = determinePermissions(userid)
         data."username" = request.getAttribute("username")
 
         return Response.ok().entity(data).build()
@@ -41,8 +42,6 @@ class MenuResource {
         int role = user.role
         Set permissions = PermissionSet.getPermissions(role)
         Set mainMenu = PermissionSet.getPermissionsByGroup(role)."MainMenu"
-
-
 
         return ["menuItems":mainMenu, "permissions":permissions]
     }

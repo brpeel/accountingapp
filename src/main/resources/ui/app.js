@@ -1,6 +1,6 @@
 	// create the module and name it accountingApp
 	//var accountingApp = angular.module('accountingApp', ['ngRoute', 'accountingApp.about']);
-	var accountingApp = angular.module('accountingApp', ['ngRoute', 'ui.grid', 'ngTable', 'angular-datepicker']);
+	var accountingApp = angular.module('accountingApp', ['ngRoute', 'ui.grid', 'ngTable']);
 
 	// configure our routes
 	accountingApp.config(function($routeProvider) {
