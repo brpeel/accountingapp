@@ -35,6 +35,8 @@ import org.spsu.accounting.data.dbi.PermissionDBI
 import org.spsu.accounting.data.dbi.StartDBI
 import org.spsu.accounting.data.dbi.UserDBI
 import org.spsu.accounting.data.domain.UserDO
+import org.spsu.accounting.report.data.BalanceSheet
+import org.spsu.accounting.report.resource.BalanceSheetResource
 import org.spsu.accounting.report.resource.IncomeStatementResource
 import org.spsu.accounting.report.resource.OwnerEquityResource
 import org.spsu.accounting.resource.*
@@ -135,6 +137,8 @@ class AccountingApplication extends Application<AccountingApplicationConfigurati
         accountDAO.objectMapper = environment.getObjectMapper()
 
         environment.jersey().register(new OwnerEquityResource(dbi: statementDBI, accountDAO: accountDAO))
+
+        environment.jersey().register(new BalanceSheetResource(dbi: statementDBI))
     }
     private void registerAuth(Environment environment, DBI jdbi) {
 

@@ -75,6 +75,11 @@
                 templateUrl : 'ui/templates/report/ownerEquity.html',
                 controller  : 'ownerEquityController'
             })
+            .when('/balanceSheet',{
+                templateUrl : 'ui/templates/report/balanceSheet.html',
+                controller  : 'balanceSheetController'
+            })
+
             // route for the about page
             .when('/about', {
                 templateUrl : 'ui/templates/about.html',
@@ -214,6 +219,12 @@
         // create a message to display in our view
         console.log('owner equity controller')
         var controller = new OwnerEquityController($rootScope, $scope, $http,  $window, $location)
+    });
+
+    accountingApp.controller('balanceSheetController', function($rootScope, $scope, $http,  $window, $location) {
+        // create a message to display in our view
+        console.log('balance sheet controller')
+        var controller = new BalanceSheetController($rootScope, $scope, $http,  $window, $location)
     });
 
     accountingApp.factory('httpRequestInterceptor', function ($q,  $window, $location) {

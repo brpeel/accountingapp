@@ -8,33 +8,21 @@ import org.spsu.accounting.data.domain.AccountStatement
  */
 class BalanceSheet {
 
-    final Map<String, List<AccountStatement>> assets = new HashMap<>()
-    final Map<String, List<AccountStatement>> liabilities = new HashMap<>()
-    final Map<String, List<AccountStatement>> ownerEquity = new HashMap<>()
+    final List<AccountStatement> assets = new ArrayList<>()
+    final List<AccountStatement> liabilities = new ArrayList<>()
+    final List<AccountStatement> ownerEquity = new ArrayList<>()
 
     public void addAccounts(List<AccountStatement> accounts){
         accounts?.each {AccountStatement account->
             String category = account.category.toLowerCase().replace(" ","")
-            Map collection = null
             if (category == "asset")
-                collection = assets
+                assets << account
             else if (category == "liability")
-                collection = liabilities
+                liabilities << account
             else if (category == "ownerequity")
-                collection = ownerEquity
+                ownerEquity << account
 
-            addAccount(collection, account)
         }
     }
 
-    private void addAccount(Map<String, List<AccountStatement>> collection, AccountStatement account){
-        String subcategory = account.subcategory ?: "other"
-
-        List<AccountStatement> accounts = collection."$subcategory"
-        if (!accounts) {
-            accounts = new ArrayList<AccountStatement>()
-            collection."$subcategory" = accounts
-        }
-        accounts.add(account)
-    }
 }

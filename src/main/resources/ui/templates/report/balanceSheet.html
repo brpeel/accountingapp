@@ -1,0 +1,42 @@
+<div class="panel panel-default col-md-10">
+    <div class="panel-heading text-center"><strong>Balance Sheet:<br/> For Month Ended {{endDate}}</strong></div>
+
+    <div class="col-md-10"><u>Assets</u></div>
+
+    <ul class="list-unstyled">
+        <div ng-repeat="account in assets">
+            <il>
+                <div class="col-md-10">{{account.name}}</div>
+                <div class="col-xs-2 text-right">${{account.balance}}</div>
+            </il>
+        </div>
+    </ul>
+
+    <div class="col-md-10"><u>Liabilities and Owner's Equity</u></div>
+
+    <ul class="list-unstyled">
+        <il>
+            <div class="col-md-10">Liabilities</div>
+            <ul class="list-unstyled">
+                <div ng-repeat="account in liabilities">
+                    <il>
+                        <div class="col-md-10">{{account.name}}</div>
+                        <div class="col-xs-2 text-right">${{account.balance}}</div>
+                    </il>
+                </div>
+            </ul>
+        </il>
+        <il>
+            <div class="col-md-10">Owner's Equity</div>
+            <ul class="list-unstyled">
+                <div ng-repeat="account in ownersEquity">
+                    <il>
+                        <div class="col-md-10">{{account.name}}</div>
+                        <div class="col-xs-2 text-right">${{account.balance}}</div>
+                    </il>
+                </div>
+            </ul>
+        </il>
+    </ul>
+
+</div>
