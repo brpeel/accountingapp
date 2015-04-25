@@ -87,7 +87,7 @@
             })
             .when('/', {
                 templateUrl : 'ui/templates/home.html',
-                controller  : 'HomeController'
+                controller  : 'MenuController'
             }//)
            // .otherwise({
     //            redirectTo: '/'
@@ -110,9 +110,9 @@
         });
     });
 
-    accountingApp.controller('HomeController', function($rootScope, $scope, $http,  $window, $location) {
+    accountingApp.controller('MenuController', function($rootScope, $scope, $http,  $window, $location) {
         // create a message to display in our view
-        console.log("IN the Home Controller")
+        console.log("In the Menu Controller")
         var controller = new MenuController($rootScope, $scope, $http,  $window, $location)
     });
 

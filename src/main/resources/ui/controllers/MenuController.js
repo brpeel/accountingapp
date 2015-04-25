@@ -2,7 +2,15 @@
 var MenuController = function($rootScope, $scope, $http, $window, $location) {
     $rootScope.menuItems = []
     $rootScope.permissions = []
+
+    var isAuthed = function() {
+        var token = $window.sessionStorage.token;
+        return (typeof token != "undefined" && token);
+    };
+
     $scope.fetchMenu = function () {
+        if (!isAuthed())
+            return;
 
         console.log('Fetch Menu Items');
         $http.get('/api/menu/actions')
@@ -29,4 +37,4 @@ var MenuController = function($rootScope, $scope, $http, $window, $location) {
     }
 
     $scope.fetchMenu();
-  };
+};
