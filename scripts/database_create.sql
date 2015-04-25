@@ -438,5 +438,4 @@ insert into accounting_trans_entry (trans_id, account_id, amount, debit)
   union select id, 202, 100.00, true from accounting_trans where description = 'Made payment on account to Bowers Office Supply, $100'
 ;
 
---ALTER SEQUENCE accounting_trans_id_seq RESTART WITH 105;
 */

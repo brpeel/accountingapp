@@ -1,10 +1,12 @@
 package org.spsu.accounting.resource
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.google.common.io.ByteStreams
 import io.dropwizard.setup.Environment
 import org.apache.commons.fileupload.FileItem
 import org.apache.commons.fileupload.disk.DiskFileItemFactory
 import org.apache.commons.fileupload.servlet.ServletFileUpload
+import org.apache.commons.io.FileUtils
 import org.skife.jdbi.v2.DBI
 import org.spsu.accounting.data.dao.DocumentDAO
 import org.spsu.accounting.data.dao.UserDAO
@@ -22,9 +24,11 @@ import javax.ws.rs.POST
 import javax.ws.rs.Path
 import javax.ws.rs.PathParam
 import javax.ws.rs.Produces
+import javax.ws.rs.WebApplicationException
 import javax.ws.rs.core.Context
 import javax.ws.rs.core.MediaType
 import javax.ws.rs.core.Response
+import javax.ws.rs.core.StreamingOutput
 
 /**
  * Created by bpeel on 4/25/15.
@@ -70,6 +74,24 @@ class DocumentResource {
     public Response getDocumentList(@PathParam("id") int transId){
 
         return Response.ok(dao.getDocuments(transId)).build()
+    }
 
+    @GET
+    @Path("/download/{id}")
+    public Response getDocument(@PathParam("id") int id){
+        DocumentDO documentDO = dao.get(id)
+
+        final byte[] data = dao.getFile(id);
+        InputStream  stream = new ByteArrayInputStream(data)
+
+        StreamingOutput streamOutput = new StreamingOutput() {
+            @Override
+            public void write(OutputStream os) throws IOException, WebApplicationException {
+                ByteStreams.copy(stream, os)
+            }
+        };
+
+        Response response = Response.ok(stream).type(documentDO.contentType).build()
+        return response
     }
 }

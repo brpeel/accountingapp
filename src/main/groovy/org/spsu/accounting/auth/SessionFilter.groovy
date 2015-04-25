@@ -30,9 +30,12 @@ class SessionFilter implements javax.servlet.Filter{
         HttpServletRequest request = (HttpServletRequest) servletRequest
 
         String path = request.getRequestURI()
+
         logger.info("Checking path : ${path}")
         if (!isOpenPath(path)){
             String token = request.getHeader("Authorization")
+            if (!token)
+                token = request.getParameter("Authorization")
             UserDO user = isValid(token)
             if (!user){
                 ((HttpServletResponse) response).setStatus(Response.Status.UNAUTHORIZED.statusCode)
@@ -61,6 +64,8 @@ class SessionFilter implements javax.servlet.Filter{
 
         if (path.startsWith("/report/"))
             return true
+        //if (path.startsWith("/api/transdocument/download/"))
+            //return true
         return path == "/ui" || path.startsWith("/ui/") || path.startsWith("/open/") || path.startsWith("/auth/")
     }
 

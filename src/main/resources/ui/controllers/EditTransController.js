@@ -24,6 +24,8 @@ function EditTransController($rootScope, $scope, $http, $window, $location, $rou
     $scope.documents = [];
     $scope.alerts = [];
 
+    $scope.token = $window.sessionStorage.token
+
     var permissions = $rootScope.permissions
     console.log(JSON.stringify(permissions))
     for (var i in permissions){

@@ -3,6 +3,8 @@ package org.spsu.accounting.data.dao.impl
 import com.google.common.hash.Hashing
 import org.apache.commons.codec.binary.Base64
 import org.apache.commons.fileupload.FileItem
+import org.apache.commons.io.FileUtils
+import org.apache.commons.io.IOUtils
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.spsu.accounting.data.dao.DocumentDAO
@@ -62,5 +64,17 @@ class DocumentDAOImpl implements DocumentDAO {
     @Override
     List<DocumentDO> getDocuments(int transId) {
         return dbi.getAll(transId)
+    }
+
+    @Override
+    DocumentDO get(int id) {
+        return dbi.getDocumentById(id)
+    }
+
+    @Override
+    byte[] getFile(int id) {
+        String encodedString = dbi.getFile(id)
+
+        return Base64.decodeBase64(encodedString)
     }
 }

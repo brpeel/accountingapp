@@ -13,4 +13,8 @@ interface DocumentDAO {
     List<DocumentDO> createDocuments(int transId, Collection<FileItem> fileItem)
 
     List<DocumentDO> getDocuments(int transId)
+
+    DocumentDO get(int id)
+
+    byte[] getFile(int id)
 }

@@ -88,7 +88,7 @@
         <div class="panel-heading">Documents:</div>
         <nav class="vertical">
             <ul class="list-unstyled">
-                <li ng-repeat="doc in documents"><a href="/transdocument/{{doc.id}}"> {{doc.file_name}}</a></li>
+                <li ng-repeat="doc in documents"><a href="api/transdocument/download/{{doc.id}}?Authorization={{token}}" download="{{doc.file_name}}"> {{doc.file_name}}</a></li>
                 <li><input type="file" nv-file-select="" uploader="uploader" ng-show="showSave" /></li>
                 <li ng-show="uploader.queue.length">
                     Queue progress:

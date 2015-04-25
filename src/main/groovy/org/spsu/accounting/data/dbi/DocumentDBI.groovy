@@ -35,4 +35,7 @@ interface DocumentDBI{
 
     @SqlQuery("""select id from accounting_trans_document where trans_id = :transId and hash = :hash""")
     Integer documentExists(@Bind("transId") int transId, @Bind("hash") String hash)
+
+    @SqlQuery("select file from accounting_trans_document where id = :id")
+    String getFile(@Bind("id") int id)
 }
