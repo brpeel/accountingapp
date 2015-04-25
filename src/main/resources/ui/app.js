@@ -1,6 +1,6 @@
 	// create the module and name it accountingApp
 	//var accountingApp = angular.module('accountingApp', ['ngRoute', 'accountingApp.about']);
-	var accountingApp = angular.module('accountingApp', ['ngRoute', 'ui.grid', 'ngTable']);
+	var accountingApp = angular.module('accountingApp', ['ngRoute', 'ui.grid', 'ngTable', 'angularFileUpload']);
 
 	// configure our routes
 	accountingApp.config(function($routeProvider) {
@@ -26,7 +26,7 @@
                 controller  : 'transactionController'
             })
             .when('/transaction/:id', {
-                templateUrl : 'ui/templates/createTransactions.html',
+                templateUrl : 'ui/templates/editTransactions.html',
                 controller  : 'editTransController'
             })
             .when('/createTrans', {
@@ -153,10 +153,10 @@
 
     });
 
-    accountingApp.controller('editTransController', function($rootScope, $scope, $http,  $window, $location, $routeParams) {
+    accountingApp.controller('editTransController', function($rootScope, $scope, $http,  $window, $location, $routeParams, FileUploader, $filter, ngTableParams) {
         // create a message to display in our view
         console.log('In Edit transaction controller')
-        var controller = new EditTransController($rootScope, $scope, $http,  $window, $location, $routeParams)
+        var controller = new EditTransController($rootScope, $scope, $http,  $window, $location, $routeParams, FileUploader, $filter, ngTableParams)
     });
 
     accountingApp.controller('createTransController', function($rootScope, $scope, $http,  $window, $location) {

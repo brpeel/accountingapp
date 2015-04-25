@@ -1,3 +1,4 @@
+/*
 truncate table account CASCADE;
 
 --Assets
@@ -47,3 +48,4 @@ insert into account (id, name, initial_balance, normal_side, added, active, adde
 insert into account (id, name, initial_balance, normal_side, added, active, added_by, subcategory)
   select 538, 'Automobile Expense', 0.00, 'Debit', now(), true, id, 'Expense'
   from accounting_user where username = 'brpeela';
+  */

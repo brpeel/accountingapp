@@ -1,4 +1,4 @@
-﻿
+﻿/*
 DROP INDEX IF EXISTS username_uidx;
 
 drop table if exists accounting_trans_document cascade;
@@ -439,3 +439,4 @@ insert into accounting_trans_entry (trans_id, account_id, amount, debit)
 ;
 
 --ALTER SEQUENCE accounting_trans_id_seq RESTART WITH 105;
+*/

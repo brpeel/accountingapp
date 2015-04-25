@@ -16,6 +16,7 @@ import io.dropwizard.setup.Bootstrap
 import io.dropwizard.setup.Environment
 import io.dropwizard.views.ViewBundle
 import org.eclipse.jetty.server.session.SessionHandler
+import org.glassfish.jersey.media.multipart.MultiPartFeature
 import org.skife.jdbi.v2.DBI
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -74,10 +75,14 @@ class AccountingApplication extends Application<AccountingApplicationConfigurati
         bootstrap.getObjectMapper().enable(DeserializationFeature.READ_ENUMS_USING_TO_STRING);
 
         bootstrap.addBundle(new AssetsBundle("/ui/"));
+        //bootstrap.addBundle(new MultiPartBundl());
     }
 
     @Override
     void run(AccountingApplicationConfiguration configuration, Environment environment) throws Exception {
+
+
+        environment.jersey().register(MultiPartFeature.class);
 
         final DBI jdbi = createDBI(configuration, environment)
         StartDAO db = new StartDAO(dbi: jdbi.onDemand(StartDBI))
@@ -122,6 +127,8 @@ class AccountingApplication extends Application<AccountingApplicationConfigurati
         (new AccountResource()).register(environment, jdbi)
         (new UserResource()).register(environment, jdbi)
         (new TransactionResource()).register(environment, jdbi)
+
+        (new DocumentResource()).register(environment, jdbi)
 
     }
 

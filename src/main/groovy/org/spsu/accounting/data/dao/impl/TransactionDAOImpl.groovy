@@ -1,6 +1,11 @@
 package org.spsu.accounting.data.dao.impl
 
+import com.google.common.base.Charsets
+import com.google.common.hash.Hashing
+import org.apache.commons.codec.binary.Base64
+import org.apache.commons.fileupload.FileItem
 import org.joda.time.DateTime
+import org.skife.jdbi.v2.sqlobject.Bind
 import org.spsu.accounting.data.dao.TransactionDAO
 import org.spsu.accounting.data.dbi.DocumentDBI
 import org.spsu.accounting.data.dbi.TransactionEntryDBI
@@ -204,4 +209,5 @@ class TransactionDAOImpl extends DAOImpl<TransactionDO> implements TransactionDA
         TransactionDO trans = get(id, true)
         dbi.reject(id, user.id)
     }
+
 }

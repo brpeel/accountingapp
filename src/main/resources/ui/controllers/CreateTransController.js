@@ -3,27 +3,17 @@ function CreateTransController($rootScope, $scope, $http, $window, $location, $r
 
     var self = this;
 
-    $rootScope.tForm = {}
-    $rootScope.tForm.description = null
-    $rootScope.tForm.entry =[{accountid:null, amount:null, debit:false}, {accountid:null, amount:null, debit:true}]
+    $scope.tForm = {}
+    $scope.tForm.description = null
+    $scope.tForm.entry =[{accountid:null, amount:null, debit:false}, {accountid:null, amount:null, debit:true}]
 
-    $scope.errormessage = null;
-    $rootScope.accounts = [];
-    $rootScope.transaction = null;
-    $rootScope.status = "Reported";
-    var permissions = $rootScope.permissions
-    for (var i in permissions){
-        var p = permissions[i]
-        console.log("Checking permission : "+ p.permission)
-        if (p.permission == "createTrans"){
-            console.log("Found")
-            $rootScope.showSave = true
-        }
-    }
-
+    $scope.alerts = [];
+    $scope.accounts = [];
+    $scope.transaction = null;
+    
     $scope.fetchOptions = function() {
         $http.get('/api/account/all').success(function(data){
-            $rootScope.accounts = data;
+            $scope.accounts = data;
         });
     };
 
@@ -40,22 +30,31 @@ function CreateTransController($rootScope, $scope, $http, $window, $location, $r
             .
             error(function(data, status, headers, config) {
                 console.log(data)
-                $scope.errormessage = data;
+
+                $scope.addAlert('danger', 'Could not save the transaction');
+                $scope.addAlert('danger', data);
             });
     };
 
 
-    $rootScope.cancel = function(){
+    $scope.cancel = function(){
         $location.path("/transactions")
     };
 
-
-    $rootScope.addEntry = function(){
-        $rootScope.tForm.entry.push({accountid:null, amount:null, debit:null})
+    $scope.addEntry = function(){
+        $scope.tForm.entry.push({accountid:null, amount:null, debit:null})
     };
 
-    $rootScope.removeEntry = function(index){
-        $rootScope.tForm.entry.splice(index,1)
+    $scope.removeEntry = function(index){
+        $scope.tForm.entry.splice(index,1)
+    };
+
+    $scope.addAlert = function(type, message) {
+        $scope.alerts.push({type: type, msg: message});
+    };
+
+    $scope.closeAlert = function(index) {
+        $scope.alerts.splice(index, 1);
     };
 
 

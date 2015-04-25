@@ -3,6 +3,15 @@ package org.spsu.accounting.resource
 import com.fasterxml.jackson.annotation.JsonGetter
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.databind.annotation.JsonSerialize
+import com.sun.jersey.core.header.FormDataContentDisposition;
+
+import com.sun.xml.internal.messaging.saaj.packaging.mime.MessagingException
+import org.apache.commons.codec.binary.Base64
+import org.apache.commons.fileupload.FileItem
+import org.apache.commons.fileupload.FileItemFactory
+import org.apache.commons.fileupload.disk.DiskFileItemFactory
+import org.apache.commons.fileupload.servlet.ServletFileUpload
+import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.joda.time.DateTime
 import org.skife.jdbi.v2.DBI
 import org.skife.jdbi.v2.sqlobject.Bind
@@ -23,6 +32,8 @@ import org.spsu.accounting.data.serial.MoneySerializer
 import org.spsu.accounting.resource.base.BaseResource
 
 import javax.servlet.http.HttpServletRequest
+import javax.ws.rs.Consumes
+import javax.ws.rs.FormParam
 import javax.ws.rs.GET
 import javax.ws.rs.POST
 import javax.ws.rs.PUT
@@ -105,6 +116,16 @@ class TransactionResource extends BaseResource<DAO<TransactionDO>> {
 
         return Response.ok().build()
     }
+
+
+
+    protected List<String> writeFiles(List<FileItem> items){
+        List<String> downloadPaths = []
+
+
+        return downloadPaths
+    }
+
 
     protected List<AccountTransactions> getAccountTranactions(int accountid){
         return accountTransDBI.getTransByAccount(accountid)

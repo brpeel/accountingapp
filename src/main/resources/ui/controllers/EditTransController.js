@@ -1,19 +1,28 @@
 'use strict';
-function EditTransController($rootScope, $scope, $http, $window, $location, $routeParams) {
+function EditTransController($rootScope, $scope, $http, $window, $location, $routeParams, FileUploader, $filter, ngTableParams) {
+
+    var id = $routeParams.id
+    if (typeof id == "undefined" || !id) {
+        $location.path("/")
+        return;
+    }
 
     var self = this;
 
-    $rootScope.tForm = {}
-    $rootScope.tForm.description = null
-    $rootScope.tForm.entry =[{accountid:null, amount:null, debit:false}, {accountid:null, amount:null, debit:true}]
+    $scope.tForm = {}
+    $scope.tForm.description = null
+    $scope.tForm.entry =[{accountid:null, amount:null, debit:false}, {accountid:null, amount:null, debit:true}]
 
     $scope.errormessage = null;
-    $rootScope.accounts = [];
-    $rootScope.transaction = null;
-    $rootScope.status = "Reported";
-    $rootScope.showSave = true;
-    $rootScope.showApprove = false;
-    var canApprove = false;
+    $scope.accounts = [];
+    $scope.transId = id;
+    $scope.status = "Reported";
+    $scope.showSave = true;
+    $scope.showApprove = false;
+    $scope.canApprove = false;
+
+    $scope.documents = [];
+    $scope.alerts = [];
 
     var permissions = $rootScope.permissions
     console.log(JSON.stringify(permissions))
@@ -22,56 +31,58 @@ function EditTransController($rootScope, $scope, $http, $window, $location, $rou
         console.log("Checking permission : "+ p.permission)
         if (p.permission == "ApproveTrans"){
             console.log("Checking permission found "+ p.permission)
-            canApprove = true
+            $scope.canApprove = true
         }
     }
 
     $scope.fetchOptions = function() {
         $http.get('/api/account/all').success(function(data){
-            $rootScope.accounts = data;
+            $scope.accounts = data;
         });
     };
 
     $scope.fetchTrans = function() {
-        var id = $routeParams.id
 
-        console.log("Checking loading transaction : "+ id)
+        $http.get('/api/transaction/'+id)
+            .success(function(response){
+
+                $scope.tForm.description = response.description
+                $scope.tForm.entry = response.entries
+
+                var status = response.status.toLowerCase();
+
+                $scope.showSave = status != "approved";
+                $scope.showApprove = $scope.canApprove && status == "reported";
+
+                console.log("showSave = "+$scope.showSave )
+            })
+            .error(function(data, status, headers, config) {
+
+                $scope.addAlert('danger', 'Could not load transaction: '+id);
+            });;
+    };
+
+    $scope.fetchDocuments = function() {
+        var id = $routeParams.id
 
         if (typeof id == "undefined" || !id) {
             $location.path("/")
             return;
         }
 
-        console.log('Fetching Transaction Id with id :'+id)
-        $http.get('/api/transaction/'+id)
+        $http.get('/api/transdocument/'+id)
             .success(function(data){
-                console.log('Trans = '+JSON.stringify(data))
-                $rootScope.tForm.description = data.description
-                $rootScope.tForm.entry = data.entries
-                $rootScope.transaction = data.id;
-                var status = data.status.toLocaleLowerCase();
-                console.log("Got status : "+ status)
-                if (status == "reported"){
-                    console.log("Show save");
-                    $rootScope.showSave = true;
-                    $rootScope.showApprove = canApprove;
-                }
-                else {
-                    $rootScope.showSave = false;
-                    $rootScope.showApprove = false;
-                }
+                $scope.documents = data;
             })
             .error(function(data, status, headers, config) {
 
-                $scope.errormessage = data;
-            });;
+                $scope.addAlert('danger', 'Could not load document list');
+            });
     };
-
 
     $scope.save = function(){
         console.log('Save Transaction');
         var trans = {description:$scope.tForm.description, entries:$scope.tForm.entry};
-        var id = $rootScope.transaction
         $http.put('api/transaction/update/'+id,trans)
             .success(function(data, status, headers, config){
 
@@ -80,15 +91,16 @@ function EditTransController($rootScope, $scope, $http, $window, $location, $rou
             .
             error(function(data, status, headers, config) {
 
-                $scope.errormessage = data;
+                $scope.addAlert('danger', 'Could not save transaction');
+                $scope.addAlert('danger', data);
             });
     };
 
-    $rootScope.approve = function(){
-        console.log('Approve Transaction = '+$rootScope.transaction)
+    $scope.approve = function(){
+        console.log('Approve Transaction = '+id)
 
         var trans = {description:$scope.tForm.description, entries:$scope.tForm.entry};
-        var id = $rootScope.transaction
+
 
         $http.put('api/transaction/approve/'+id,trans)
             .success(function(data, status, headers, config){
@@ -97,33 +109,76 @@ function EditTransController($rootScope, $scope, $http, $window, $location, $rou
             })
             .error(function(data, status, headers, config) {
 
-                $scope.errormessage = data;
+                $scope.addAlert('danger', 'Could not Approve transaction');
+                $scope.addAlert('danger', data);
             });
     };
 
-    $rootScope.reject = function(){
-        console.log('Reject Transaction = '+$rootScope.transaction)
+    $scope.reject = function(){
+        console.log('Reject Transaction = '+id)
         var trans = {description:$scope.tForm.description, entries:$scope.tForm.entry};
-        var id = $rootScope.transaction
+
         $http.put('api/transaction/reject/'+id,trans)
             .success(function(data, status, headers, config){
 
                 $location.path("/transactions")
             })
             .error(function(data, status, headers, config) {
-
-                $scope.errormessage = data;
+                $scope.addAlert('danger', 'Could not reject transaction');
+                $scope.addAlert('danger', data);
             });
     };
 
-    $rootScope.addEntry = function(){
-        $rootScope.tForm.entry.push({accountid:null, amount:null, debit:null})
+    $scope.addEntry = function(){
+        $scope.tForm.entry.push({accountid:null, amount:null, debit:null})
     };
 
-    $rootScope.removeEntry = function(index){
-        $rootScope.tForm.entry.splice(index,1)
+    $scope.removeEntry = function(index){
+        $scope.tForm.entry.splice(index,1)
     };
 
-    $scope.fetchTrans()
-    $scope.fetchOptions()
+    var uploader = new FileUploader({
+        url: 'api/transdocument/'+ $routeParams.id,
+        headers: {'Authorization': $window.sessionStorage.token}
+    });
+
+    $scope.uploader = uploader
+        // FILTERS
+
+    uploader.filters.push({
+        name: 'customFilter',
+        fn: function(item /*{File|FileLikeObject}*/, options) {
+            return this.queue.length < 10;
+        }
+    });
+
+    // CALLBACKS
+
+    uploader.onSuccessItem = function(fileItem, response, status, headers) {
+        console.info('onSuccessItem', fileItem, response, status, headers);
+
+        console.log("Successful save. "+JSON.stringify(response))
+
+        for (var i in response.data){
+            console.log("adding document : "+JSON.stringify(response.data[i]))
+            $scope.documents.push(response.data[i]);
+        }
+
+    };
+    uploader.onErrorItem = function(fileItem, response, status, headers) {
+        $scope.addAlert('danger', 'Could not upload file');
+    };
+
+    $scope.addAlert = function(type, message) {
+        $scope.alerts.push({type: type, msg: message});
+    };
+
+    $scope.closeAlert = function(index) {
+        $scope.alerts.splice(index, 1);
+    };
+
+
+    $scope.fetchTrans();
+    $scope.fetchDocuments();
+    $scope.fetchOptions();
 };

@@ -53,11 +53,11 @@ class SessionFilter implements javax.servlet.Filter{
         catch (Exception e){
             logger.info("Could not check session status", e)
         }
-        return false
+        return null
     }
 
     private isOpenPath(String path){
-        //return true
+       // return true
 
         if (path.startsWith("/report/"))
             return true

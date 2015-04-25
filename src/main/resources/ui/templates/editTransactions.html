@@ -1,0 +1,110 @@
+<div class="col-md-8">
+    <h3>Transaction : {{transId}}</h3>
+    <div>
+        <div ng-repeat="alert in alerts" class="alert alert-{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</div>
+    </div>
+    <form role="createTransForm">
+
+        <div class="form-group">
+            <label for="description">Description</label>
+            <input type="description" ng-model="tForm.description" class="form-control" name="description"
+                   id="description" placeholder="Enter Description"/>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Entries</h3>
+            </div>
+            <table class="table">
+                <tr>
+                    <th colspan="4">Account</th>
+                    <th colspan="3">Amount</th>
+                    <th>Type</th>
+                    <th></th>
+                </tr>
+                <tr ng-repeat="item in tForm.entry">
+                    <td colspan="4">
+                            <select ng-model="item.accountid" class="form-control" name="account"
+                                    ng-options="item.id as item.name for item in accounts" required="true">
+                                <option value="">Select Account</option>
+                            </select>
+                    </td>
+                    <td colspan="3">
+                        <div class="input-group">
+                        <div class="input-group-addon">$</div>
+                        <input type="money" ng-model="item.amount" class="form-control" name="amount" required="true"/>
+                        </div>
+                    </td>
+                    <td>
+                        <select ng-model="item.debit" class="form-control" name="debit" required="true">
+                            <option value="true">Debit</option>
+                            <option value="false">Credit</option>
+                        </select>
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-default" ng-click="removeEntry($index)">
+                            Remove Entry
+                        </button>
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+
+        <div class="form-group form-inline col-xs-10">
+            <div class="center-block">
+                <button type="button" class="btn btn-default" ng-click="addEntry()" ng-show="showSave">Add Entry
+                </button>
+            </div>
+        </div>
+
+        <div class="form-group form-inline col-xs-10">
+            <div class="col-md-2"></div>
+            <div class="col-md-2">
+                <button type="button" class="btn btn-link" ng-click="cancel()">Cancel</button>
+            </div>
+
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary" ng-click="save()" ng-show="showSave">Submit</button>
+            </div>
+            <div class="col-md-2">
+                <button type="approve" class="btn btn-success" ng-click="approve()" ng-show="showApprove">Approve
+                </button>
+            </div>
+            <div class="col-md-2">
+                <button type="reject" class="btn btn-danger" ng-click="reject()" ng-show="showApprove">Reject</button>
+            </div>
+        </div>
+    </form>
+
+
+
+</div>
+<div class ="col-md-4">
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <div class="panel panel-default">
+        <div class="panel-heading">Documents:</div>
+        <nav class="vertical">
+            <ul class="list-unstyled">
+                <li ng-repeat="doc in documents"><a href="/transdocument/{{doc.id}}"> {{doc.file_name}}</a></li>
+                <li><input type="file" nv-file-select="" uploader="uploader" ng-show="showSave" /></li>
+                <li ng-show="uploader.queue.length">
+                    Queue progress:
+                    <div class="progress" style="">
+                        <div class="progress-bar" role="progressbar"  ng-style="{ 'width': uploader.progress + '%' }"></div>
+                    </div>
+                </li>
+                <li>
+                    <button type="button" class="btn btn-success btn-s" ng-show="showSave" ng-click="uploader.uploadAll()" ng-disabled="!uploader.getNotUploadedItems().length">
+                        <span class="glyphicon glyphicon-upload"></span> Upload File
+                    </button>
+                    <button type="button" class="btn btn-danger btn-s" ng-show="uploader.queue.length" ng-click="uploader.clearQueue()" ng-disabled="!uploader.queue.length">
+                        <span class="glyphicon glyphicon-trash"></span> Cancel
+                    </button>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>

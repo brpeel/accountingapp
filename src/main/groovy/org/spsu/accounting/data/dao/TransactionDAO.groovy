@@ -1,5 +1,6 @@
 package org.spsu.accounting.data.dao
 
+import org.apache.commons.fileupload.FileItem
 import org.spsu.accounting.data.domain.TransactionDO
 import org.spsu.accounting.data.domain.UserDO
 

@@ -21,16 +21,23 @@ class DBConnection {
         DBConnection connection = new DBConnection()
         connection.dbi = new DBI(ds)
 
-        File file = new File("./scripts/database_create.sql");
+        executeSetupScript("./src/test/resources/h2Schema/create.sql", connection)
+        executeSetupScript("./src/test/resources/h2Schema/update.sql", connection)
+
+        return connection
+    }
+
+    private static executeSetupScript(String script, DBConnection connection){
+        File file = new File(script);
         String sql = file.text
 
         sql = sql.replaceAll("BIGSERIAL", "bigint auto_increment")
 
         Handle h = connection.dbi.open()
         h.execute(sql)
-        h.close()
 
-        return connection
+
+        h.close()
     }
 
     def <SqlObjectType> SqlObjectType onDemand(Class<SqlObjectType> SqlObjectType){

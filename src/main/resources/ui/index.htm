@@ -24,6 +24,9 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
     <script src="ui/libs/ng-table/ng-table.min.js"></script>
 
+    <script src="ui/libs/angular-file-upload.min.js"></script>
+    <script src="ui/libs/angular-file-upload.min.map"></script>
+
     <link rel="stylesheet" href="ui/libs/ng-table/ng-table.min.css" />
 
     <link rel="shortcut icon" href="/ui/images/favicon.ico" type="image/x-icon" />
@@ -74,15 +77,12 @@
 </nav>
 
 <nav class="vertical col-md-2" >
-    <ul class="unstyled">
+    <ul class="list-unstyled">
         <li ng-repeat="item in menuItems"><a href="#{{item.permission}}"><i class="fa fa-home"></i> {{item.label}}</a></li>
     </ul>
 </nav>
 
 <div id="main">
-
-    <!-- angular templating -->
-    <!-- this is where content will be injected -->
 
     <div ng-view class="col-md-10"></div>
 
