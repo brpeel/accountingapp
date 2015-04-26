@@ -1,5 +1,5 @@
 <div class="col-md-8">
-    <h3>Transaction : {{transId}}</h3>
+    <h3>Transaction : {{transId}} - Status : {{tForm.status}}</h3>
     <div>
         <div ng-repeat="alert in alerts" class="alert alert-{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</div>
     </div>

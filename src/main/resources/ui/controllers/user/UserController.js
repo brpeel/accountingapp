@@ -4,26 +4,6 @@ var UserController = function($rootScope, $scope, $http, $window, $location, $fi
 
     var data = [];
 
-    $scope.createLabel = null;
-    $scope.createIcon = null;
-    $scope.canEdit = false;
-
-    //createUser editUser
-    var permissions = $rootScope.permissions
-    for (var i in permissions){
-        var p = permissions[i]
-        console.log("Checking permission : "+ p.permission)
-        if (p.permission == "createUser"){
-            console.log("Can create");
-            $scope.createLabel = p.label;
-            $scope.createIcon = p.style;
-        }
-        else if (p.permission == "editUser"){
-            console.log("Can Edit");
-            $scope.canEdit = true;
-        }
-    }
-
     $http.get('/api/user/all/true').success(function (users) {
 
         data = users;

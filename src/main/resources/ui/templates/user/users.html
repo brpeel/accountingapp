@@ -1,12 +1,8 @@
 <div class="alert alert-error" ng-show="error">
     {{errorMessage}}
 </div>
-<!--div class="form-group col-md-6">
-    <label for="active">Show Inactive</label>
-    <input type="checkbox" ng-model="showInactive" class="form-control" name="active" id="active" onclick="toggle"/>
-</div-->
 
-<a href="#createUser" ng-show="createLabel"><i  class="{{createIcon}}">{{createLabel}}</i></a>
+<a href="#createUser" ng-show="allowed.createUser"><i  class="fa fa-plus-square">Add User</i></a>
 
 <table ng-table="tableParams" show-filter="true" class="table col-md-10">
     <tr ng-repeat="user in $data" ng-class="{ 'emphasis': !user.active }">

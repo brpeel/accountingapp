@@ -1,6 +1,6 @@
 
     <!--div class="gridStyle" ng-grid="transGrid"></div -->
-    <a href="#createAccount" ng-show="createLabel"><i  class="{{createIcon}}">{{createLabel}}</i></a>
+    <a href="#createAccount"  ng-show="allowed.createAccount"><i  class="fa fa-plus-square">Create Account</i></a>
 
     <table ng-table="tableParams" class="table">
         <tr ng-repeat="account in $data" ng-class="{ 'emphasis': !account.active }">

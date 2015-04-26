@@ -11,31 +11,22 @@ function EditTransController($rootScope, $scope, $http, $window, $location, $rou
 
     $scope.tForm = {}
     $scope.tForm.description = null
+    $scope.tForm.status = "Reported";
     $scope.tForm.entry =[{accountid:null, amount:null, debit:false}, {accountid:null, amount:null, debit:true}]
 
     $scope.errormessage = null;
     $scope.accounts = [];
     $scope.transId = id;
-    $scope.status = "Reported";
+
     $scope.showSave = true;
     $scope.showApprove = false;
-    $scope.canApprove = false;
+    $scope.canApprove = $rootScope.allowed.ApproveTrans;
 
     $scope.documents = [];
     $scope.alerts = [];
 
     $scope.token = $window.sessionStorage.token
 
-    var permissions = $rootScope.permissions
-    console.log(JSON.stringify(permissions))
-    for (var i in permissions){
-        var p = permissions[i]
-        console.log("Checking permission : "+ p.permission)
-        if (p.permission == "ApproveTrans"){
-            console.log("Checking permission found "+ p.permission)
-            $scope.canApprove = true
-        }
-    }
 
     $scope.fetchOptions = function() {
         $http.get('/api/account/all').success(function(data){
@@ -48,15 +39,17 @@ function EditTransController($rootScope, $scope, $http, $window, $location, $rou
         $http.get('/api/transaction/'+id)
             .success(function(response){
 
-                $scope.tForm.description = response.description
-                $scope.tForm.entry = response.entries
+                console.log(JSON.stringify(response));
+                $scope.tForm.description = response.description;
+                $scope.tForm.entry = response.entries;
+                $scope.tForm.status = response.status;
 
                 var status = response.status.toLowerCase();
 
                 $scope.showSave = status != "approved";
                 $scope.showApprove = $scope.canApprove && status == "reported";
 
-                console.log("showSave = "+$scope.showSave )
+                console.log("showSave = "+$scope.showSave+" " )
             })
             .error(function(data, status, headers, config) {
 
