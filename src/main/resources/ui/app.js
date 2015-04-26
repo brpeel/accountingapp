@@ -87,6 +87,14 @@
                 templateUrl : 'ui/templates/report/balanceSheet.html',
                 controller  : 'balanceSheetController'
             })
+            .when('/financialRatio',{
+                templateUrl : 'ui/templates/report/financialRatio.html',
+                controller  : 'financialRatioController'
+            })
+            .when('/trialBalance',{
+                templateUrl : 'ui/templates/report/trialBalance.html',
+                controller  : 'trialBalanceController'
+            })
 
             // route for the about page
             .when('/about', {
@@ -248,6 +256,18 @@
         // create a message to display in our view
         console.log('balance sheet controller')
         var controller = new BalanceSheetController($rootScope, $scope, $http,  $window, $location)
+    });
+
+    accountingApp.controller('financialRatioController', function($rootScope, $scope, $http,  $window, $location) {
+        // create a message to display in our view
+        console.log('Fin Ratio controller')
+        var controller = new FinancialRatioController($rootScope, $scope, $http,  $window, $location)
+    });
+
+    accountingApp.controller('trialBalanceController', function($rootScope, $scope, $http,  $window, $location) {
+        // create a message to display in our view
+        console.log('Trial Balance controller')
+        var controller = new TrialBalanceController($rootScope, $scope, $http,  $window, $location)
     });
 
     accountingApp.factory('httpRequestInterceptor', function ($q,  $window, $location) {
