@@ -90,7 +90,7 @@
             <ul class="list-unstyled">
                 <li ng-repeat="doc in documents"><a href="api/transdocument/download/{{doc.id}}?Authorization={{token}}" download="{{doc.file_name}}"> {{doc.file_name}}</a></li>
                 <li><input type="file" nv-file-select="" uploader="uploader" ng-show="showSave" /></li>
-                <li ng-show="uploader.queue.length">
+                <li ng-show="uploader.getNotUploadedItems().length">
                     Queue progress:
                     <div class="progress" style="">
                         <div class="progress-bar" role="progressbar"  ng-style="{ 'width': uploader.progress + '%' }"></div>
@@ -100,7 +100,7 @@
                     <button type="button" class="btn btn-success btn-s" ng-show="showSave" ng-click="uploader.uploadAll()" ng-disabled="!uploader.getNotUploadedItems().length">
                         <span class="glyphicon glyphicon-upload"></span> Upload File
                     </button>
-                    <button type="button" class="btn btn-danger btn-s" ng-show="uploader.queue.length" ng-click="uploader.clearQueue()" ng-disabled="!uploader.queue.length">
+                    <button type="button" class="btn btn-danger btn-s" ng-show="uploader.getNotUploadedItems().length" ng-click="uploader.clearQueue()" ng-disabled="!uploader.queue.length">
                         <span class="glyphicon glyphicon-trash"></span> Cancel
                     </button>
                 </li>

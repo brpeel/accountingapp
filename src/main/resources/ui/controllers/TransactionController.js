@@ -21,8 +21,7 @@ var TransactionController = function($rootScope, $scope, $http, $window, $locati
         $http.post('api/transaction/search',searchTerms)
             .success(function(response, status, headers, config){
 
-                console.log(response)
-                data = response
+                data = response;
                 $scope.tableData = data;
 
                 $scope.tableParams.total(data.length);

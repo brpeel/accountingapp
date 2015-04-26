@@ -151,13 +151,15 @@ function EditTransController($rootScope, $scope, $http, $window, $location, $rou
 
     uploader.onSuccessItem = function(fileItem, response, status, headers) {
         console.info('onSuccessItem', fileItem, response, status, headers);
-
+/*
         console.log("Successful save. "+JSON.stringify(response))
 
         for (var i in response.data){
             console.log("adding document : "+JSON.stringify(response.data[i]))
             $scope.documents.push(response.data[i]);
         }
+        */
+        $scope.fetchDocuments();
 
     };
     uploader.onErrorItem = function(fileItem, response, status, headers) {
