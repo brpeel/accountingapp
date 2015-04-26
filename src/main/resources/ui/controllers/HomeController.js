@@ -34,7 +34,7 @@ var HomeController = function($rootScope, $scope, $http, $window, $location, $fi
     };
 
     $scope.fetchMenu = function () {
-    
+
         $http.get('/api/menu/actions')
             .success(function (data, status, headers, config) {
                 var items = data.menuItems.sort(comparePermissions);
