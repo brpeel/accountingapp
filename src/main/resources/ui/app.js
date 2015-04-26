@@ -68,6 +68,10 @@
                 templateUrl : 'ui/templates/user/editUser.html',
                 controller  : 'createUserController'
             })
+            .when('/myuser/:id', {
+                templateUrl : 'ui/templates/user/myuser.html',
+                controller  : 'myUserController'
+            })
 
             //reports
             .when('/incomeStatement',{
@@ -205,6 +209,12 @@
 
         console.log('In Edit User controller')
         var controller = new EditUserController($rootScope, $scope, $http,  $window, $location, $routeParams)
+
+    });
+
+    accountingApp.controller('myUserController', function($rootScope, $scope, $http,  $window, $location, $routeParams) {
+
+        var controller = new MyUserController($rootScope, $scope, $http,  $window, $location, $routeParams)
 
     });
 

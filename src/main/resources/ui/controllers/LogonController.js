@@ -32,6 +32,7 @@ function LogonController($rootScope, $scope, $http, $window, $location) {
 
                 $rootScope.errormessage = null;
                 $rootScope.username = data.username;
+                $rootScope.userid = data.userid;
                 //$rootScope.permissions = data.permissions;
                 //$rootScope.menuItems = data.mainMenu;
                 $scope.user.header = btoa(userIn.username + ':' + userIn.password);

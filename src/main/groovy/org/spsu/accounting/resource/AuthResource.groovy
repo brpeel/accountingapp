@@ -68,7 +68,7 @@ class AuthResource {
         String token =  dao.createSession(user);
 
 
-        Map data = ["token":token, "username":user.username, "reset_on_logon":resetOnLogon, "password_expired":passwordExpired]
+        Map data = ["token":token, "username":user.username, "userid":user.id, "reset_on_logon":resetOnLogon, "password_expired":passwordExpired]
 
         return Response.ok(data).build();
     }

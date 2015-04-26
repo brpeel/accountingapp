@@ -1,17 +1,5 @@
-<!--div class="alert alert-danger" ng-show="errormessage">
-    <strong>Error!</strong> {{errormessage}}
-</div>
-<div class="alert alert-danger" ng-show="errormessage">
-    <strong>Error!</strong> {{errormessage}}
-</div-->
-<div  class="col-md-8">
-    <div ng-repeat="alert in alerts" class="alert alert-{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</div>
-</div>
 <form role="editUserForm" class="col-md-6">
-    <div class="form-group">
-        <label for="active">Active</label>
-        <input type="checkbox" ng-model="accountingUser.active" class="form-control" name="active" id="active" />
-    </div>
+
     <div class="form-group">
         <label for="username">User Name</label>
         <input type="text" ng-disabled="true" ng-model="accountingUser.username" class="form-control" name="username" id="username" placeholder="Enter User Name" />
@@ -31,15 +19,14 @@
     <div class="form-group">
         <label for="role">Role</label>
 
-        <select ng-model="accountingUser.role" class="form-control" name="role" id="role"
+        <select ng-disabled="true" ng-model="accountingUser.role" class="form-control" name="role" id="role"
                 ng-options="item.role as item.role_name for item in roles" required="true">
             <option value="">Select Role</option>
         </select>
     </div>
+
     <div class="btn-group col-md-8" role="group">
-        <button class="btn btn-primary" ng-click="save()" ng-show="showSave">Save</button>
-        <button class="btn btn-warning" ng-click="reset()" ng-show="showReset">Reset User Login</button>
+        <button class="btn btn-primary" ng-click="save()">Save</button>
         <button type="button" class="btn btn-link" ng-click="cancel()">Cancel</button>
     </div>
-
 </form>
