@@ -8,7 +8,7 @@ var TransactionController = function($rootScope, $scope, $http, $window, $locati
 
         data = transactions;
 
-        $scope.tableParams = new ngTableParams({
+        var tableParams = new ngTableParams({
             page: 1,            // show first page
             count: 10,           // count per page
             sorting: {
@@ -33,5 +33,7 @@ var TransactionController = function($rootScope, $scope, $http, $window, $locati
                 $defer.resolve($scope.transactions);
             }
         });
+
+        $scope.tableParams = tableParams
     });
 };
