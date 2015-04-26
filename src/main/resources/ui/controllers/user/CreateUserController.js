@@ -23,6 +23,10 @@ function CreateUserController($rootScope, $scope, $http, $window, $location) {
         });
     };
 
+    $scope.cancel = function(){
+        $location.path("/users");
+    };
+
     $scope.save = function(){
         console.log('Create User');
         var accUser = $rootScope.accountingUser;

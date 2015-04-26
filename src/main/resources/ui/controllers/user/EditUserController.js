@@ -49,6 +49,9 @@ function EditUserController($rootScope, $scope, $http, $window, $location, $rout
             });
     };
 
+    $scope.cancel = function(){
+        $location.path("/users");
+    };
 
     $scope.save = function(){
         console.log('Save User');

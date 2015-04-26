@@ -36,6 +36,10 @@
             <option value="">Select Role</option>
         </select>
     </div>
-    <button class="btn btn-primary" ng-click="save()" ng-show="showSave">Save</button>
-    <button class="btn btn-warning" ng-click="reset()" ng-show="showReset">Reset User Login</button>
+    <div class="btn-group col-md-8" role="group">
+        <button class="btn btn-primary" ng-click="save()" ng-show="showSave">Save</button>
+        <button class="btn btn-warning" ng-click="reset()" ng-show="showReset">Reset User Login</button>
+        <button type="button" class="btn btn-link" ng-click="cancel()">Cancel</button>
+    </div>
+
 </form>
