@@ -30,17 +30,17 @@ class DocumentDAOImpl implements DocumentDAO {
     }
 
     @Override
-    List<DocumentDO> createDocuments(int transId, Collection<FileItem> items) {
+    List<DocumentDO> createDocuments(int transId, int userid, Collection<FileItem> items) {
         final List<DocumentDO> createdDocuments = []
         items?.each { FileItem item ->
-            createdDocuments.add(createDocument(transId, item))
+            createdDocuments.add(createDocument(transId, userid, item))
         }
 
         return createdDocuments
     }
 
     @Override
-    DocumentDO createDocument(int transId, FileItem fileItem) {
+    DocumentDO createDocument(int transId, int userid, FileItem fileItem) {
 
         try {
             byte[] bytes = fileItem.get();
@@ -51,7 +51,7 @@ class DocumentDAOImpl implements DocumentDAO {
 
             Integer documentId = dbi.documentExists(transId, hash)
             if (!documentId)
-                documentId = dbi.createDocument(transId, fileItem.name, fileItem.contentType, bytes.length, hash, encodedString)
+                documentId = dbi.createDocument(transId, fileItem.name, fileItem.contentType, bytes.length, hash, encodedString, userid)
 
             return getDocumentById(documentId)
         }

@@ -95,11 +95,11 @@
             })
             .when('/', {
                 templateUrl : 'ui/templates/home.html',
-                controller  : 'MenuController'
-            }//)
-           // .otherwise({
-    //            redirectTo: '/'
-    //        }
+                controller  : 'HomeController'
+            })
+            .otherwise({
+                redirectTo: '/'
+            }
     );
 	}).run( function($rootScope, $location, $window) {
 
@@ -118,12 +118,16 @@
         });
     });
 
+    accountingApp.controller('HomeController', function($rootScope, $scope, $http,  $window, $location) {
+        // create a message to display in our view
+
+        var controller = new HomeController($rootScope, $scope, $http,  $window, $location)
+    });
     accountingApp.controller('MenuController', function($rootScope, $scope, $http,  $window, $location) {
         // create a message to display in our view
         console.log("In the Menu Controller")
         var controller = new MenuController($rootScope, $scope, $http,  $window, $location)
     });
-
 
     accountingApp.controller('LogOutController', function($rootScope, $scope, $http,  $window, $location) {
         // create a message to display in our view

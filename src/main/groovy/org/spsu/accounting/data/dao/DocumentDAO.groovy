@@ -8,9 +8,9 @@ import org.spsu.accounting.data.domain.DocumentDO
  */
 interface DocumentDAO {
 
-    DocumentDO createDocument(int transId, FileItem fileItem)
+    DocumentDO createDocument(int transId, int userid, FileItem fileItem)
 
-    List<DocumentDO> createDocuments(int transId, Collection<FileItem> fileItem)
+    List<DocumentDO> createDocuments(int transId, int userid, Collection<FileItem> fileItem)
 
     List<DocumentDO> getDocuments(int transId)
 

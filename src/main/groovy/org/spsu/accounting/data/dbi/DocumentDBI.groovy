@@ -13,24 +13,25 @@ import org.spsu.accounting.data.mapper.DocumentDOMapper
 @RegisterMapper(DocumentDOMapper.class)
 interface DocumentDBI{
 
-    @SqlQuery("select id, trans_id, file_name, content_type, size, hash, file, uploaded from accounting_trans_document where id = :id")
+    @SqlQuery("select id, trans_id, file_name, content_type, size, hash, file, uploaded, uploaded_by from accounting_trans_document where id = :id")
     @MapResultAsBean
     DocumentDO getDocumentById(@Bind("id") int id)
 
-    @SqlQuery("select id, trans_id, file_name, content_type, size, hash, file, uploaded from accounting_trans_document where trans_id = :transId")
+    @SqlQuery("select id, trans_id, file_name, content_type, size, hash, file, uploaded, uploaded_by from accounting_trans_document where trans_id = :transId")
     @MapResultAsBean
     List<DocumentDO> getAll(@Bind("transId") int transactionId)
 
     @SqlUpdate("""
-    insert into accounting_trans_document (trans_id, file_name, content_type, size, hash, file)
-    values (:transId, :name, :type, :size, :hash, :data)""")
+    insert into accounting_trans_document (trans_id, file_name, content_type, size, hash, file, uploaded_by)
+    values (:transId, :name, :type, :size, :hash, :data, :userid)""")
     @GetGeneratedKeys
     int createDocument(@Bind("transId") int transId,
                        @Bind("name") String name,
                        @Bind("type") String type,
                        @Bind("size") int size,
                        @Bind("hash") String hash,
-                       @Bind("data") String data)
+                       @Bind("data") String data,
+                       @Bind("userid") int userid)
 
 
     @SqlQuery("""select id from accounting_trans_document where trans_id = :transId and hash = :hash""")

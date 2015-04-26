@@ -34,6 +34,7 @@ import org.spsu.accounting.data.dbi.AccountStatementDBI
 import org.spsu.accounting.data.dbi.HealthCheckDBI
 import org.spsu.accounting.data.dbi.PermissionDBI
 import org.spsu.accounting.data.dbi.StartDBI
+import org.spsu.accounting.data.dbi.TimelineDBI
 import org.spsu.accounting.data.dbi.UserDBI
 import org.spsu.accounting.data.domain.UserDO
 import org.spsu.accounting.report.data.BalanceSheet
@@ -120,7 +121,7 @@ class AccountingApplication extends Application<AccountingApplicationConfigurati
 
         environment.jersey().register(new MenuResource(dao: new UserDAOImpl<UserDO>(dbi: jdbi.onDemand(UserDBI))))
         environment.jersey().register(new AboutResource())
-
+        environment.jersey().register(new TimelineResource(dbi:jdbi.onDemand(TimelineDBI)))
 
         registerAuth(environment, jdbi)
 
@@ -129,6 +130,8 @@ class AccountingApplication extends Application<AccountingApplicationConfigurati
         (new TransactionResource()).register(environment, jdbi)
 
         (new DocumentResource()).register(environment, jdbi)
+
+
 
     }
 

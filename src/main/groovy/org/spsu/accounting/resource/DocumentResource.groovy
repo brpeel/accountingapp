@@ -59,11 +59,13 @@ class DocumentResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response uploadFile(@Context HttpServletRequest request, @PathParam("id") int transId) {
 
+        int userid = getUserId(request);
+
         DiskFileItemFactory factory = new DiskFileItemFactory();
         ServletFileUpload upload = new ServletFileUpload(factory);
 
         final List<FileItem> items = upload.parseRequest(request);
-        final List<DocumentDO> documents = dao.createDocuments(transId, items)
+        final List<DocumentDO> documents = dao.createDocuments(transId, userid, items)
 
         return Response.ok(documents).build()
     }
@@ -93,5 +95,13 @@ class DocumentResource {
 
         Response response = Response.ok(stream).type(documentDO.contentType).build()
         return response
+    }
+
+    protected int getUserId(HttpServletRequest request){
+
+        Integer userid = request.getAttribute("userid")
+        if (userid == null)
+            throw new WebApplicationException(Response.Status.UNAUTHORIZED)
+        return userid
     }
 }
