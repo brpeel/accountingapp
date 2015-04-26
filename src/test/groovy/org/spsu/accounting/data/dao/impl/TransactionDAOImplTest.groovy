@@ -111,28 +111,6 @@ class TransactionDAOImplTest extends Specification {
         4 * entryDBI.insert(_)
     }
 
-    def "The user must have the ability to upload one or more source documents for each transaction"() {
-        given:
-        documentDBI.get(_, _) >> null
-
-        when:
-        dao.addDocument(1, "something")
-        dao.addDocument(1, "something new")
-
-        then:
-        2 * documentDBI.insert(_, _)
-    }
-
-    def "The user must have the ability to remove documents"() {
-        given:
-        documentDBI.get(_, _) >> null
-
-        when:
-        dao.removeDocument(1, "something")
-
-        then:
-        1 * documentDBI.delete(_, _)
-    }
 
     def "Each transaction will automatically be assigned the current date and time when the transaction was recorded"() {
 

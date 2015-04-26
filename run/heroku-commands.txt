@@ -1,9 +1,10 @@
 #DATABASE_URL:  postgres://username:password@host:port/dbname
 #postgres://qzttshdkjehswf:gCaz38THpXvT3wOcJ7OoOsMGQy@ec2-54-225-101-202.compute-1.amazonaws.com:5432/d2jlgecs85p9ca
 
-psql -h ec2-54-225-101-202.compute-1.amazonaws.com -p 5432 -d d2jlgecs85p9ca -U qzttshdkjehswf -f scripts/database_create.sql
+#create
+#psql -h ec2-54-225-101-202.compute-1.amazonaws.com -p 5432 -d d2jlgecs85p9ca -U qzttshdkjehswf -f scripts/database_create.sql
 
-
+psql -h ec2-54-225-101-202.compute-1.amazonaws.com -p 5432 -d d2jlgecs85p9ca -U qzttshdkjehswf -f scripts/update.sql
 
 #Push code
 git push heroku master
