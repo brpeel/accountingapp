@@ -25,6 +25,10 @@
                 templateUrl : 'ui/templates/transactions.html',
                 controller  : 'transactionController'
             })
+            .when('/findTransaction', {
+                templateUrl : 'ui/templates/searchTransactions.html',
+                controller  : 'searchTransactionController'
+            })
             .when('/transaction/:id', {
                 templateUrl : 'ui/templates/editTransactions.html',
                 controller  : 'editTransController'
@@ -150,6 +154,11 @@
 
     accountingApp.controller('transactionController', function($rootScope, $scope, $http, $window, $location, $filter, ngTableParams) {
         var controller = new TransactionController($rootScope, $scope, $http,  $window, $location, $filter, ngTableParams)
+
+    });
+
+    accountingApp.controller('searchTransactionController', function($rootScope, $scope, $http, $window, $location, $filter, ngTableParams) {
+        var controller = new SearchTransactionController($rootScope, $scope, $http,  $window, $location, $filter, ngTableParams)
 
     });
 

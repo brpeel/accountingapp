@@ -13,6 +13,8 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory
 import org.apache.commons.fileupload.servlet.ServletFileUpload
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.joda.time.DateTime
+import org.joda.time.format.DateTimeFormat
+import org.joda.time.format.DateTimeFormatter
 import org.skife.jdbi.v2.DBI
 import org.skife.jdbi.v2.sqlobject.Bind
 import org.skife.jdbi.v2.sqlobject.SqlQuery
@@ -71,6 +73,34 @@ class TransactionResource extends BaseResource<DAO<TransactionDO>> {
         List trans = getAccountTranactions(id)
 
         return Response.ok(trans).build();
+    }
+
+    @POST
+    @Path("/search")
+    @Produces(MediaType.APPLICATION_JSON)
+    Response search( Map searchTerms){
+
+        List results = []
+        if (!searchTerms || searchTerms.size() == 0)
+            results = getAllObjects(false);
+       else {
+            String id = searchTerms?.id
+            String keyword = searchTerms?.keyword
+
+            DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd");
+
+            DateTime startRange = null;
+            if (searchTerms.startDate)
+                startRange = formatter.parseDateTime(searchTerms.startDate)
+
+            DateTime endRange = null;
+            if (searchTerms.endDate)
+                endRange = formatter.parseDateTime(searchTerms.endDate)
+
+            results = dao.search(id, keyword, startRange, endRange)
+        }
+
+        return Response.ok(results).build()
     }
 
     @POST

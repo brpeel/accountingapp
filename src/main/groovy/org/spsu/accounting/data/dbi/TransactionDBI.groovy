@@ -22,10 +22,11 @@ interface TransactionDBI{
     @MapResultAsBean
     List<TransactionDO> getAll()
 
-    @SqlQuery("select id, reported_by, approved_by, reported, approved, status, description from accounting_trans \
-    where cast(id as varchar) like coalesce(:id, '%') \
-        and lower(description) like lower(coalesce(:keyword,'%')) \
-        and reported >= coalesce(:startRange, reported) and reported <= coalesce(:endRange, reported) order by id")
+    @SqlQuery("""
+    select id, reported_by, approved_by, reported, approved, status, description from accounting_trans
+    where cast(id as varchar) like coalesce(:id, '%')
+        and lower(description) like lower(coalesce(:keyword,'%'))
+        and reported >= coalesce(:startRange, reported) and reported <= coalesce(:endRange, reported) order by id""")
     @MapResultAsBean
     List<TransactionDO> search(@Bind("id") String id, @Bind("keyword") String keyword, @Bind("startRange") Timestamp start, @Bind("endRange") Timestamp end)
 
