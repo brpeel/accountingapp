@@ -25,6 +25,7 @@ import org.spsu.accounting.data.dbi.TransactionDBI
 import org.spsu.accounting.data.dbi.TransactionEntryDBI
 import org.spsu.accounting.data.domain.AccountDO
 import org.spsu.accounting.data.domain.TransactionDO
+import org.spsu.accounting.data.domain.TransactionEntryDO
 import org.spsu.accounting.data.domain.UserDO
 import org.spsu.accounting.data.mapper.BaseMapper
 import org.spsu.accounting.data.serial.DateTimeSerializer
@@ -87,9 +88,30 @@ class TransactionResource extends BaseResource<DAO<TransactionDO>> {
     @PUT
     @Path("/update/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    Response update( @Context HttpServletRequest request, @PathParam("id") int id, Map values){
+    Response update( @Context HttpServletRequest request, @PathParam("id") int id, TransactionDO changes){
 
-        return super.patchObject(id, values)
+        TransactionDO transaction = get(id);
+
+        transaction.description = changes.description;
+
+        Set<Integer> changeEntries = new HashSet<>()
+        changes?.entries?.each {TransactionEntryDO it ->
+            if (it.id)
+                changeEntries.add(it.id)
+        }
+
+        List<Integer> removedEntries = []
+        List<TransactionEntryDO> entries = []
+        transaction.entries?.each {TransactionEntryDO it ->
+            if (!changeEntries.contains(it.id))
+              removedEntries.add(it.id)
+        }
+
+        transaction.entries = changes.entries;
+
+        dao.save(transaction);
+        dao.removeEntries(removedEntries)
+        return Response.noContent().header("Location", buildURI(id)).build()
     }
 
     @PUT

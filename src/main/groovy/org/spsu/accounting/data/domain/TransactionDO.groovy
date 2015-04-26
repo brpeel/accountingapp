@@ -44,6 +44,7 @@ public class TransactionDO extends BaseDO{
         entries = []
         if (!col || col.size() == 0)
             return;
+
         col.each {def e ->
             if (e instanceof Map)
                 entries.add(mapper.convertValue(e, TransactionEntryDO))

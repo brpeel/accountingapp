@@ -13,4 +13,7 @@ interface TransactionDAO extends DAO<TransactionDO> {
 
     public void reject(int id, UserDO user);
 
+    void removeEntries(List<Integer> entries);
+
+    void removeEntry(int entryId);
 }

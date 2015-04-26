@@ -78,33 +78,15 @@ class TransactionDAOImpl extends DAOImpl<TransactionDO> implements TransactionDA
         return id
     }
 
-    def addEntry(int transactionId, TransactionEntryDO entry){
-        TransactionDO trans = super.get(transactionId)
-        if (!trans)
-            throw new WebApplicationException(Response.status(Response.Status.NOT_FOUND).entity("Transaction $transactionId does not exist"))
+    void removeEntries(List<Integer> entries){
+        if (!entries && entries?.size() == 0)
+            return
 
-        if (trans.isSubmitted())
-            throw new WebApplicationException(Response.status(Response.Status.FORBIDDEN).entity("Transaction has already been submitted"))
-
-        entry.transactionId = transactionId
-        if (!entry.id)
-            entryDBI.insert(entry)
-        else
-            entryDBI.update(entry)
+        entryDBI.delete(entries.iterator())
     }
 
-    def removeEntry(int transactionId, int entryId){
-        entryDBI.delete(entryId)
-    }
-
-    def addDocument(int transactionId, String uri){
-        if (!documentDBI.get(transactionId, uri))
-            documentDBI.insert(transactionId, uri)
-    }
-
-    def removeDocument(int transactionId, String uri){
-        if (!documentDBI.get(transactionId, uri))
-            documentDBI.delete(transactionId, uri)
+    void removeEntry(int entryId){
+        entryDBI.delete([entryId])
     }
 
     @Override
@@ -114,28 +96,14 @@ class TransactionDAOImpl extends DAOImpl<TransactionDO> implements TransactionDA
 
             final int transID = object.id
             object.entries?.each {TransactionEntryDO entry ->
+                entry.transactionId = transID
                 if (!entry.id)
                     entryDBI.insert(entry)
                 else
                     entryDBI.update(entry)
             }
-
-            object.documents?.each {String uri ->
-                addDocument(transID, uri)
-            }
         }
-    }
-
-    private void saveChildren(Collection<BaseDO> children, def dbi){
-        if (!children)
-            return
-
-        children.each {TransactionEntryDO entry ->
-            if (!entry.id)
-                dbi.insert(entry)
-            else
-                dbi.update(entry)
-        }
+        return updated
     }
 
     @Override
@@ -148,7 +116,6 @@ class TransactionDAOImpl extends DAOImpl<TransactionDO> implements TransactionDA
         Set<String> messages = super.validateObject(obj)
         messages = messages ? messages : new HashSet<String>()
 
-
         if (!hasEntry(obj))
             messages.add("Transaction must have credit and debt account entries")
 
@@ -158,7 +125,7 @@ class TransactionDAOImpl extends DAOImpl<TransactionDO> implements TransactionDA
         if (accountIsCreditedAndDebited(obj))
             messages.add("Transaction must never allow debiting and crediting of the same account")
 
-        obj.entries?.each { TransactionEntryDO entry ->
+        obj?.entries?.each { TransactionEntryDO entry ->
             Set msgs = super.validateObject(entry)
             if (msgs)
                 messages.addAll(msgs)

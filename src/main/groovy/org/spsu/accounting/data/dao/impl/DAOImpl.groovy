@@ -62,7 +62,7 @@ public class DAOImpl<T extends BaseDO> implements DAO<T> {
     }
 
     int save(T object){
-        List validationMessages = validateObject(object)
+        Set validationMessages = validateObject(object)
 
         if (validationMessages)
             throw new WebApplicationException(Response.status(Response.Status.BAD_REQUEST).entity(validationMessages).build());

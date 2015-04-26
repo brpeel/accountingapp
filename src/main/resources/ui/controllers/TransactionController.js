@@ -12,7 +12,7 @@ var TransactionController = function($rootScope, $scope, $http, $window, $locati
             page: 1,            // show first page
             count: 10,           // count per page
             sorting: {
-                Status: 'asc'
+                TransId: 'asc'
             }
         }, {
             total: data.length, // length of data
@@ -23,7 +23,14 @@ var TransactionController = function($rootScope, $scope, $http, $window, $locati
                     $filter('orderBy')(data, params.orderBy()) :
                     data;
 
-                $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+                orderedData = params.filter ?
+                    $filter('filter')(orderedData, params.filter()) :
+                    orderedData;
+
+                $scope.transactions = orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count());
+
+                params.total(orderedData.length); // set total for recalc pagination
+                $defer.resolve($scope.transactions);
             }
         });
     });

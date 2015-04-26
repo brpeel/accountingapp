@@ -1,6 +1,7 @@
 package org.spsu.accounting.data.dbi
 
 import org.skife.jdbi.v2.sqlobject.*
+import org.skife.jdbi.v2.sqlobject.customizers.Define
 import org.skife.jdbi.v2.sqlobject.customizers.RegisterMapper
 import org.skife.jdbi.v2.sqlobject.helpers.MapResultAsBean
 import org.spsu.accounting.data.domain.TransactionEntryDO
@@ -25,10 +26,12 @@ interface TransactionEntryDBI {
     @GetGeneratedKeys
     int insert(@BindBean TransactionEntryDO entry)
 
-    @SqlBatch("update accounting_trans_entry set amount = :amount where id = :id")
-    int update(@BindBean TransactionEntryDO entry)
+    @SqlUpdate("update accounting_trans_entry set amount = :amount, debit = :debit where id = :id")
+    void update(@BindBean TransactionEntryDO entry)
 
     @SqlBatch("delete from accounting_trans_entry where id = :id")
-    int delete(@Bind("id") int id)
+    void delete(@Bind("id") Iterator<Integer> idList)
+
+
 
 }
