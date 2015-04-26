@@ -124,6 +124,10 @@ function EditTransController($rootScope, $scope, $http, $window, $location, $rou
             });
     };
 
+    $scope.cancel = function(){
+        $location.path("/transactions");
+    };
+
     $scope.addEntry = function(){
         $scope.tForm.entry.push({accountid:null, amount:null, debit:null})
     };

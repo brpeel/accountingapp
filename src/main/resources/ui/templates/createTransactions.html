@@ -1,13 +1,16 @@
 <div class="col-md-8">
     <h3>Create New Transaction</h3>
+
     <div class="col-md-8">
-        <div ng-repeat="alert in alerts" class="alert alert-{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</div>
+        <div ng-repeat="alert in alerts" class="alert alert-{{alert.type}}" close="closeAlert($index)">{{alert.msg}}
+        </div>
     </div>
     <form role="createTransForm">
 
         <div class="form-group">
             <label for="description">Description</label>
-            <textarea class="form-control" rows="3" id="description" ng-model="tForm.description" placeholder="Enter Description"></textarea>
+            <textarea class="form-control" rows="3" id="description" ng-model="tForm.description"
+                      placeholder="Enter Description"></textarea>
             <!--input type="description" ng-model="tForm.description" class="form-control" name="description"
                    id="description" placeholder="Enter Description"/-->
         </div>
@@ -24,15 +27,16 @@
                 </tr>
                 <tr ng-repeat="item in tForm.entry">
                     <td colspan="4">
-                            <select ng-model="item.accountid" class="form-control" name="account"
-                                    ng-options="item.id as item.name for item in accounts" required="true">
-                                <option value="">Select Account</option>
-                            </select>
+                        <select ng-model="item.accountid" class="form-control" name="account"
+                                ng-options="item.id as item.name for item in accounts" required="true">
+                            <option value="">Select Account</option>
+                        </select>
                     </td>
                     <td colspan="3">
                         <div class="input-group">
-                        <div class="input-group-addon">$</div>
-                        <input type="number" ng-model="item.amount" class="form-control" name="amount" required="true"/>
+                            <div class="input-group-addon">$</div>
+                            <input type="number" ng-model="item.amount" class="form-control" name="amount"
+                                   required="true"/>
                         </div>
                     </td>
                     <td>
@@ -58,16 +62,13 @@
             </div>
         </div>
 
-        <div class="form-group form-inline col-xs-10">
-            <div class="col-md-2"></div>
-            <div class="col-md-2">
-                <button type="button" class="btn btn-link" ng-click="cancel()">Cancel</button>
-            </div>
-
-            <div class="col-md-2">
+        <div class="btn-group  btn-group-justified col-md-6" role="group">
+            <div class="btn-group" role="group">
                 <button type="submit" class="btn btn-primary" ng-click="save()">Submit</button>
             </div>
-
+            <div class="btn-group" role="group">
+                <button type="button" class="btn btn-link" ng-click="cancel()">Cancel</button>
+            </div>
         </div>
     </form>
 

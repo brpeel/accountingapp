@@ -36,9 +36,8 @@ function CreateTransController($rootScope, $scope, $http, $window, $location, $r
             });
     };
 
-
     $scope.cancel = function(){
-        $location.path("/transactions")
+        $location.path("/transactions");
     };
 
     $scope.addEntry = function(){

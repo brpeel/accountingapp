@@ -39,6 +39,10 @@ function AssignSurrogateController($rootScope, $scope, $http, $window, $location
         });
     };
 
+    $scope.cancel = function(){
+        $location.path("/");
+    };
+
     $scope.save = function(){
         console.log('Save Surrogate');
 

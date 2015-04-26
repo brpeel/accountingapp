@@ -3,6 +3,10 @@ function CreateAccountControler($rootScope, $scope, $http, $window, $location) {
 
     var self = this;
 
+    $scope.cancel = function(){
+        $location.path("/transactions");
+    };
+
     $scope.save = function(){
         console.log('Create Account');
         var data = {
