@@ -15,17 +15,16 @@ import spock.lang.Stepwise
 @Stepwise
 class DocumentDAOImplTest extends Specification {
 
-    @Shared DocumentDAOImpl dao
-    @Shared DocumentDBI dbi
-    @Shared int transid
+    DocumentDAOImpl dao
+    DocumentDBI dbi
 
-    void setupSpec() {
+    void setup() {
 
-        DBConnection db = DBConnection.openConnection("Doc")
-        dbi = db.onDemand(DocumentDBI)
+        //DBConnection db = DBConnection.openConnection("Doc")
+        dbi = Mock(DocumentDBI)
         dao = new DocumentDAOImpl(dbi: dbi)
 
-        transid = db.minFieldValue("accounting_trans", "id")
+       // transid = db.minFieldValue("accounting_trans", "id")
     }
 
     def "CreateDocument"() {
@@ -36,23 +35,15 @@ class DocumentDAOImplTest extends Specification {
         fileItem.getContentType() >> "text/plain"
         fileItem.get() >> file.getBytes()
         fileItem.getName() >> file.getName()
-
-
-        when:
-        def documentId = dao.createDocument(transid, fileItem )
-
-        then:
-        documentId != null
-        documentId != 0
-    }
-
-    def "GetDocuments"() {
+        1 * dbi.documentExists(_,_) >> null
 
         when:
-        List<DocumentDO> docs = dao.getDocuments(transid)
-        docs.each {println it}
-        then:
-        docs?.size() > 0
+        dao.createDocument(1, 1, fileItem )
 
+        then:
+        noExceptionThrown()
+        1 * dbi.createDocument(1, file.getName(), "text/plain", file.getBytes().size(), _, _, 1) >> 1000
+        1 * dbi.getDocumentById(1000)
     }
+
 }
