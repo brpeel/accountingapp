@@ -38,7 +38,6 @@
 
     <!-- Accounts and Transactions -->
     <script src="ui/controllers/TransactionController.js"></script>
-    <script src="ui/controllers/SearchTransactionController.js"></script>
     <script src="ui/controllers/CreateTransController.js"></script>
     <script src="ui/controllers/EditTransController.js"></script>
     <script src="ui/controllers/ChartOfAccountsController.js"></script>
@@ -78,7 +77,7 @@
 </nav>
 
 <nav class="vertical col-md-2" ng-controller="MenuController">
-    <ul class="list-unstyled">
+    <ul class="nav nav-pills nav-stacked">
         <li ng-repeat="item in menuItems"><a href="#{{item.permission}}"><i class="fa fa-home"></i> {{item.label}}</a></li>
     </ul>
 </nav>

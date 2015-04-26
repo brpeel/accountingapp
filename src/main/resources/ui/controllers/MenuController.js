@@ -13,10 +13,8 @@ var MenuController = function($rootScope, $scope, $http, $window, $location) {
         if (!isAuthed())
             return;
 
-        console.log('Fetch Menu Items');
         $http.get('/api/menu/actions')
             .success(function (data, status, headers, config) {
-                console.log(data)
                 var items = data.menuItems.sort(comparePermissions);
                 $rootScope.permissions = data.permissions
 

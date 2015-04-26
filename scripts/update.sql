@@ -15,8 +15,3 @@ alter table accounting_trans_document add column uploaded TIMESTAMP DEFAULT NOW(
 alter table accounting_trans_document add column file TEXT;
 
 
-update user_permission set group_order = group_order + 1 where permission_group = 'MainMenu' and group_order > 1;
-
-insert into user_permission (permission, user_type_id, permission_group, group_order, label, style, active)
-values ('findTransaction', 10, 'MainMenu', 3, 'Find Transaction', 'fa fa-columns', true);
-

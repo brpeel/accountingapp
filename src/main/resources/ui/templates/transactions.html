@@ -1,13 +1,38 @@
 
     <!--div class="gridStyle" ng-grid="transGrid"></div -->
+    <div>
+        <div ng-repeat="alert in alerts" class="alert alert-{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</div>
+    </div>
 
     <a href="#createTrans" ng-show="allowed.submitTrans"><i  class="fa fa-plus-square">Create Transaction</i></a>
 
-    <button ng-click="tableParams.sorting({})" class="btn btn-default pull-right">Clear sorting</button>
+    <form role="createAccountForm">
+        <div class="form-group col-md-2">
+            <label for="id">Id</label>
+            <input type="number" ng-model="id" class="form-control" name="id" id="id"/>
+        </div>
+        <div class="form-group col-md-3">
+            <label for="keyword">Keyword</label>
+            <input type="text" ng-model="keyword" class="form-control" name="keyword" id="keyword"/>
+        </div>
+        <div class="form-group col-md-3"">
+        <label for="startDate">Start Date</label>
+        <input type="date" ng-model="startDate" class="form-control" name="startDate" id="startDate"/>
+        </div>
+        <div class="form-group col-md-3">
+            <label for="endDate">End Date</label>
+            <input type="date" ng-model="endDate" class="form-control" name="endDate" id="endDate"/>
+        </div>
+        <div class=" col-md-10">
+            <button class="btn btn-primary" ng-click="search()">Search</button>
+        </div>
+
+    </form>
+    <!--button ng-click="tableParams.sorting({})" class="btn btn-default pull-right">Clear sorting</button-->
 
     <table ng-table="tableParams" class="table">
         <tr ng-repeat="trans in $data" ng-class="{ 'emphasis': !trans.approved }">
-            <td data-title="'TransId'" sortable="'transid'"><a href="#transaction/{{trans.id}}">{{trans.id}}</a></td>
+            <td data-title="'TransId'"><a href="#transaction/{{trans.id}}">{{trans.id}}</a></td>
             <td data-title="'Description'">{{trans.description}}</td>
             <td data-title="'Status'">{{trans.status}}</td>
             <td data-title="'TotalCredits'" align="right">{{trans.credits}}</td>
