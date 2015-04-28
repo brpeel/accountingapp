@@ -2,7 +2,6 @@ package org.spsu.accounting.data.dao.impl
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.joda.time.DateTime
-import org.junit.Ignore
 import org.spsu.accounting.data.DBConnection
 import org.spsu.accounting.data.dbi.DocumentDBI
 import org.spsu.accounting.data.dbi.PermissionDBI
@@ -78,6 +77,7 @@ class TransactionDAOImplTest extends Specification {
         transaction = newTrans(1)
     }
 
+    @Unroll("#featureName : #name")
     def "Debits must equal credits for each transaction"() {
 
         given:
@@ -91,10 +91,12 @@ class TransactionDAOImplTest extends Specification {
         !expectedMsg || msg?.contains(expectedMsg)
 
         where:
-        creditEntry                                                     | debitEntry                                                     | expectedMsg
-        null                                                            | null                                                           | "Transaction must have credit and debt account entries"
-        new TransactionEntryDO(accountId: 1, amount: 100, debit: false) | new TransactionEntryDO(accountId: 2, amount: 200, debit: true) | "Total credits must equal total debits"
-        new TransactionEntryDO(accountId: 3, amount: 100, debit: false) | new TransactionEntryDO(accountId: 4, amount: 100, debit: true) | null
+        name                          | creditEntry                                                     | debitEntry                                                     | expectedMsg
+        "No transactions"             | null                                                            | null                                                           | "Transaction must have debt and credit account entries"
+        "No debits"                   | null                                                            | new TransactionEntryDO(accountId: 2, amount: 200, debit: true) | "Transaction must have debt and credit account entries"
+        "No credits"                  | new TransactionEntryDO(accountId: 1, amount: 100, debit: false) | null                                                           | "Transaction must have debt and credit account entries"
+        "Debits not equal to Credits" | new TransactionEntryDO(accountId: 1, amount: 100, debit: false) | new TransactionEntryDO(accountId: 2, amount: 200, debit: true) | "Total credits must equal total debits"
+        "Debits equal credits"        | new TransactionEntryDO(accountId: 3, amount: 100, debit: false) | new TransactionEntryDO(accountId: 4, amount: 100, debit: true) | null
 
     }
 
@@ -226,7 +228,7 @@ class TransactionDAOImplTest extends Specification {
 
 
         when:
-        Set<String> msgs =  dao.validateObject(transaction)
+        Set<String> msgs = dao.validateObject(transaction)
         Set<String> msgSet = msgs?.toSet()
 
         then:

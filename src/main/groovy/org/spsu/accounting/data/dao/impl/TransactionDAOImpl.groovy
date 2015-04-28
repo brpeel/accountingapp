@@ -116,8 +116,8 @@ class TransactionDAOImpl extends DAOImpl<TransactionDO> implements TransactionDA
         Set<String> messages = super.validateObject(obj)
         messages = messages ? messages : new HashSet<String>()
 
-        if (!hasEntry(obj))
-            messages.add("Transaction must have credit and debt account entries")
+        if (!hasDebits(obj) || !hasCredits(obj))
+            messages.add("Transaction must have debt and credit account entries")
 
         if (!creditsEqualDebits(obj))
             messages.add("Total credits must equal total debits")
@@ -136,13 +136,20 @@ class TransactionDAOImpl extends DAOImpl<TransactionDO> implements TransactionDA
         return null
     }
 
-    boolean hasEntry(TransactionDO obj){
+    boolean hasDebits(TransactionDO obj){
+        return hasEntryType(obj, true)
+    }
+
+    boolean hasCredits(TransactionDO obj){
+       return hasEntryType(obj, false)
+    }
+
+    private boolean hasEntryType(TransactionDO obj, boolean debit){
         boolean hasEntry = false
-        if (!obj.entries)
-            return false
-        Iterator<TransactionEntryDO> i = obj.entries.iterator()
-        while (i.hasNext() && !hasEntry)
-            hasEntry = i.next() != null
+        obj.entries?.each {TransactionEntryDO entry->
+            if (entry)
+                hasEntry = hasEntry || entry.debit == debit
+        }
         return hasEntry
     }
 

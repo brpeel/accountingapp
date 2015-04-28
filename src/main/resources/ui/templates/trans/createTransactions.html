@@ -7,13 +7,7 @@
     </div>
     <form role="createTransForm">
 
-        <div class="form-group">
-            <label for="description">Description</label>
-            <textarea class="form-control" rows="3" id="description" ng-model="tForm.description"
-                      placeholder="Enter Description"></textarea>
-            <!--input type="description" ng-model="tForm.description" class="form-control" name="description"
-                   id="description" placeholder="Enter Description"/-->
-        </div>
+
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h3 class="panel-title">Entries</h3>
@@ -54,7 +48,13 @@
             </table>
 
         </div>
-
+        <div class="form-group">
+            <label for="description">Description</label>
+            <textarea class="form-control" rows="3" id="description" ng-model="tForm.description"
+                      placeholder="Enter Description"></textarea>
+            <!--input type="description" ng-model="tForm.description" class="form-control" name="description"
+                   id="description" placeholder="Enter Description"/-->
+        </div>
         <div class="form-group form-inline col-xs-10">
             <div class="center-block">
                 <button type="button" class="btn btn-default" ng-click="addEntry()" ng-show="showSave">Add Entry

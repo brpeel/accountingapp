@@ -22,32 +22,28 @@
 
             //Transactions
             .when('/transactions', {
-                templateUrl : 'ui/templates/transactions.html',
+                templateUrl : 'ui/templates/trans/transactions.html',
                 controller  : 'transactionController'
             })
-            .when('/findTransaction', {
-                templateUrl : 'ui/templates/searchTransactions.html',
-                controller  : 'searchTransactionController'
-            })
             .when('/transaction/:id', {
-                templateUrl : 'ui/templates/editTransactions.html',
+                templateUrl : 'ui/templates/trans/editTransactions.html',
                 controller  : 'editTransController'
             })
             .when('/createTrans', {
-                templateUrl : 'ui/templates/createTransactions.html',
+                templateUrl : 'ui/templates/trans/createTransactions.html',
                 controller  : 'createTransController'
             })
             .when('/accounttrans/:id', {
-                templateUrl : 'ui/templates/accounttrans.html',
+                templateUrl : 'ui/templates/trans/accounttrans.html',
                 controller  : 'accountTransController'
             })
             //Accounts
             .when('/accounts', {
-                templateUrl : 'ui/templates/chartofaccounts.html',
+                templateUrl : 'ui/templates/account/chartofaccounts.html',
                 controller  : 'chartOfAccountsController'
             })
             .when('/createAccount', {
-                templateUrl : 'ui/templates/createAccount.html',
+                templateUrl : 'ui/templates/account/createAccount.html',
                 controller  : 'createAccountController'
             })
 
@@ -170,11 +166,6 @@
 
     accountingApp.controller('transactionController', function($rootScope, $scope, $http, $window, $location, $filter, ngTableParams) {
         var controller = new TransactionController($rootScope, $scope, $http,  $window, $location, $filter, ngTableParams)
-
-    });
-
-    accountingApp.controller('searchTransactionController', function($rootScope, $scope, $http, $window, $location, $filter, ngTableParams) {
-        var controller = new SearchTransactionController($rootScope, $scope, $http,  $window, $location, $filter, ngTableParams)
 
     });
 

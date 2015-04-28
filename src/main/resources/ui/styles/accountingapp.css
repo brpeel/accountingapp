@@ -1,3 +1,7 @@
+.btm-border {
+    border-bottom: 1px solid black;
+}
+
 .navbar-custom {
     background-color:#154933;
     color:#ffffff;
