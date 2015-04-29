@@ -1,42 +1,59 @@
-<div class="panel panel-default col-md-10">
-    <div class="panel-heading text-center"><strong>Balance Sheet:<br/> For Month Ended {{endDate}}</strong></div>
 
-    <div class="col-md-10"><u>Assets</u></div>
 
-    <ul class="list-unstyled">
-        <div ng-repeat="account in assets">
-            <il>
-                <div class="col-md-10">{{account.name}}</div>
-                <div class="col-xs-2 text-right">${{account.balance}}</div>
-            </il>
-        </div>
-    </ul>
+<div class="col-md-6">
+    <div class="panel panel-default">
+        <div class="panel-heading text-center"><strong>Balance Statement:<br/></strong></div>
+        <table>
+            <tr>
+                <td colspan="2" class="text-center"><label>Assets</label></td>
+            </tr>
+            <tr ng-repeat="account in assets">
+                <td width="500px"><div class="indent">{{ account.name }}</div></td>
+                <td class="text-right padRight">
+                    <div ng-switch on="$index">
+                        <div ng-switch-when="0">${{account.balance}}</div>
+                        <div ng-switch-default>{{account.balance}}</div>
+                    </div>
+                </td>
+            </tr>
 
-    <div class="col-md-10"><u>Liabilities and Owner's Equity</u></div>
+            <tr>
+                <td><div width="500px" class="doubleindent">Total Assets</div></td>
+                <td class="padRight"><u class="btm-border text-right">${{ totalAssets }}</u></td>
+            </tr>
 
-    <ul class="list-unstyled">
-        <il>
-            <div class="col-md-10">Liabilities</div>
-            <ul class="list-unstyled">
-                <div ng-repeat="account in liabilities">
-                    <il>
-                        <div class="col-md-10">{{account.name}}</div>
-                        <div class="col-xs-2 text-right">${{account.balance}}</div>
-                    </il>
-                </div>
-            </ul>
-        </il>
-        <il>
-            <div class="col-md-10">Owner's Equity</div>
-            <ul class="list-unstyled">
-                <div ng-repeat="account in ownersEquity">
-                    <il>
-                        <div class="col-md-10">{{account.name}}</div>
-                        <div class="col-xs-2 text-right">${{account.balance}}</div>
-                    </il>
-                </div>
-            </ul>
-        </il>
-    </ul>
+            <tr>
+                <td colspan="3" class="text-center"><label>Liabilities and Owner's Equity</label></td>
+            </tr>
+            <tr ng-repeat="account in liabilities">
+                <td width="500px"><div class="indent">{{ account.name }}</div></td>
+                <td class="text-right padRight">
+                    <div ng-switch on="$index">
+                        <div ng-switch-when="0">${{account.balance}}</div>
+                        <div ng-switch-default>{{account.balance}}</div>
+                    </div>
+                </td>
+            </tr>
 
+            <tr>
+                <td><div width="500px" class="doubleindent">Total Liabilities</div></td>
+                <td class="text-right padRight"><u>${{ totalLiabilities }}</u></td>
+            </tr>
+
+            <tr>
+                <td width="500px" class="indent">Owner's Equity</td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td width="500px" class="doubleindent">Owner's capital</td>
+                <td><u class="text-right padRight">${{ownerEquity}}</u></td>
+            </tr>
+
+            <tr>
+                <td width="500px" class="tripleindent">Total liabilities and owner's equity</td>
+                <td class="padRight"><u class="btm-border text-right">${{ownersEquityPlusLiabilities}}</u></td>
+            </tr>
+        </table>
+    </div>
 </div>

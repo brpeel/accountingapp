@@ -19,6 +19,8 @@ public class MoneySerializer extends JsonSerializer<BigDecimal> {
     public String convertToString(BigDecimal value){
         if (value == null)
             return null
-        return value.setScale(2, BigDecimal.ROUND_HALF_UP).toString()
+
+       return String.format("%,.2f", value.setScale(2, BigDecimal.ROUND_HALF_UP));
+       // return value.setScale(2, BigDecimal.ROUND_HALF_UP).toString()
     }
 }

@@ -20,6 +20,6 @@ public class DoubleMoneySerializer extends JsonSerializer<Double> {
     public String convertToString(BigDecimal value){
         if (value == null)
             return null
-        return value.setScale(2, BigDecimal.ROUND_HALF_UP).toString()
+        return String.format("%,.2f", value.setScale(2, BigDecimal.ROUND_HALF_UP));//value.setScale(2, BigDecimal.ROUND_HALF_UP).toString()
     }
 }

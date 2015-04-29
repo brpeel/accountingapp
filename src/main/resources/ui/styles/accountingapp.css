@@ -6,8 +6,17 @@
     padding-left: 20px;  /*idem*/
 }
 
+
+.padRight {
+    padding-right: 20px;  /*idem*/
+}
+
 .doubleindent {
     padding-left: 40px;  /*idem*/
+}
+
+.tripleindent {
+    padding-left: 60px;  /*idem*/
 }
 
 .navbar-custom {

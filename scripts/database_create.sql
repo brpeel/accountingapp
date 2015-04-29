@@ -340,6 +340,10 @@ insert into account (id, name, initial_balance, normal_side, added, active, adde
   select 102, 'Office Supplies', 0.00, 'Credit', now(), true, id, 'Asset', null
   from accounting_user where username = 'brpeela';
 
+insert into account (id, name, initial_balance, normal_side, added, active, added_by, category, subcategory)
+  select 103, 'Accounts Recievable', 0.00, 'Credit', now(), true, id, 'Asset', null
+  from accounting_user where username = 'brpeela';
+
 --Revenues
 insert into account (id, name, initial_balance, normal_side, added, active, added_by, category, subcategory)
   select 501, 'Professional Fees', 0.00, 'Credit', now(), true, id, 'Revenue', null
