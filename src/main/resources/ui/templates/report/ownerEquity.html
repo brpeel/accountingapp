@@ -1,31 +1,44 @@
-<div class="panel panel-default col-md-8">
-    <div class="panel-heading text-center"><strong>Income Statement:<br/> For Month Ended {{endDate}}</strong></div>
+<div class="col-md-6">
+    <div class="panel panel-default">
+        <div class="panel-heading text-center"><strong>Owner Equity Statement:<br/> For Month Ended {{endDate}}</strong></div>
 
-    <ul class="list-unstyled">
-        <il>
-            <div class="col-md-10">{{accountName}}, {{startDate}}</div>
-            <div class="col-xs-2 text-right">${{startingBalance}}</div>
-        </il>
-        <il>
-            <div class="col-md-10">Investment during the month</div>
-            <div class="col-xs-2 text-right">${{investments}}</div>
-        </il>
-        <il>
-            <div class="col-md-10">Net Income</div>
-            <div class="col-xs-2 text-right"><u>${{netIncome}}</u></div>
-        </il>
-        <il>
-            <div class="col-md-10"></div>
-            <div class="col-xs-2 text-right">${{incomePlusInvestments}}</div>
-        </il>
-        <il>
-            <div class="col-md-10">Withdrawals during the month</div>
-            <div class="col-xs-2 text-right"><u>${{withdrawals}}</u></div>
-        </il>
+        <table>
 
-        <il>
-            <div class="col-md-10"><label><strong>{{accountName}}, {{endDate}}</strong></label></div>
-            <div class="col-xs-2 text-right"><u>${{endingBalance}}</u></div>
-        </il>
-    </ul>
+            <tr>
+                <td colspan="2"><div width="600px">{{accountName}}, {{startDate}}</div></td>
+                <td></td>
+                <td class="text-right padRight">${{startingBalance}}</td>
+            </tr>
+            <tr>
+                <td>Add:</td>
+                <td width="600px" colspan="2">Investment during the month</td>
+                <td class="text-right padRight">${{investments}}</td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td colspan="2">Net Income</td>
+                <td class="text-right padRight"><u>${{netIncome}}</u></td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td colspan="2"></td>
+                <td class="text-right padRight">${{incomePlusInvestments}}</td>
+            </tr>
+
+            <tr>
+                <td>Less:</td>
+                <td colspan="2">Withdrawals during the month</td>
+                <td class="text-right padRight"><u>${{withdrawals}}</u></td>
+            </tr>
+
+            <tr>
+                <td colspan="2"><label><strong>{{accountName}}, {{endDate}}</strong></label></td>
+                <td></td>
+                <td class="text-right padRight"><u>${{endingBalance}}</u></td>
+            </tr>
+        </table>
+       
+    </div>
 </div>

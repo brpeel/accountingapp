@@ -14,11 +14,11 @@ import org.spsu.accounting.data.mapper.TransactionEntryDOMapper
 @RegisterMapper(TransactionEntryDOMapper.class)
 interface TransactionEntryDBI {
 
-    @SqlQuery("""select * from accounting_trans_entry where trans_id = :transactionId""")
+    @SqlQuery("""select * from accounting_trans_entry where trans_id = :transactionId order by case when debit = true then 0 else 1 end""")
     @MapResultAsBean
     List<TransactionEntryDO> getEntries(@Bind("transactionId") int transactionId)
 
-    @SqlQuery("""select * from accounting_trans_entry where id = :id""")
+    @SqlQuery("""select * from accounting_trans_entry where id = :id order by case when debit = true then 0 else 1 end""")
     @MapResultAsBean
     TransactionEntryDO getEntry(@Bind("id") int id)
 
