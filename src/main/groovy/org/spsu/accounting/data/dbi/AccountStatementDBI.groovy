@@ -55,6 +55,7 @@ FROM accounting_trans_entry entry
     ON entry.account_id = account.id
   JOIN accounting_trans trans
     ON trans.id = entry.trans_id
+ WHERE status = 'Approved'
 GROUP BY account.id, account.name, account.category, account.subcategory
 ORDER BY account.orderno""")
     List<AccountStatement> getBalances(@Define("types") types)
