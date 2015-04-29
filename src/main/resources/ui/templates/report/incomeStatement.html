@@ -1,63 +1,54 @@
-<div class="col-md-8">
+
+
+<div class="col-md-6">
     <div class="panel panel-default">
-        <div class="panel-heading text-center">Income Statement:</div>
-
-        <ul class="list-unstyled">
-            <il>
-                <div><label>Revenues</label></div>
-            </il>
-            <il>
-                <ul class="list-unstyled">
-                    <div ng-repeat="account in revenues">
-                        <il>
-                            <div class="col-md-10">{{account.name}}</div>
-                            <div class="col-xs-1 text-right">
-                                <div ng-switch on="$index">
-                                    <div ng-switch-when="0">${{account.balance}}</div>
-                                    <div ng-switch-default>{{account.balance}}</div>
-                                </div>
-                            </div>
-                        </il>
+        <div class="panel-heading text-center"><strong>Income Statement:<br/></strong></div>
+        <table>
+            <tr>
+                <td><label>Revenues</label></td>
+            </tr>
+            <tr ng-repeat="account in revenues">
+                <td width="400px"><div class="indent">{{ account.name }}</div></td>
+                <td></td>
+                <td class="text-right">
+                    <div ng-switch on="$index">
+                        <div ng-switch-when="0">${{account.balance}}</div>
+                        <div ng-switch-default>{{account.balance}}</div>
                     </div>
-                    <ul>
-                        <il class="list-unstyled">
-                            <div class="col-md-10"> Total Revenues</div>
-                            <div class="col-xs-1 text-right"><u>${{totalRevenue}}</u></div>
-                        </il>
-                    </ul>
-                </ul>
-            </il>
+                </td>
+            </tr>
 
+            <tr>
+                <td><div width="400px" class="doubleindent">Total Revenues</div></td>
+                <td></td>
+                <td><u>${{ totalRevenue }}</u></td>
+            </tr>
 
-            <il>
-                <div><label>Expenses</label></div>
-            </il>
-            <il>
-                <ul class="list-unstyled">
-                    <div ng-repeat="account in expenses">
-                        <il>
-                            <div class="col-md-8">{{account.name}}</div>
-                            <div class="col-md-2 text-right">
-                                <div ng-switch on="$index">
-                                    <div ng-switch-when="0">${{account.balance}}</div>
-                                    <div ng-switch-default>{{account.balance}}</div>
-                                </div>
-                            </div>
-                        </il>
+            <tr>
+                <td><label>Expenses</label></td>
+            </tr>
+            <tr ng-repeat="account in expenses">
+                <td width="400px"><div class="indent">{{ account.name }}</div></td>
+                <td class="text-right">
+                    <div ng-switch on="$index">
+                        <div ng-switch-when="0">${{account.balance}}</div>
+                        <div ng-switch-default>{{account.balance}}</div>
                     </div>
-                    <ul>
-                        <il class="list-unstyled">
-                            <div class="col-md-8"> Total Expenses</div>
-                            <div class="col-md-2 text-right"><u>${{totalExpense}}</u></div>
-                        </il>
-                    </ul>
-                </ul>
-            </il>
+                </td>
+                <td></td>
+            </tr>
 
-            <il>
-                <div class="col-md-10"><label>Net Income</label></div>
-                <div class="col-xs-1"><u class="btm-border">${{netIncome}}</u></div>
-            </il>
-        </ul>
+            <tr>
+                <td><div width="400px" class="doubleindent">Total Expenses</div></td>
+                <td></td>
+                <td><u>${{ totalExpense }}</u></td>
+            </tr>
+
+            <tr>
+                <td width="400px"><label>Net Income</label></td>
+                <td></td>
+                <td><u class="btm-border">${{netIncome}}</u></td>
+            </tr>
+        </table>
     </div>
 </div>

@@ -2,6 +2,14 @@
     border-bottom: 1px solid black;
 }
 
+.indent {
+    padding-left: 20px;  /*idem*/
+}
+
+.doubleindent {
+    padding-left: 40px;  /*idem*/
+}
+
 .navbar-custom {
     background-color:#154933;
     color:#ffffff;

@@ -1,6 +1,7 @@
 package org.spsu.accounting.report.data
 
 import com.fasterxml.jackson.annotation.JsonGetter
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import org.spsu.accounting.data.domain.AccountStatement
@@ -22,6 +23,7 @@ class IncomeStatement {
 
     public void addAccounts(List<AccountStatement>  accounts){
         accounts?.each {AccountStatement account->
+            account.name = "${account.name}"
             if (account.category.toLowerCase() == "revenue"){
                 revenues.add(account)
                 totalRevenues += account.balance
@@ -31,6 +33,8 @@ class IncomeStatement {
                 totalExpenses += account.balance
             }
         }
+        //revenues.add(new AccountStatement(name:"Total Revenues", balance: totalRevenues))
+        //expenses.add(new AccountStatement(name:"Total Expenses", balance: totalExpenses))
     }
 
     @JsonGetter("netIncome")

@@ -17,6 +17,7 @@ import java.sql.Timestamp
 @RegisterMapper(AccountStatementMapper.class)
 interface AccountStatementDBI {
 
+    /*
     @SqlQuery("""
     SELECT
       account.id,
@@ -30,9 +31,26 @@ interface AccountStatementDBI {
       JOIN accounting_trans trans
         ON trans.id = entry.trans_id
     WHERE account.category in (<types>)
-          AND trans.reported >= :startDate
-          AND trans.reported <operator> :endDate
+          -- AND trans.reported >= :startDate
+          -- AND trans.reported <operator> :endDate
     GROUP BY account.id, account.name, account.category, account.subcategory""")
     List<AccountStatement> getBalances(@Bind("startDate") Timestamp start, @Bind("endDate") Timestamp end, @Define("types") types, @Define("operator") op)
+    */
+
+    @SqlQuery("""
+    SELECT
+      account.id,
+      account.name,
+      account.category,
+      account.subcategory,
+      sum(amount) as balance
+    FROM accounting_trans_entry entry
+      JOIN account account
+        ON entry.account_id = account.id
+      JOIN accounting_trans trans
+        ON trans.id = entry.trans_id
+    WHERE account.category in (<types>)
+    GROUP BY account.id, account.name, account.category, account.subcategory""")
+    List<AccountStatement> getBalances(@Define("types") types)
 
 }

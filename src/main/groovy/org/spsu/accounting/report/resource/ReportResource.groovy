@@ -22,7 +22,8 @@ abstract class ReportResource {
     protected List<AccountStatement> getAccounts(int year, int month, String types){
 
         Period p = getPeriod(year, month)
-        return dbi.getBalances(p.startTime, p.endTime, types, "<")
+        //return dbi.getBalances(p.startTime, p.endTime, types, "<")
+        return dbi.getBalances(types)
     }
 
     protected Period getPeriod(int year, int month){
