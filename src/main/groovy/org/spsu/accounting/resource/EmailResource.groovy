@@ -64,6 +64,8 @@ class EmailResource {
 
 
         mailServer.send(toUser.email, email.subject, email.body, from)
+
+        return Response.ok().build();
     }
 
     @Path("senddocument/{to}")
