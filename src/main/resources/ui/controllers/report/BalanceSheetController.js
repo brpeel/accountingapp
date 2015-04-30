@@ -22,6 +22,7 @@ var BalanceSheetController = function($rootScope, $scope, $http, $window, $locat
         $scope.totalLiabilities = data.totalLiabilities;
         $scope.ownerEquity = data.ownerEquity;
         $scope.ownersEquityPlusLiabilities = data.ownersEquityPlusLiabilities;
+        $scope.ownerCapitalAccount = data.ownerCapitalAccount;
 
     });
 

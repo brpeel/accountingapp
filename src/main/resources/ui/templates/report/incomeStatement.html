@@ -8,7 +8,7 @@
                 <td><label>Revenues</label></td>
             </tr>
             <tr ng-repeat="account in revenues">
-                <td width="400px"><div class="indent">{{ account.name }}</div></td>
+                <td width="400px"><div class="indent"><a href="#accounttrans/{{account.id}}">{{account.name}}</a></div></td>
                 <td></td>
                 <td class="text-right">
                     <div ng-switch on="$index">
@@ -28,7 +28,7 @@
                 <td><label>Expenses</label></td>
             </tr>
             <tr ng-repeat="account in expenses">
-                <td width="400px"><div class="indent">{{ account.name }}</div></td>
+                <td width="400px"><div class="indent"><a href="#accounttrans/{{account.id}}">{{account.name}}</a></div></td>
                 <td class="text-right">
                     <div ng-switch on="$index">
                         <div ng-switch-when="0">${{account.balance}}</div>

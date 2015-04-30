@@ -30,6 +30,8 @@ class OwnerEquity extends Statement {
     BigDecimal netIncome = BigDecimal.ZERO
 
     String accountName
+
+    int ownerCapitalAccount;
     //String startDate
     //String endDate
 
@@ -38,8 +40,10 @@ class OwnerEquity extends Statement {
             String category = account.category.toLowerCase()
             String subcat = account.subcategory?.toLowerCase()
             if (category == "owner equity") {
-                if (subcat == "investment")
+                if (subcat == "investment") {
                     investments += account.balance ?: BigDecimal.ZERO
+                    ownerCapitalAccount = account.id
+                }
                 else if (subcat == "withdraw")
                     withdrawals += account.balance ?: BigDecimal.ZERO
             } else if (category == "revenue") {

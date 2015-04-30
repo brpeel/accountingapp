@@ -98,7 +98,7 @@ public class TransactionDO extends BaseDO{
     }
 
     public boolean isSubmitted(){
-        return status?.toLowerCase() in ["submitted", "approved"]
+        return status?.toLowerCase() in ["submitted", "posted"]
     }
 
     @JsonGetter

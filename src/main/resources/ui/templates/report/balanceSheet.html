@@ -8,7 +8,7 @@
                 <td colspan="2" class="text-center"><label>Assets</label></td>
             </tr>
             <tr ng-repeat="account in assets">
-                <td width="500px"><div class="indent">{{ account.name }}</div></td>
+                <td width="500px"><div class="indent"><a href="#accounttrans/{{account.id}}">{{account.name}}</a></div></td>
                 <td class="text-right padRight">
                     <div ng-switch on="$index">
                         <div ng-switch-when="0">${{account.balance}}</div>
@@ -25,8 +25,12 @@
             <tr>
                 <td colspan="3" class="text-center"><label>Liabilities and Owner's Equity</label></td>
             </tr>
+            <tr>
+                <td width="500px" class="indent">Liabilities</td>
+                <td></td>
+            </tr>
             <tr ng-repeat="account in liabilities">
-                <td width="500px"><div class="indent">{{ account.name }}</div></td>
+                <td width="500px"><div class="indent"><a href="#accounttrans/{{account.id}}">{{account.name}}</a></div></td>
                 <td class="text-right padRight">
                     <div ng-switch on="$index">
                         <div ng-switch-when="0">${{account.balance}}</div>
@@ -46,7 +50,7 @@
             </tr>
 
             <tr>
-                <td width="500px" class="doubleindent">Owner's capital</td>
+                <td width="500px" class="doubleindent"><a href="#accounttrans/{{ownerCapitalAccount}}">Owner's capital</a></td>
                 <td><u class="text-right padRight">${{ownerEquity}}</u></td>
             </tr>
 

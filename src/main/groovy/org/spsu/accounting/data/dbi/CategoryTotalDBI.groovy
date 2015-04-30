@@ -28,7 +28,7 @@ interface CategoryTotalDBI {
         ON entry.account_id = account.id
       JOIN accounting_trans trans
         ON trans.id = entry.trans_id
-    WHERE status = 'Approved'
+    WHERE status = 'Posted'
     GROUP BY account.category, account.subcategory""")
     List<CategoryTotal> getTotalsBySubCategory()
 
@@ -47,7 +47,7 @@ interface CategoryTotalDBI {
         ON entry.account_id = account.id
       JOIN accounting_trans trans
         ON trans.id = entry.trans_id
-    WHERE status = 'Approved'
+    WHERE status = 'Posted'
     GROUP BY account.category""")
     List<CategoryTotal> getTotals()
 

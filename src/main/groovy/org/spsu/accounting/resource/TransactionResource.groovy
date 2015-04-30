@@ -138,6 +138,7 @@ class TransactionResource extends BaseResource<DAO<TransactionDO>> {
         }
 
         transaction.entries = changes.entries;
+        transaction.status = 'Submitted'
 
         dao.save(transaction);
         dao.removeEntries(removedEntries)
@@ -145,12 +146,12 @@ class TransactionResource extends BaseResource<DAO<TransactionDO>> {
     }
 
     @PUT
-    @Path("/approve/{id}")
+    @Path("/post/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    Response approve( @Context HttpServletRequest request, @PathParam("id") int id){
+    Response post( @Context HttpServletRequest request, @PathParam("id") int id){
 
         UserDO user = getUser(request)
-        dao.approve(id, user)
+        dao.post(id, user)
 
         //Adjust account balances
 

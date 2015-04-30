@@ -48,9 +48,9 @@ interface TransactionDBI{
     @SqlUpdate("""update accounting_trans set
                     approved_by = :user,
                     approved = now(),
-                    status = 'Approved'
+                    status = 'Posted'
                 where id = :id""")
-    int approve(@Bind("id") int id, @Bind("user") int userid)
+    int post(@Bind("id") int id, @Bind("user") int userid)
 
     @SqlUpdate("""update accounting_trans set
                     approved_by = null,

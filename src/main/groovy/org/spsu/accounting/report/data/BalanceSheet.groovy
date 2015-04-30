@@ -39,6 +39,8 @@ class BalanceSheet extends Statement {
     BigDecimal ownersEquityPlusLiabilities = 0.0;
 
 
+    int ownerCapitalAccount;
+
     public void addAccounts(List<AccountStatement> accounts){
         accounts?.each {AccountStatement account->
             String category = account.category.toLowerCase().replace(" ","")
@@ -53,8 +55,10 @@ class BalanceSheet extends Statement {
                 totalLiabilities += account.balance
             }
             else if (category == "ownerequity") {
-                if (subcategory == "investment")
+                if (subcategory == "investment") {
                     investment += account.balance
+                    ownerCapitalAccount = account.id;
+                }
                 if (subcategory == "withdraw")
                     drawing += account.balance
             }

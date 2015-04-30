@@ -171,10 +171,10 @@ class TransactionDAOImpl extends DAOImpl<TransactionDO> implements TransactionDA
     }
 
     @Override
-    void approve(int id, UserDO user) {
+    void post(int id, UserDO user) {
         user.requirePermission("ApproveTrans")
         TransactionDO trans = get(id, true)
-        dbi.approve(id, user.id)
+        dbi.post(id, user.id)
     }
 
     @Override

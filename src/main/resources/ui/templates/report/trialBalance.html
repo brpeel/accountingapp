@@ -9,7 +9,7 @@
                 <td class="text-center"><u>Credit</u></td>
             </tr>
             <tr ng-repeat="account in accounts">
-                <td width="400px"><div class="indent">{{ account.name }}</div></td>
+                <td width="400px"><div class="indent"><a href="#accounttrans/{{account.id}}">{{account.name}}</a></div></td>
                 <td class="text-right padRight"><div ng-if="account.isFirst">$</div><p ng-if="account.debit">{{account.debit}}</p></td>
                 <td class="text-right padRight"><p ng-if="account.credit"><div ng-if="account.isFirst">$</div>{{account.credit}}</p></td>
             </tr>

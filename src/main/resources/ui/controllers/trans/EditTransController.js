@@ -46,7 +46,7 @@ function EditTransController($rootScope, $scope, $http, $window, $location, $rou
 
                 var status = response.status.toLowerCase();
 
-                $scope.showSave = status != "approved";
+                $scope.showSave = status != "posted";
                 $scope.showApprove = $scope.canApprove && status == "reported";
 
                 console.log("showSave = "+$scope.showSave+" " )
@@ -91,13 +91,13 @@ function EditTransController($rootScope, $scope, $http, $window, $location, $rou
             });
     };
 
-    $scope.approve = function(){
+    $scope.post = function(){
         console.log('Approve Transaction = '+id)
 
         var trans = {description:$scope.tForm.description, entries:$scope.tForm.entry};
 
 
-        $http.put('api/transaction/approve/'+id,trans)
+        $http.put('api/transaction/post/'+id,trans)
             .success(function(data, status, headers, config){
 
                 $location.path("/transactions")
@@ -155,14 +155,7 @@ function EditTransController($rootScope, $scope, $http, $window, $location, $rou
 
     uploader.onSuccessItem = function(fileItem, response, status, headers) {
         console.info('onSuccessItem', fileItem, response, status, headers);
-/*
-        console.log("Successful save. "+JSON.stringify(response))
 
-        for (var i in response.data){
-            console.log("adding document : "+JSON.stringify(response.data[i]))
-            $scope.documents.push(response.data[i]);
-        }
-        */
         $scope.fetchDocuments();
 
     };

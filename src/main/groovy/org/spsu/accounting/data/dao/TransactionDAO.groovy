@@ -9,7 +9,7 @@ import org.spsu.accounting.data.domain.UserDO
  */
 interface TransactionDAO extends DAO<TransactionDO> {
 
-    public void approve(int id, UserDO user);
+    public void post(int id, UserDO user);
 
     public void reject(int id, UserDO user);
 
