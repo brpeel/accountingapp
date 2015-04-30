@@ -15,9 +15,6 @@ import java.lang.reflect.Field
  */
 abstract class BaseDO {
 
-    @JsonIgnore
-    Logger logger = LoggerFactory.getLogger(getClass())
-
     @JsonProperty("id")
     Integer id
 

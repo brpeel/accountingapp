@@ -106,7 +106,6 @@ public class TransactionDO extends BaseDO{
     @JsonSerialize(using = MoneySerializer.class)
     public BigDecimal debits(){
         BigDecimal debits = sumDebits()
-        logger.info("debits = $debits")
         return debits
     }
 
