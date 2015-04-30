@@ -102,14 +102,15 @@ public class TransactionDO extends BaseDO{
         return status?.toLowerCase() == "submitted"
     }
 
-    @JsonGetter
+    @JsonGetter("debits")
     @JsonSerialize(using = MoneySerializer.class)
     public BigDecimal debits(){
         BigDecimal debits = sumDebits()
+        logger.info("debits = $debits")
         return debits
     }
 
-    @JsonGetter
+    @JsonGetter("credits")
     @JsonSerialize(using = MoneySerializer.class)
     public BigDecimal credits(){
         BigDecimal debits = sumCredits()

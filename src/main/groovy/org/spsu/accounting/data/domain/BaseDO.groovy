@@ -1,6 +1,9 @@
 package org.spsu.accounting.data.domain
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 import java.lang.reflect.Field
 
@@ -11,6 +14,9 @@ import java.lang.reflect.Field
  * Created on 10/2/14.
  */
 abstract class BaseDO {
+
+    @JsonIgnore
+    Logger logger = LoggerFactory.getLogger(getClass())
 
     @JsonProperty("id")
     Integer id
