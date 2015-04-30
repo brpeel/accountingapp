@@ -64,7 +64,7 @@ abstract class BaseResource<T extends DAO<BaseDO>> {
     @Path("/all")
     @Produces(MediaType.APPLICATION_JSON)
     Response getAll(){
-        List all = getAllObjects(false)
+        List all = getAllObjects(true)
         return Response.ok(all).build();
     }
 

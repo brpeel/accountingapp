@@ -8,7 +8,7 @@ var ChartOfAccountsController = function($rootScope, $scope, $http, $window, $lo
    // console.log($rootScope.permissions)
     $scope.fetch = function() {
 
-        $http.get('/api/account/all').success(function(accounts){
+        $http.get('/api/account/all/').success(function(accounts){
             //$scope.accounts = data;
             console.log(JSON.stringify(accounts))
             data = accounts;

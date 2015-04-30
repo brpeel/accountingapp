@@ -10,7 +10,9 @@ import org.spsu.accounting.resource.base.BaseResource
 
 import javax.servlet.http.HttpServletRequest
 import javax.ws.rs.POST
+import javax.ws.rs.PUT
 import javax.ws.rs.Path
+import javax.ws.rs.PathParam
 import javax.ws.rs.Produces
 import javax.ws.rs.core.Context
 import javax.ws.rs.core.MediaType
@@ -38,5 +40,24 @@ public class AccountResource extends BaseResource<ActiveDAO<AccountDO>> {
         AccountDO item = new AccountDO(values);
         item.addedBy = userid
         return postObject(item)
+    }
+
+
+    @PUT
+    @Path("activate/{id}")
+    @Produces
+    Response activate(@PathParam("id") int id) {
+        dao.activate(id)
+
+        return Response.ok().build()
+    }
+
+    @PUT
+    @Path("deactivate/{id}")
+    @Produces
+    Response deactivate(@PathParam("id") int id) {
+        dao.deactivate(id)
+
+        return Response.ok().build()
     }
 }

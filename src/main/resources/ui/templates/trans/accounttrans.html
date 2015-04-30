@@ -1,3 +1,18 @@
+
+<div>
+    <div ng-repeat="alert in alerts" class="alert alert-{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</div>
+</div>
+
+<h3 ng-show="active">Account Status : <div ngshow="active" class="label label-success">Active</div></h3>
+<h3 ng-show="!active">Account Status : <div ngshow="!active" class="label label-warning">Not Active</div></h3>
+
+<div class="btn-group" role="group">
+    <button  ng-show="allowed.createAccount && active" type="submit" class="btn btn-warning" ng-click="deactivate()">Deactivate Account</button>
+</div>
+<div class="btn-group" role="group">
+    <button  ng-show="allowed.createAccount && !active" type="submit" class="btn btn-primary" ng-click="activate()">Activate Account</button>
+</div>
+
 <table ng-table="tableParams" class="table">
     <tr ng-repeat="trans in $data" ng-class="{ 'emphasis': !trans.approved }">
         <td data-title="'TransId'" ><a href="#transaction/{{trans.id}}">{{trans.id}}</a></td>
