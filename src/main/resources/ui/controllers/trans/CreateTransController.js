@@ -17,6 +17,11 @@ function CreateTransController($rootScope, $scope, $http, $window, $location, $r
         });
     };
 
+
+    $scope.reset = function() {
+        $window.location.reload();
+    };
+
     $scope.save = function(){
         console.log('Save Transaction');
 

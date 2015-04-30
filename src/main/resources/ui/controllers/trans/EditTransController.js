@@ -75,6 +75,10 @@ function EditTransController($rootScope, $scope, $http, $window, $location, $rou
             });
     };
 
+    $scope.reset = function() {
+        $window.location.reload();
+    };
+
     $scope.save = function(){
         console.log('Save Transaction');
         var trans = {description:$scope.tForm.description, entries:$scope.tForm.entry};

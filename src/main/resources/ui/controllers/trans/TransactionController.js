@@ -80,7 +80,7 @@ var TransactionController = function($rootScope, $scope, $http, $window, $locati
 
         var pendingOnly = $scope.pendingOnly;
         console.log("Pending only: "+pendingOnly)
-        
+
         var searchTerms = {
             'id':$scope.id,
             'keyword':$scope.keyword,
