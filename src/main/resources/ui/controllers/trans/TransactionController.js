@@ -2,7 +2,8 @@
 
 var TransactionController = function($rootScope, $scope, $http, $window, $location, $filter, ngTableParams) {
 
-    $scope.alerts = []
+    $scope.alerts = [];
+    $scope.pendingOnly = false;
 
     $scope.addAlert = function(type, message) {
         $scope.alerts.push({type: type, msg: message});
@@ -17,6 +18,7 @@ var TransactionController = function($rootScope, $scope, $http, $window, $locati
 
     $scope.queryData = function(searchTerms){
         console.log("Searching for transactions using "+JSON.stringify(searchTerms))
+        $scope.alerts = [];
         var result = []
         $http.post('api/transaction/search',searchTerms)
             .success(function(response, status, headers, config){
@@ -68,13 +70,23 @@ var TransactionController = function($rootScope, $scope, $http, $window, $locati
         });
     }
 
+    $scope.togglePending = function(){
+        $scope.pendingOnly = !$scope.pendingOnly;
+
+        $scope.search()
+    }
+
     $scope.search = function(){
 
+        var pendingOnly = $scope.pendingOnly;
+        console.log("Pending only: "+pendingOnly)
+        
         var searchTerms = {
             'id':$scope.id,
             'keyword':$scope.keyword,
             'startDate':$scope.startDate,
-            'endDate':$scope.endDate
+            'endDate':$scope.endDate,
+            'pendingOnly' : pendingOnly
         };
         $scope.queryData(searchTerms);
 

@@ -6,7 +6,7 @@
 
     <a href="#createTrans" ng-show="allowed.submitTrans"><i  class="fa fa-plus-square">Create Transaction</i></a>
 
-    <form role="createAccountForm">
+    <form role="searchForm">
         <div class="form-group col-md-2">
             <label for="id">Id</label>
             <input type="number" ng-model="id" class="form-control" name="id" id="id"/>
@@ -23,11 +23,20 @@
             <label for="endDate">End Date</label>
             <input type="date" ng-model="endDate" class="form-control" name="endDate" id="endDate"/>
         </div>
+
+
         <div class=" col-md-10">
             <button class="btn btn-primary" ng-click="search()">Search</button>
         </div>
 
     </form>
+
+    <div class="form-group col-md-8">
+
+        <label class="checkbox inline"><input type="checkbox" ng-model="pendingOnly" ng-click="togglePending()">Pending Transactions Only</label>
+
+    </div>
+
     <!--button ng-click="tableParams.sorting({})" class="btn btn-default pull-right">Clear sorting</button-->
 
     <table ng-table="tableParams" class="table">

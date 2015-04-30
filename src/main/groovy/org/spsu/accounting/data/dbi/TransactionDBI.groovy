@@ -26,9 +26,11 @@ interface TransactionDBI{
     select id, reported_by, approved_by, reported, approved, status, description from accounting_trans
     where cast(id as varchar) like coalesce(:id, '%')
         and lower(description) like lower(coalesce(:keyword,'%'))
-        and reported >= coalesce(:startRange, reported) and reported <= coalesce(:endRange, reported) order by id""")
+        and reported >= coalesce(:startRange, reported) and reported <= coalesce(:endRange, reported)
+        and (:pendingOnly = false or status = 'Submitted')
+    order by id""")
     @MapResultAsBean
-    List<TransactionDO> search(@Bind("id") String id, @Bind("keyword") String keyword, @Bind("startRange") Timestamp start, @Bind("endRange") Timestamp end)
+    List<TransactionDO> search(@Bind("id") String id, @Bind("keyword") String keyword, @Bind("startRange") Timestamp start, @Bind("endRange") Timestamp end, @Bind("pendingOnly") boolean pendingOnly)
 
 	@SqlUpdate("insert into accounting_trans (reported_by, approved_by, reported, approved, status, description) \
 	 values ( :reportedBy, null, now(), null, 'Reported', :description)")

@@ -97,7 +97,8 @@ class TransactionResource extends BaseResource<DAO<TransactionDO>> {
             if (searchTerms.endDate)
                 endRange = formatter.parseDateTime(searchTerms.endDate)
 
-            results = dao.search(id, keyword, startRange, endRange)
+            boolean pendingOnly = searchTerms.pendingOnly// && Boolean.parseBoolean(searchTerms.pendingOnly)
+            results = dao.search(id, keyword, startRange, endRange, pendingOnly)
         }
 
         return Response.ok(results).build()

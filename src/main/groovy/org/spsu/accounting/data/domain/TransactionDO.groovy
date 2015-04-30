@@ -36,6 +36,7 @@ public class TransactionDO extends BaseDO{
 
     List<DocumentDO> documents = []
 
+
     @JsonSetter("entries")
     public void setEntries(Collection col){
 
@@ -98,7 +99,7 @@ public class TransactionDO extends BaseDO{
     }
 
     public boolean isSubmitted(){
-        return status?.toLowerCase() in ["submitted", "posted"]
+        return status?.toLowerCase() == "submitted"
     }
 
     @JsonGetter

@@ -48,11 +48,11 @@ class TransactionDAOImpl extends DAOImpl<TransactionDO> implements TransactionDA
     }
 
 
-    List<TransactionDO> search(Integer id, String keyword = null, DateTime startRange = null, DateTime endRange = null){
+    List<TransactionDO> search(Integer id, String keyword = null, DateTime startRange = null, DateTime endRange = null, boolean pendingOnly = false){
         return search(id?.toString(), keyword, startRange, endRange)
     }
 
-    List<TransactionDO> search(String id, String keyword = null, DateTime startRange = null, DateTime endRange = null){
+    List<TransactionDO> search(String id, String keyword = null, DateTime startRange = null, DateTime endRange = null, boolean pendingOnly = false){
 
         List<String> conditions = []
 
@@ -64,7 +64,7 @@ class TransactionDAOImpl extends DAOImpl<TransactionDO> implements TransactionDA
 
         logger.info("Executing search using => id:$id, keyword:$keyword, start: $start, end:$end")
 
-        return dbi.search(id, keyword, start, end)
+        return dbi.search(id, keyword, start, end, pendingOnly)
 
     }
 
