@@ -57,3 +57,5 @@ update account set subcategory = 'Current Liability' where name = 'Accounts Paya
 UPDATE account set initial_balance = 0;
 
 update user_permission set user_type_id = 100 where permission = 'email'  and permission_group = 'MainMenu';
+
+update accounting_trans set status = 'Posted' where status = 'Approved'
