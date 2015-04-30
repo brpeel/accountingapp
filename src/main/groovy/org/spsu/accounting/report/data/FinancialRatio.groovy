@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import org.spsu.accounting.data.domain.CategoryTotal
 import org.spsu.accounting.data.serial.MoneySerializer
 import org.spsu.accounting.data.serial.MoneyWithSignSerializer
+import org.spsu.accounting.data.serial.PercentageSerializer
 import org.spsu.accounting.data.serial.RatioSerializer
 
 /**
@@ -20,13 +21,13 @@ class FinancialRatio {
     @JsonSerialize(using = RatioSerializer.class)
     BigDecimal inventoryToNetWorkingCapital = 0.0      //Inventory /(Current assets - Current Liabilities)
 
-    @JsonSerialize(using = RatioSerializer.class)
+    @JsonSerialize(using = PercentageSerializer.class)
     BigDecimal debtToAssetRatio =  0.0                 //Total debt / Total assets
 
-    @JsonSerialize(using = RatioSerializer.class)
+    @JsonSerialize(using = PercentageSerializer.class)
     BigDecimal debtToEquityRatio = 0.0                 //Total debt / Total stockholders' equity
 
-    @JsonSerialize(using = RatioSerializer.class)
+    @JsonSerialize(using = PercentageSerializer.class)
     BigDecimal longTermDebtToEquityRatio = 0.0         //Long-term debt / Total shareholders' equity
 
     @JsonSerialize(using = MoneyWithSignSerializer.class)

@@ -8,7 +8,7 @@ import com.fasterxml.jackson.databind.SerializerProvider
 /**
  * Created by bpeel on 4/11/15.
  */
-public class RatioSerializer extends JsonSerializer<BigDecimal> {
+public class PercentageSerializer extends JsonSerializer<BigDecimal> {
     @Override
     public void serialize(BigDecimal value, JsonGenerator jgen, SerializerProvider provider) throws IOException,
             JsonProcessingException {
@@ -19,7 +19,8 @@ public class RatioSerializer extends JsonSerializer<BigDecimal> {
     public String convertToString(BigDecimal value){
         if (value == null)
             return null
-       return value.setScale(2, BigDecimal.ROUND_HALF_UP).toString() + ":1";
+        value *= 100.00
+       return value.setScale(1, BigDecimal.ROUND_HALF_UP).toString() + "%";
        // return value.setScale(2, BigDecimal.ROUND_HALF_UP).toString()
     }
 }
