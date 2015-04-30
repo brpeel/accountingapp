@@ -37,7 +37,7 @@ FROM accounting_trans_entry entry
   JOIN accounting_trans trans
     ON trans.id = entry.trans_id
  WHERE status = 'Posted'
-GROUP BY account.id, account.name, account.category, account.subcategory
+GROUP BY account.id, account.name, account.category, account.subcategory, account.initial_balance
 ORDER BY account.orderno, case when account.normal_side = 'Credit' then 1 else 0 end""")
     List<AccountStatement> getBalances()
 
@@ -64,7 +64,7 @@ ORDER BY account.orderno, case when account.normal_side = 'Credit' then 1 else 0
       JOIN accounting_trans trans
         ON trans.id = entry.trans_id
     WHERE status = 'Posted'
-    GROUP BY account.id, account.name, account.category
+    GROUP BY account.id, account.name, account.category, account.initial_balance
     ORDER BY
     CASE category
       WHEN 'Asset' THEN 1
