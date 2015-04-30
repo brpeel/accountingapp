@@ -2,6 +2,7 @@ package org.spsu.accounting.resource
 
 import org.skife.jdbi.v2.DBI
 import org.spsu.accounting.data.dao.ActiveDAO
+import org.spsu.accounting.data.dao.impl.AccountDAOImpl
 import org.spsu.accounting.data.dao.impl.ActiveDAOImpl
 import org.spsu.accounting.data.dbi.AccountDBI
 import org.spsu.accounting.data.domain.AccountDO
@@ -23,7 +24,7 @@ public class AccountResource extends BaseResource<ActiveDAO<AccountDO>> {
 
     @Override
     protected ActiveDAO<AccountDO> createDAO(DBI jdbi) {
-        return new ActiveDAOImpl<AccountDO>(dbi: jdbi.onDemand(AccountDBI))
+        return new AccountDAOImpl(dbi: jdbi.onDemand(AccountDBI))
     }
 
     @POST

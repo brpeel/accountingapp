@@ -95,7 +95,7 @@ class TransactionDAOImplTest extends Specification {
         "No transactions"             | null                                                            | null                                                           | "Transaction must have debt and credit account entries"
         "No debits"                   | null                                                            | new TransactionEntryDO(accountId: 2, amount: 200, debit: true) | "Transaction must have debt and credit account entries"
         "No credits"                  | new TransactionEntryDO(accountId: 1, amount: 100, debit: false) | null                                                           | "Transaction must have debt and credit account entries"
-        "Debits not equal to Credits" | new TransactionEntryDO(accountId: 1, amount: 100, debit: false) | new TransactionEntryDO(accountId: 2, amount: 200, debit: true) | "Total credits must equal total debits"
+        "Debits not equal to Credits" | new TransactionEntryDO(accountId: 1, amount: 100, debit: false) | new TransactionEntryDO(accountId: 2, amount: 200, debit: true) | "Total credits must equal balance debits"
         "Debits equal credits"        | new TransactionEntryDO(accountId: 3, amount: 100, debit: false) | new TransactionEntryDO(accountId: 4, amount: 100, debit: true) | null
 
     }

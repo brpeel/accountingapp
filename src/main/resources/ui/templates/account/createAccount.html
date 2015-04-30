@@ -1,34 +1,59 @@
-<modal title="CreateAccount form" class="col-md-6">
-    <form role="createAccountForm">
-        <div class="form-group">
-            <label for="name">Name</label>
-            <input type="name" ng-model="name" class="form-control" name="name" id="name" placeholder="Enter Name"/>
-        </div>
-        <div class="form-group">
-            <label for="initialBalance">Initial Balance</label>
-            <input type="initialBalance" ng-model="initialBalance" class="form-control" name="initialBalance"
-                   id="initialBalance" placeholder="Enter Balance"/>
-        </div>
-        <div class="form-group">
-            <label for="side">Normal Side</label>
-            <input type="side" ng-model="side" class="form-control" name="side" id="side" placeholder="Enter Side"/>
-        </div>
-        <div class="form-group">
-            <label for="category">Category</label>
-            <input type="category" ng-model="category" class="form-control" name="category" id="category"
-                   placeholder="Enter Category"/>
-        </div>
 
-        <div class="btn-group  btn-group-justified col-md-6" role="group">
-            <div class="btn-group" role="group">
-                <button type="submit" class="btn btn-primary" ng-click="save()">Submit</button>
-            </div>
-            <div class="btn-group" role="group">
-                <button type="button" class="btn btn-link" ng-click="cancel()">Cancel</button>
-            </div>
-        </div>
-    </form>
-    <div class="alert alert-danger" ng-show="errormessage">
-        <strong>Error!</strong> {{errormessage}}
+
+
+<div class="alert alert-danger" ng-show="errormessage">
+    <strong>Error!</strong> {{errormessage}}
+</div>
+
+<div class="col-md-6">
+<form>
+
+    <div class="form-group">
+        <label for="name">Name</label>
+        <input type="name" ng-model="name" class="form-control" name="name" id="name" placeholder="Enter Name" required="true"/>
     </div>
-</modal>
+    <div class="form-group">
+        <label for="initialBalance">Initial Balance</label>
+        <input type="initialBalance" ng-model="initialBalance" class="form-control" name="initialBalance"
+               id="initialBalance" placeholder="Enter Balance"/>
+    </div>
+
+   <div class="form-group">
+       <label for="side">Normal Side</label>
+       <select id="side" ng-model="side" class="form-control" name="side" required="true">
+           <option value="Debit">Debit</option>
+           <option value="Credit">Credit</option>
+       </select>
+   </div>
+
+    <div class="form-group">
+        <label for="category">Category</label>
+        <select id="category" ng-model="category" class="form-control" name="category" ng-change="updateSubCat()" required="true">
+            <option value="Asset">Asset</option>
+            <option value="Liability">Liability</option>
+            <option value="Owner Equity">Owner's Equity</option>
+            <option value="Expense">Expense</option>
+            <option value="Revenue">Revenue</option>
+        </select>
+    </div>
+
+     <div class="form-group">
+         <label for="subcategory">Sub Category</label>
+         <select type="subcategory" ng-model="subcategory" class="form-control" name="subcategory" id="subcategory"
+                ng-options="choice for choice in subcategories"
+                ng-change="updateSubCat()"
+                placeholder="Enter Sub Category">
+         </select>
+     </div>
+    <div class="btn-group btn-group-justified" role="group">
+        <div class="btn-group" role="group">
+            <button type="submit" class="btn btn-primary" ng-click="save()">Create Account</button>
+        </div>
+        <div class="btn-group" role="group">
+            <button type="button" class="btn btn-link" ng-click="cancel()">Cancel</button>
+        </div>
+    </div>
+</form>
+</div>
+
+

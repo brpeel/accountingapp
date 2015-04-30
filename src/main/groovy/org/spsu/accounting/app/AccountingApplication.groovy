@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.databind.util.ISO8601DateFormat
 import com.fasterxml.jackson.datatype.joda.JodaModule
-import com.google.common.collect.ImmutableMap
 import io.dropwizard.Application
 import io.dropwizard.assets.AssetsBundle
 import io.dropwizard.auth.basic.BasicAuthProvider
@@ -14,7 +13,6 @@ import io.dropwizard.jersey.sessions.HttpSessionProvider
 import io.dropwizard.migrations.MigrationsBundle
 import io.dropwizard.setup.Bootstrap
 import io.dropwizard.setup.Environment
-import io.dropwizard.views.ViewBundle
 import org.eclipse.jetty.server.session.SessionHandler
 import org.glassfish.jersey.media.multipart.MultiPartFeature
 import org.skife.jdbi.v2.DBI
@@ -29,18 +27,9 @@ import org.spsu.accounting.data.dao.impl.AccountDAOImpl
 import org.spsu.accounting.data.dao.impl.PermissionDAOImpl
 import org.spsu.accounting.data.dao.impl.StartDAO
 import org.spsu.accounting.data.dao.impl.UserDAOImpl
-import org.spsu.accounting.data.dbi.AccountDBI
-import org.spsu.accounting.data.dbi.AccountStatementDBI
-import org.spsu.accounting.data.dbi.HealthCheckDBI
-import org.spsu.accounting.data.dbi.PermissionDBI
-import org.spsu.accounting.data.dbi.StartDBI
-import org.spsu.accounting.data.dbi.TimelineDBI
-import org.spsu.accounting.data.dbi.UserDBI
+import org.spsu.accounting.data.dbi.*
 import org.spsu.accounting.data.domain.UserDO
-import org.spsu.accounting.report.data.BalanceSheet
-import org.spsu.accounting.report.resource.BalanceSheetResource
-import org.spsu.accounting.report.resource.IncomeStatementResource
-import org.spsu.accounting.report.resource.OwnerEquityResource
+import org.spsu.accounting.report.resource.*
 import org.spsu.accounting.resource.*
 import org.spsu.accounting.resource.base.BaseResource
 import org.spsu.accounting.utils.mail.MailConfig
@@ -121,7 +110,7 @@ class AccountingApplication extends Application<AccountingApplicationConfigurati
 
         environment.jersey().register(new MenuResource(dao: new UserDAOImpl<UserDO>(dbi: jdbi.onDemand(UserDBI))))
         environment.jersey().register(new AboutResource())
-        environment.jersey().register(new TimelineResource(dbi:jdbi.onDemand(TimelineDBI)))
+        environment.jersey().register(new TimelineResource(dbi: jdbi.onDemand(TimelineDBI)))
 
         registerAuth(environment, jdbi)
 
@@ -132,24 +121,27 @@ class AccountingApplication extends Application<AccountingApplicationConfigurati
         (new DocumentResource()).register(environment, jdbi)
 
 
-
     }
 
-    private void registerReports(Environment environment, DBI jdbi)
-    {
+    private void registerReports(Environment environment, DBI jdbi) {
         AccountStatementDBI statementDBI = jdbi.onDemand(AccountStatementDBI)
 
-        environment.jersey().register(new IncomeStatementResource(dbi: statementDBI))
-
         AccountDBI accountDBI = jdbi.onDemand(AccountDBI)
-        AccountDAO accountDAO = new AccountDAOImpl(dbi:accountDBI)
+        AccountDAO accountDAO = new AccountDAOImpl(dbi: accountDBI)
         accountDAO.validator = environment.getValidator()
         accountDAO.objectMapper = environment.getObjectMapper()
 
-        environment.jersey().register(new OwnerEquityResource(dbi: statementDBI, accountDAO: accountDAO))
+        CategoryTotalDBI categoryDBI = jdbi.onDemand(CategoryTotalDBI)
 
-        environment.jersey().register(new BalanceSheetResource(dbi: statementDBI))
+        environment.jersey().register(new IncomeStatementResource(accountDBI: statementDBI, categoryTotalDBI: categoryDBI))
+        environment.jersey().register(new OwnerEquityResource(accountDBI: statementDBI, categoryTotalDBI: categoryDBI, accountDAO: accountDAO))
+        environment.jersey().register(new BalanceSheetResource(accountDBI: statementDBI, categoryTotalDBI: categoryDBI))
+        environment.jersey().register(new TrailBalanceResource(accountDBI: statementDBI, categoryTotalDBI: categoryDBI))
+        environment.jersey().register(new FinancialRatioResource(accountDBI: statementDBI, categoryTotalDBI: categoryDBI))
+
+
     }
+
     private void registerAuth(Environment environment, DBI jdbi) {
 
         UserDAO userDAO = new UserDAOImpl(dbi: jdbi.onDemand(UserDBI))

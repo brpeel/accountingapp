@@ -120,7 +120,7 @@ class TransactionDAOImpl extends DAOImpl<TransactionDO> implements TransactionDA
             messages.add("Transaction must have debt and credit account entries")
 
         if (!creditsEqualDebits(obj))
-            messages.add("Total credits must equal total debits")
+            messages.add("Total credits must equal balance debits")
 
         if (accountIsCreditedAndDebited(obj))
             messages.add("Transaction must never allow debiting and crediting of the same account")

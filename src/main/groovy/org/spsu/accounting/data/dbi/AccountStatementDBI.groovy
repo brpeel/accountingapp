@@ -60,8 +60,4 @@ GROUP BY account.id, account.name, account.category, account.subcategory
 ORDER BY account.orderno""")
     List<AccountStatement> getBalances(@Define("types") types)
 
-    @SqlQuery("""
-
-    """)
-    double getOwnersEquity()
 }

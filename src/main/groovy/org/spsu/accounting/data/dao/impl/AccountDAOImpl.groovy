@@ -26,7 +26,7 @@ class AccountDAOImpl  extends ActiveDAOImpl<AccountDO> implements AccountDAO{
         AccountDO existing =  object.id ? dbi.get(object.id) : null
 
         if (!existing){
-            List validationMessages = validateObject(object)
+            Set validationMessages = validateObject(object)
 
             if (validationMessages)
                 throw new WebApplicationException(Response.status(Response.Status.BAD_REQUEST).entity(validationMessages).build());

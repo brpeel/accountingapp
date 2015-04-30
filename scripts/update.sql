@@ -34,9 +34,9 @@ insert into account (id, name, initial_balance, normal_side, added, active, adde
 
 --cash must be listed first followed by notes or accounts receivable and so forth.
 
-UPDATE Account SET orderno = 0 WHERE name = 'Cash';
-UPDATE Account SET orderno = 1 WHERE name = 'Accounts Recievable';
-UPDATE Account SET orderno = 10 WHERE name = 'Office Supplies';
+UPDATE Account SET orderno = 0, subcategory = 'Cash' WHERE name = 'Cash';
+UPDATE Account SET orderno = 1, subcategory = 'Current Asset' WHERE name = 'Accounts Recievable';
+UPDATE Account SET orderno = 10, subcategory = 'Current Asset' WHERE name = 'Office Supplies';
 
 UPDATE Account SET normal_side = 'Debit' WHERE category = 'Asset';
 UPDATE Account SET normal_side = 'Debit' WHERE category = 'Expense';
@@ -45,5 +45,13 @@ UPDATE Account SET normal_side = 'Credit' WHERE category = 'Owner Equity' and su
 UPDATE Account SET normal_side = 'Debit' WHERE category = 'Owner Equity' and subcategory = 'Withdraw';
 UPDATE Account SET normal_side = 'Credit' WHERE category = 'Revenue';
 
+update account set subcategory = 'Operating Expense' where name = 'Wages Expense';
+update account set subcategory = 'Operating Expense' where name = 'Utilities Expense';
+update account set subcategory = 'Operating Expense' where name = 'Telephone Expense';
+update account set subcategory = 'Operating Expense' where name = 'Rent Expense';
+update account set subcategory = 'Revenue' where name = 'Professional Fees';
+update account set subcategory = 'Other Expense' where name = 'Charitable Contributions Expense';
+update account set subcategory = 'Operating Expense' where name = 'Automobile Expense';
+update account set subcategory = 'Current Liability' where name = 'Accounts Payable';
 
 

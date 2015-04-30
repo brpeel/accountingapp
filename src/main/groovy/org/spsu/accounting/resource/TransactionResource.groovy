@@ -187,9 +187,9 @@ class TransactionResource extends BaseResource<DAO<TransactionDO>> {
 
         Integer id
 
-        Integer reportedBy
+        Integer reportedby
 
-        Integer approvedBy
+        Integer approvedby
 
         @JsonSerialize(using = DateTimeSerializer)
         DateTime reported
@@ -226,7 +226,7 @@ class TransactionResource extends BaseResource<DAO<TransactionDO>> {
     public interface AccountTransDBI {
 
         @SqlQuery("""
-        select t.id, t.reported_by, t.approved_by, t.reported, t.approved, t.status, t.description, e.account_id, e.amount, e.debit
+        select t.id, t.reported_by as reportedby, t.approved_by as approvedby, t.reported, t.approved, t.status, t.description, e.account_id, e.amount, e.debit
         from accounting_trans t
           join accounting_trans_entry e
             on t.id = e.trans_id

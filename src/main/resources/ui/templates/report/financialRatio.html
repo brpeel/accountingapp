@@ -1,0 +1,68 @@
+
+<div class="col-md-6">
+    <div class="panel panel-default">
+        <div class="panel-heading text-center"><strong>Financial Ratios:<br/></strong></div>
+        <ul class="list-unstyled">
+          <li>
+              <!-- Current Ratio -->
+              <div class="panel-body">
+                  <h4>Current Ratio = {{currentRatio}}</h4>
+                  <p>
+                      Current assets / Current liabilities = {{currentAssets}} / {{currentLiabilities}}
+                  </p>
+              </div>
+          </li>
+
+            <!-- quickRatio -->
+            <li>
+                <div class="panel-body">
+                    <h4> Quick Ratio = {{quickRatio}}</h4>
+                    <p>
+                        (Current assets-Inventory) / Current Liabilities = ({{currentAssets}} - {{inventory}}) / {{currentLiabilities}}
+                    </p>
+                </div>
+            </li>
+
+            <!-- inventoryToNetWorkingCapital -->
+            <li>
+                <div class="panel-body">
+                    <h4> Inventory to Net Working Capital = {{inventoryToNetWorkingCapital}}</h4>
+                    <p>
+                        Inventory /(Current assets - Current Liabilities) = {{inventory}} / ({{currentAssets}} - {{currentLiabilities}})
+                    </p>
+                </div>
+            </li>
+
+            <!-- debtToAssetRatio  -->
+            <li>
+                <div class="panel-body">
+                    <h4> Debit to Asset Ratio = {{debtToAssetRatio}} </h4>
+                    <p>
+                        Total debt / Total assets = {{totalLiabilities}} / {{totalAssets}}
+                    </p>
+                </div>
+            </li>
+
+            <!-- debtToEquityRatio -->
+            <li>
+                <div class="panel-body">
+                    <h4> Debt to Equity Ratio = {{debtToEquityRatio}}</h4>
+                    <p>
+                        Total debt / Total stockholders' equity = {{totalLiabilities}} / {{stakeHolderEquity}}
+                    </p>
+                </div>
+            </li>
+
+            <!-- longTermDebtToEquityRatio -->
+            <li>
+                <div class="panel-body">
+                    <h4> Long Term Debt to Equity Ratio = {{longTermDebtToEquityRatio}}</h4>
+                    <p>
+                        Long-term debt / Total shareholders' equity = {{longTermLiabilities}} / {{stakeHolderEquity}}
+                    </p>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+
