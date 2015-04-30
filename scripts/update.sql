@@ -54,4 +54,5 @@ update account set subcategory = 'Other Expense' where name = 'Charitable Contri
 update account set subcategory = 'Operating Expense' where name = 'Automobile Expense';
 update account set subcategory = 'Current Liability' where name = 'Accounts Payable';
 
+UPDATE account set initial_balance = 0;
 

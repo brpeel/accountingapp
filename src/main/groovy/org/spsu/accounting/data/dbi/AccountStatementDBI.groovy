@@ -50,7 +50,7 @@ interface AccountStatementDBI {
         when normal_side = 'Credit' and debit = true then -1*amount
         when normal_side = 'Debit' and debit = false then -1*amount
         else amount
-      end) as balance
+      end)  + account.initial_balance as balance
 FROM accounting_trans_entry entry
   JOIN account account
     ON entry.account_id = account.id
@@ -77,7 +77,7 @@ ORDER BY account.orderno, case when account.normal_side = 'Credit' then 1 else 0
           WHEN normal_side = 'Debit' AND debit = FALSE
             THEN -1 * amount
           ELSE amount
-          END)      AS balance
+          END)   + account.initial_balance    AS balance
     FROM accounting_trans_entry entry
       JOIN account account
         ON entry.account_id = account.id

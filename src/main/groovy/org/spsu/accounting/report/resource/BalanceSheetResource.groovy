@@ -23,7 +23,7 @@ class BalanceSheetResource extends ReportResource {
 
         BalanceSheet statement = new BalanceSheet()
 
-        List<AccountStatement> accStmt = getAccounts(year, month, "'Asset', 'Owner Equity', 'Liability'")
+        List<AccountStatement> accStmt = getAccounts(year, month)
         statement.addAccounts(accStmt)
 
         return statement

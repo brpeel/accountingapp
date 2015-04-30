@@ -27,12 +27,12 @@ class OwnerEquityResource extends ReportResource {
 
         OwnerEquity statement = new OwnerEquity()
 
-        List<AccountStatement> accStmt = getAccounts(year, month, "'Revenue', 'Expense', 'Owner Equity'")
+        List<AccountStatement> accStmt = getAccounts(year, month)//getAccounts(year, month, "'Revenue', 'Expense', 'Owner Equity'")
         statement.addAccounts(accStmt)
 
         Period period = getPeriod(year, month)
         statement.account = accountDAO.getAccountByType(period, 'Owner Equity', 'Investment')?.get(0)
-        statement.period = period
+        //statement.period = period
 
         return statement
     }

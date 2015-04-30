@@ -25,6 +25,8 @@ var OwnerEquityController = function($rootScope, $scope, $http, $window, $locati
         $scope.startDate = data.startDate;
         $scope.endDate = data.endDate;
 
+        $scope.periodEnd = data.periodEnd;
+
     });
 
 };

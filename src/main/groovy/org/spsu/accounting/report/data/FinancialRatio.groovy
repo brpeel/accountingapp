@@ -10,7 +10,7 @@ import org.spsu.accounting.data.serial.RatioSerializer
 /**
  * Created by bpeel on 4/28/15.
  */
-class FinancialRatio {
+class FinancialRatio extends Statement{
 
     @JsonSerialize(using = RatioSerializer.class)
     BigDecimal currentRatio = 0.0                      // Current assets / Current liabilities

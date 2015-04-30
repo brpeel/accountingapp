@@ -22,7 +22,7 @@ interface CategoryTotalDBI {
           when normal_side = 'Credit' and debit = true then -1*amount
           when normal_side = 'Debit' and debit = false then -1*amount
           else amount
-          end) as balance
+          end)  + account.initial_balance as balance
     FROM accounting_trans_entry entry
       JOIN account account
         ON entry.account_id = account.id
@@ -41,7 +41,7 @@ interface CategoryTotalDBI {
           when normal_side = 'Credit' and debit = true then -1*amount
           when normal_side = 'Debit' and debit = false then -1*amount
           else amount
-          end) as balance
+          end)  + account.initial_balance as balance
     FROM accounting_trans_entry entry
       JOIN account account
         ON entry.account_id = account.id

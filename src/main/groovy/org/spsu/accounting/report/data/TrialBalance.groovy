@@ -9,7 +9,7 @@ import org.spsu.accounting.data.serial.MoneySerializer
 /**
  * Created by bpeel on 4/29/15.
  */
-class TrialBalance {
+class TrialBalance extends Statement {
 
     final List<TrialBalanceAccount> accounts = []
     @JsonSerialize(using = MoneySerializer.class)
@@ -18,15 +18,6 @@ class TrialBalance {
     @JsonSerialize(using = MoneySerializer.class)
     BigDecimal totalDebit = 0.0
 
-    @JsonGetter("date")
-    public String getDate(){
-        DateTime now = new DateTime();
-
-        String month = new java.text.DateFormatSymbols().months[ now.monthOfYear + 1 ]
-
-        return "${month} ${now.dayOfMonth}, ${now.year}"
-
-    }
 
     void addAccounts(List<AccountStatement> accounts){
 

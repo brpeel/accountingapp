@@ -29,7 +29,7 @@ class IncomeStatementResource extends ReportResource{
         logger.info("getting income statement for $year $month")
         IncomeStatement statement = new IncomeStatement()
 
-        List<AccountStatement> accounts = getAccounts(2015, 4, "'Revenue', 'Expense'")
+        List<AccountStatement> accounts = getAccounts(2015, 4)
 
         statement.addAccounts(accounts)
 

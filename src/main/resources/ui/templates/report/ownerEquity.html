@@ -1,6 +1,6 @@
 <div class="col-md-6">
     <div class="panel panel-default">
-        <div class="panel-heading text-center"><strong>Owner Equity Statement:<br/> For Month Ended {{endDate}}</strong></div>
+        <div class="panel-heading text-center"><strong>Owner Equity Statement:<br/> For Month Ended {{periodEnd}}</strong></div>
 
         <table>
 
@@ -34,9 +34,9 @@
             </tr>
 
             <tr>
-                <td colspan="2"><label><strong>{{accountName}}, {{endDate}}</strong></label></td>
+                <td colspan="2">{{accountName}}, {{endDate}}</td>
                 <td></td>
-                <td class="text-right padRight"><u>${{endingBalance}}</u></td>
+                <td class="text-right padRight"><u class="btm-border">${{endingBalance}}</u></td>
             </tr>
         </table>
        

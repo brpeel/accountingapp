@@ -10,7 +10,7 @@ import org.spsu.accounting.data.serial.MoneySerializer
 /**
  * Created by bpeel on 4/11/15.
  */
-class IncomeStatement {
+class IncomeStatement extends Statement {
 
     @JsonSerialize(using = MoneySerializer.class)
     BigDecimal totalRevenues = 0.0

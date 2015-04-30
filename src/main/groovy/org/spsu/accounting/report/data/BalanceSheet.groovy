@@ -9,7 +9,7 @@ import org.spsu.accounting.data.serial.MoneySerializer
 /**
  * Created by bpeel on 4/14/15.
  */
-class BalanceSheet {
+class BalanceSheet extends Statement {
 
     final List<AccountStatement> assets = new ArrayList<>()
     final List<AccountStatement> liabilities = new ArrayList<>()

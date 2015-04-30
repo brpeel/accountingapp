@@ -7,12 +7,13 @@ import org.spsu.accounting.data.domain.AccountDO
 import org.spsu.accounting.data.domain.AccountStatement
 import org.spsu.accounting.data.serial.MoneySerializer
 
+import javax.swing.plaf.nimbus.State
 import java.text.SimpleDateFormat
 
 /**
  * Created by brettpeel on 4/12/15.
  */
-class OwnerEquity {
+class OwnerEquity extends Statement {
 
     final static SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM dd, yyyy")
 
@@ -29,8 +30,8 @@ class OwnerEquity {
     BigDecimal netIncome = BigDecimal.ZERO
 
     String accountName
-    String startDate
-    String endDate
+    //String startDate
+    //String endDate
 
     public void addAccounts(List<AccountStatement> accounts) {
         accounts?.each { AccountStatement account ->
@@ -66,11 +67,40 @@ class OwnerEquity {
         startingBalance = accountDO.initialBalance
         accountName = accountDO.name
     }
-
+/*
     public void setPeriod(Period period) {
 
         startDate = dateFormat.format(new Date(period.start.millis))
         DateTime inclusiveEnd = period.end.minusDays(1)
         endDate = dateFormat.format(new Date(inclusiveEnd.millis))
     }
+ */
+
+    @JsonGetter("startDate")
+    public String getStart() {
+
+        DateTime now = new DateTime();
+
+
+        String month = new java.text.DateFormatSymbols().months[now.monthOfYear]
+
+        return "${month} 1"
+    }
+
+
+    @JsonGetter("endDate")
+    public String getEndDate() {
+
+        DateTime now = new DateTime();
+
+        String day
+        Calendar.with {
+            day = instance.getActualMaximum(DATE)
+        }
+
+        String month = new java.text.DateFormatSymbols().months[now.monthOfYear]
+
+        return "${month} ${day}"
+    }
+
 }
