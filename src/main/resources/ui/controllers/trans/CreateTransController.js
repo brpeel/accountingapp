@@ -5,7 +5,7 @@ function CreateTransController($rootScope, $scope, $http, $window, $location, $r
 
     $scope.tForm = {}
     $scope.tForm.description = null
-    $scope.tForm.entry =[{accountid:null, amount:null, debit:false}, {accountid:null, amount:null, debit:true}]
+    $scope.tForm.entry =[{accountid:null, amount:null, debit:true}, {accountid:null, amount:null, debit:false}]
 
     $scope.alerts = [];
     $scope.accounts = [];

@@ -90,7 +90,7 @@ interface UserDBI{
 	 where id = :id")
 	int update(@BindBean UserDO doBean)
 
-    @SqlUpdate("insert into token (id, expiration, user_id) values (:id, :expiration, :userid)")
+    @SqlUpdate("update accounting_user set login_attempts = 0 where id = :userid; insert into token (id, expiration, user_id) values (:id, :expiration, :userid)")
     void createSession(@Bind("id") String id, @Bind("expiration") long expiration, @Bind("userid") int userId)
 
     @SqlQuery("select u.* from token t join accounting_user u on u.id = t.user_id where t.id = :id and t.expiration > :now")
