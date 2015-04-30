@@ -2,6 +2,10 @@
     border-bottom: 1px solid black;
 }
 
+.top-border {
+    border-top: 1px solid black;
+}
+
 .indent {
     padding-left: 20px;  /*idem*/
 }

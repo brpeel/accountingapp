@@ -44,6 +44,7 @@ interface AccountStatementDBI {
   account.category,
   account.subcategory,
   account.orderno,
+  case when account.normal_side = 'Credit' then false else true end as debitNormal,
   sum(
       case
         when normal_side = 'Credit' and debit = true then -1*amount
@@ -57,7 +58,41 @@ FROM accounting_trans_entry entry
     ON trans.id = entry.trans_id
  WHERE status = 'Approved'
 GROUP BY account.id, account.name, account.category, account.subcategory
-ORDER BY account.orderno""")
-    List<AccountStatement> getBalances(@Define("types") types)
+ORDER BY account.orderno, case when account.normal_side = 'Credit' then 1 else 0 end""")
+    List<AccountStatement> getBalances()
 
+
+    @SqlQuery("""
+   SELECT
+      account.id,
+      account.name,
+      account.category,
+      CASE WHEN account.normal_side = 'Credit'
+        THEN FALSE
+      ELSE TRUE END AS debitNormal,
+      sum(
+          CASE
+          WHEN normal_side = 'Credit' AND debit = TRUE
+            THEN -1 * amount
+          WHEN normal_side = 'Debit' AND debit = FALSE
+            THEN -1 * amount
+          ELSE amount
+          END)      AS balance
+    FROM accounting_trans_entry entry
+      JOIN account account
+        ON entry.account_id = account.id
+      JOIN accounting_trans trans
+        ON trans.id = entry.trans_id
+    WHERE status = 'Approved'
+    GROUP BY account.id, account.name, account.category
+    ORDER BY
+    CASE category
+      WHEN 'Asset' THEN 1
+      WHEN 'Liability' THEN 2
+      WHEN 'Owner Equity'THEN 3
+      WHEN 'Revenue' THEN 4
+      WHEN 'Expense'THEN 5
+      ELSE 6
+    END, account.orderno""")
+    List<AccountStatement> getTrialBalances()
 }

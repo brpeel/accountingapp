@@ -1,0 +1,24 @@
+<div class="col-md-6">
+    <div class="panel panel-default">
+        <div class="panel-heading text-center"><strong>Trial Balance:<br/> {{date}}</strong></div>
+
+        <table>
+            <tr>
+                <td></td>
+                <td class="text-center"><u>Debit</u></td>
+                <td class="text-center"><u>Credit</u></td>
+            </tr>
+            <tr ng-repeat="account in accounts">
+                <td width="400px"><div class="indent">{{ account.name }}</div></td>
+                <td class="text-right padRight"><div ng-if="account.isFirst">$</div><p ng-if="account.debit">{{account.debit}}</p></td>
+                <td class="text-right padRight"><p ng-if="account.credit"><div ng-if="account.isFirst">$</div>{{account.credit}}</p></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="text-right padRight"><u class="btm-border top-border">${{totalDebit}}</u></td>
+                <td class="text-right padRight"><u class="btm-border top-border">${{totalCredit}}</u></td>
+            </tr>
+        </table>
+
+    </div>
+</div>

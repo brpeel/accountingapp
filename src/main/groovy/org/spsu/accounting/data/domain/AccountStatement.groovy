@@ -19,4 +19,6 @@ class AccountStatement {
 
     @JsonSerialize(using = MoneySerializer.class)
     BigDecimal balance
+
+    boolean debitNormal = false
 }

@@ -21,11 +21,12 @@ abstract class ReportResource {
 
     abstract def getStatement(int year, int month)
 
-    protected List<AccountStatement> getAccounts(int year, int month, String types) {
+
+    protected List<AccountStatement> getAccounts(int year, int month) {
 
         Period p = getPeriod(year, month)
         //return dbi.getBalances(p.startTime, p.endTime, types, "<")
-        return accountDBI.getBalances(types)
+        return accountDBI.getBalances()
     }
 
     protected Period getPeriod(int year, int month) {
