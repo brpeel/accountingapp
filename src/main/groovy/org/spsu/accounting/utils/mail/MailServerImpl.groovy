@@ -2,7 +2,9 @@ package org.spsu.accounting.utils.mail
 
 import org.apache.commons.mail.DefaultAuthenticator
 import org.apache.commons.mail.Email
+import org.apache.commons.mail.MultiPartEmail
 import org.apache.commons.mail.SimpleEmail
+import org.spsu.accounting.data.domain.UserDO
 
 
 /**
@@ -14,6 +16,32 @@ class MailServerImpl implements MailServer {
 
     public MailServerImpl(MailConfig config){
         this.config = config
+    }
+
+    @Override
+    String send(String to, String subject, String body, UserDO user, File attachment) {
+        Email email = new MultiPartEmail()
+
+        email.setFrom(user.email, user.firstName+" "+user.lastName)
+        email.setSubject(subject)
+        email.setMsg(body)
+        email.addTo(to, "Brett Peel")
+        if (attachment)
+            email.attach(attachment)
+
+        return send(email)
+    }
+
+    @Override
+    String send(String to, String subject, String body, UserDO user) {
+        Email email = new SimpleEmail()
+
+        email.setFrom(user.email, user.firstName+" "+user.lastName)
+        email.setSubject(subject)
+        email.setMsg(body)
+        email.addTo(to, "Brett Peel")
+
+        return send(email)
     }
 
     @Override
@@ -56,4 +84,6 @@ class MailServerImpl implements MailServer {
 
         return email.send()
     }
+
+
 }

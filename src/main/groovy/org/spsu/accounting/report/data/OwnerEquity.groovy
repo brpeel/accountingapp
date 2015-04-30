@@ -81,10 +81,9 @@ class OwnerEquity extends Statement {
  */
 
     @JsonGetter("startDate")
-    public String getStart() {
+    public String getStartDate() {
 
         DateTime now = new DateTime();
-
 
         String month = new java.text.DateFormatSymbols().months[now.monthOfYear]
 

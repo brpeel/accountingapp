@@ -78,6 +78,17 @@ class DocumentResource {
         return Response.ok(dao.getDocuments(transId)).build()
     }
 
+
+
+    @GET
+    @Path("/data/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getDocumentData(@PathParam("id") int id){
+
+        DocumentDO documentDO = dao.get(id)
+        return Response.ok(documentDO).build()
+    }
+
     @GET
     @Path("/download/{id}")
     public Response getDocument(@PathParam("id") int id){

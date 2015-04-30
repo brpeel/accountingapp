@@ -21,9 +21,11 @@ import org.slf4j.LoggerFactory
 import org.spsu.accounting.auth.AccountingAuthenticator
 import org.spsu.accounting.auth.SessionFilter
 import org.spsu.accounting.data.dao.AccountDAO
+import org.spsu.accounting.data.dao.DocumentDAO
 import org.spsu.accounting.data.dao.PermissionDAO
 import org.spsu.accounting.data.dao.UserDAO
 import org.spsu.accounting.data.dao.impl.AccountDAOImpl
+import org.spsu.accounting.data.dao.impl.DocumentDAOImpl
 import org.spsu.accounting.data.dao.impl.PermissionDAOImpl
 import org.spsu.accounting.data.dao.impl.StartDAO
 import org.spsu.accounting.data.dao.impl.UserDAOImpl
@@ -107,8 +109,11 @@ class AccountingApplication extends Application<AccountingApplicationConfigurati
 
     private void registerResources(Environment environment, DBI jdbi) {
 
+        UserDAO userDAO = new UserDAOImpl<UserDO>(dbi: jdbi.onDemand(UserDBI))
+        DocumentDAO documentDAO = new DocumentDAOImpl(dbi: jdbi.onDemand(DocumentDBI))
 
-        environment.jersey().register(new MenuResource(dao: new UserDAOImpl<UserDO>(dbi: jdbi.onDemand(UserDBI))))
+        environment.jersey().register(new MenuResource(dao:userDAO))
+        environment.jersey().register(new EmailResource(dao:userDAO, documentDAO: documentDAO))
         environment.jersey().register(new AboutResource())
         environment.jersey().register(new TimelineResource(dbi: jdbi.onDemand(TimelineDBI)))
 

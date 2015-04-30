@@ -69,6 +69,14 @@
                 controller  : 'myUserController'
             })
 
+            .when('/email/', {
+                templateUrl : 'ui/templates/email/emailUser.html',
+                controller  : 'emailUserController'
+            })
+            .when('/emaildocument/:id', {
+                templateUrl : 'ui/templates/email/emailDoc.html',
+                controller  : 'emailDocumentController'
+            })
             //reports
             .when('/incomeStatement',{
                 templateUrl : 'ui/templates/report/incomeStatement.html',
@@ -100,11 +108,12 @@
             .when('/', {
                 templateUrl : 'ui/templates/home.html',
                 controller  : 'HomeController'
-            })
+            });
+        /*
             .otherwise({
                 redirectTo: '/'
-            }
-    );
+            });
+            */
 	}).run( function($rootScope, $location, $window) {
 
         // register listener to watch route changes
@@ -226,6 +235,18 @@
         console.log('In Create User controller')
         var controller = new CreateUserController($rootScope, $scope, $http,  $window, $location)
 
+    });
+
+    accountingApp.controller('emailUserController', function($rootScope, $scope, $http,  $window, $location) {
+
+        var controller = new EmailUserController($rootScope, $scope, $http,  $window, $location)
+    });
+
+
+    accountingApp.controller('emailDocumentController', function($rootScope, $scope, $http,  $window, $location, $routeParams) {
+
+        console.log('IN email document controller');
+        var controller = new EmailDocumentController($rootScope, $scope, $http,  $window, $location, $routeParams)
     });
 
     //################################### REPORTS ####################################

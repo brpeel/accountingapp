@@ -158,7 +158,7 @@ class TransactionDAOImplTest extends Specification {
         result?.description?.toLowerCase() =~ "test"
     }
 
-    def "Managers can approve transactions"() {
+    def "Managers can post transactions"() {
         given:
         UserDO user = new UserDO(id: 2, role: 50)
 
@@ -167,11 +167,11 @@ class TransactionDAOImplTest extends Specification {
         int transId = dao.create(transaction)
 
         when:
-        dao.approve(transId, user)
+        dao.post(transId, user)
         transaction = dao.get(transId)
 
         then:
-        transaction.status == "Approved"
+        transaction.status == "Posted"
         transaction.approvedBy == user.id
         transaction.approved != null
     }
@@ -199,7 +199,7 @@ class TransactionDAOImplTest extends Specification {
         UserDO user = new UserDO(id: 3, role: 10)
 
         when:
-        dao.approve(1, user)
+        dao.post(1, user)
 
         then:
         0 * dbi.update(_)

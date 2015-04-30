@@ -16,14 +16,13 @@ var HomeController = function($rootScope, $scope, $http, $window, $location, $fi
         $scope.alerts.splice(index, 1);
     };
 
-    console.log($rootScope.allowed)
+
    // console.log($rootScope.permissions)
     $scope.fetch = function() {
 
         $http.get('/api/timeline')
             .success(function(data){
                 $scope.timeline = data;
-                console.log(JSON.stringify(data))
             })
             .error(function(response, status, headers, config) {
 

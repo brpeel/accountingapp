@@ -29,5 +29,5 @@ class MailConfig {
     boolean notifyStart = false
 
     @JsonProperty
-    boolean testMode = true
+    boolean testMode = false
 }
